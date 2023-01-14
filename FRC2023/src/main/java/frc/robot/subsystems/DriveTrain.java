@@ -4,11 +4,42 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.SparkMaxAbsoluteEncoder;
+
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DriveTrain extends SubsystemBase {
+  private CANSparkMax leftFrontMotor;
+  private CANSparkMax leftRearMotor;
+  private CANSparkMax rightFrontMotor;
+  private CANSparkMax rightRearMotor;
+
+  private MotorControllerGroup leftMotors;
+  private MotorControllerGroup rightMotors;
+  private DifferentialDrive drive;
+
   /** Creates a new DriveTrain. */
-  public DriveTrain() {}
+  public DriveTrain() {
+    leftFrontMotor = new CANSparkMax(0, null);
+    leftRearMotor = new CANSparkMax(0, null);
+    leftFrontMotor.setInverted(true);
+    leftRearMotor.setInverted(true);
+    leftMotors = new MotorControllerGroup(leftFrontMotor, leftRearMotor);
+
+    rightFrontMotor = new CANSparkMax(0, null);
+    rightRearMotor = new CANSparkMax(0, null);
+    rightMotors = new MotorControllerGroup(rightFrontMotor, rightRearMotor);
+
+    drive = new DifferentialDrive(leftMotors, rightMotors);
+
+  }
+
+  public void drive(double xspeed, double zrotation) {
+    drive.arcadeDrive(xspeed, zrotation);
+  }
 
   @Override
   public void periodic() {

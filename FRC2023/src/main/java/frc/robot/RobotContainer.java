@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.commands.ArcadeDrive;
@@ -11,13 +12,19 @@ import frc.robot.subsystems.DriveTrain;
 
 public class RobotContainer {
 
-  public DriveTrain driveTrain;
-
+  public DriveTrain drivetrain;
+  Joystick driverJoystick = new Joystick(0);
 
   public RobotContainer() {
-    driveTrain = new DriveTrain();
-    driveTrain.setDefaultCommand(new ArcadeDrive(driveTrain));
+    drivetrain = new DriveTrain();
+    drivetrain.setDefaultCommand(new ArcadeDrive(drivetrain,
+    () -> driverJoystick.getRawAxis(Constants.AXIS_RightTrigger),
+    () -> driverJoystick.getRawAxis(Constants.AXIS_LeftTrigger),
+    () -> driverJoystick.getRawAxis(Constants.AXIS_LeftStickX)
+    ));
     configureBindings();
+
+
   }
 
   private void configureBindings() {}
