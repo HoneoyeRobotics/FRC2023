@@ -23,14 +23,14 @@ public class DriveTrain extends SubsystemBase {
 
   /** Creates a new DriveTrain. */
   public DriveTrain() {
-    leftFrontMotor = new CANSparkMax(0, null);
-    leftRearMotor = new CANSparkMax(0, null);
+    leftFrontMotor = new CANSparkMax(26, null);
+    leftRearMotor = new CANSparkMax(25, null);
     leftFrontMotor.setInverted(true);
     leftRearMotor.setInverted(true);
     leftMotors = new MotorControllerGroup(leftFrontMotor, leftRearMotor);
 
-    rightFrontMotor = new CANSparkMax(0, null);
-    rightRearMotor = new CANSparkMax(0, null);
+    rightFrontMotor = new CANSparkMax(21, null);
+    rightRearMotor = new CANSparkMax(22, null);
     rightMotors = new MotorControllerGroup(rightFrontMotor, rightRearMotor);
 
     drive = new DifferentialDrive(leftMotors, rightMotors);
