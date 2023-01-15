@@ -4,30 +4,43 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.ArcadeDrive;
+import frc.robot.commands.ToggleVisionState;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.Vision;
 
 public class RobotContainer {
 
   public DriveTrain drivetrain;
-  Joystick driverJoystick = new Joystick(0);
+  public Vision vision;
+  CommandXboxController driverJoystick = new CommandXboxController(0);
 
   public RobotContainer() {
+    //initialize subsystems
     drivetrain = new DriveTrain();
-    drivetrain.setDefaultCommand(new ArcadeDrive(drivetrain,
-    () -> driverJoystick.getRawAxis(Constants.AXIS_RightTrigger),
-    () -> driverJoystick.getRawAxis(Constants.AXIS_LeftTrigger),
-    () -> driverJoystick.getRawAxis(Constants.AXIS_LeftStickX)
-    ));
-    configureBindings();
+    vision = new Vision();
 
+
+    //wire default commands
+    drivetrain.setDefaultCommand(new ArcadeDrive(drivetrain,
+      () -> driverJoystick.getLeftTriggerAxis(),
+      () -> driverJoystick.getRightTriggerAxis(),
+      () -> driverJoystick.getLeftX(),
+      () -> driverJoystick.getLeftY(),
+      () -> driverJoystick.getHID().getLeftBumper()
+      ));
+    configureBindings();
 
   }
 
-  private void configureBindings() {}
+  private void configureBindings() {
+    
+    driverJoystick.rightBumper().debounce(0.1).onTrue(new ToggleVisionState(vision));
+    
+  }
 
   public Command getAutonomousCommand() {
     return Commands.print("No autonomous command configured");

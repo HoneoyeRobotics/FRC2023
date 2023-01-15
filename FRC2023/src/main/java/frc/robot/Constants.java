@@ -14,12 +14,17 @@ package frc.robot;
  */
 public final class Constants {
 
-    
-    public static final int AXIS_LeftStickX  = 0;
-    public static final int AXIS_LeftStickY = 1;
-    public static final int AXIS_LeftTrigger = 2;    
-    public static final int AXIS_RightTrigger = 3;
-    public static final int AXIS_RightStickX = 4;
-    public static final int AXIS_RightStickY =  5;
-    public static final int TurretMotorPID = 24;
+
+
+    public final class CanIDs{
+        public static final int LeftFrontDrive = 25;
+        public static final int LeftRearDrive = 26;
+        public static final int RightFrontDrive = 21;
+        public static final int RightRearDrive = 22;
+        
+        public static final int ArmRotateMotor = 0;
+        public static final int ArmLiftMotor = 0;
+        public static final int ArmLengthMotor = 0;
+        
+    }
 }
