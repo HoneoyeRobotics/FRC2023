@@ -4,6 +4,10 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.PathConstraints;
+import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -39,6 +43,9 @@ public class RobotContainer {
   private void configureBindings() {
     
     driverJoystick.rightBumper().debounce(0.1).onTrue(new ToggleVisionState(vision));
+    PathPlannerTrajectory examplePath = PathPlanner.loadPath("Test", new PathConstraints(1, 0.05));
+
+    driverJoystick.start().debounce(0.1).onTrue(drivetrain.FollowPath(examplePath, true));
     
   }
 

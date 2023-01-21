@@ -1,8 +1,6 @@
 
 package frc.robot;
 
-import com.revrobotics.ControlType;
-
 import edu.wpi.first.wpilibj.Preferences;
 import frc.robot.enums.DriveControlType;
 
