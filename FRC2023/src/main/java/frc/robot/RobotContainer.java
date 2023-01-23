@@ -33,7 +33,8 @@ public class RobotContainer {
       () -> driverJoystick.getRightTriggerAxis(),
       () -> driverJoystick.getLeftX(),
       () -> driverJoystick.getLeftY(),
-      () -> driverJoystick.getHID().getLeftBumper()
+      () -> driverJoystick.getHID().getLeftBumper(),
+      () -> driverJoystick.getRightY()
       ));
     configureBindings();
 
