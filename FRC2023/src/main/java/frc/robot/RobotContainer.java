@@ -48,7 +48,7 @@ public class RobotContainer {
     
     driverJoystick.rightBumper().debounce(0.1).onTrue(new ToggleVisionState(vision));
     driverJoystick.b().debounce(0.1).whileTrue(new RunBottomPickup(pickup));
-    driverJoystick.y().debounce(0.1).onTrue(new ToggleClaw(arms));
+    driverJoystick.x().debounce(0.1).onTrue(new ToggleClaw(arms));
   }
 
   public Command getAutonomousCommand() {
