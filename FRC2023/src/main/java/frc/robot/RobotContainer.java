@@ -9,7 +9,9 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.ArcadeDrive;
 import frc.robot.commands.RunBottomPickup;
+import frc.robot.commands.ToggleClaw;
 import frc.robot.commands.ToggleVisionState;
+import frc.robot.subsystems.Arms;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Pickup;
 import frc.robot.subsystems.Vision;
@@ -19,6 +21,7 @@ public class RobotContainer {
   public DriveTrain drivetrain;
   public Vision vision;
   public Pickup pickup;
+  public Arms arms;
   CommandXboxController driverJoystick = new CommandXboxController(0);
 
   public RobotContainer() {
@@ -26,6 +29,7 @@ public class RobotContainer {
     drivetrain = new DriveTrain();
     vision = new Vision();
     pickup = new Pickup();
+    arms = new Arms();
 
     //wire default commands
     drivetrain.setDefaultCommand(new ArcadeDrive(drivetrain,
@@ -44,6 +48,7 @@ public class RobotContainer {
     
     driverJoystick.rightBumper().debounce(0.1).onTrue(new ToggleVisionState(vision));
     driverJoystick.b().debounce(0.1).whileTrue(new RunBottomPickup(pickup));
+    driverJoystick.y().debounce(0.1).onTrue(new ToggleClaw(arms));
   }
 
   public Command getAutonomousCommand() {
