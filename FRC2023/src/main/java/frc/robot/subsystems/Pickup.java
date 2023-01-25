@@ -4,14 +4,22 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.PneumaticsControlModule;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class Arms extends SubsystemBase {
-  /** Creates a new Arms. */
-  private PneumaticsControlModule pcm;
-  public Arms() {}
+public class Pickup extends SubsystemBase {
+  /** Creates a new Pickup. */
 
+  private CANSparkMax bottomPickupMotor;
+  public Pickup() {
+    bottomPickupMotor = new CANSparkMax(23, MotorType.kBrushless);
+  }
+
+  public void runBottomPickupMotor(double speed){
+    bottomPickupMotor.set(speed);
+  }
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

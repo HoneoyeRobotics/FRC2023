@@ -25,6 +25,8 @@ public final class RobotPrefs {
             return DriveControlType.TriggersForward;
         case "triggersturn":
             return DriveControlType.TriggersTurn;
+        case "triggersturndoubleforward":
+            return DriveControlType.TriggersTurnDoubleForward;
         default:
             return DriveControlType.SingleStick;
        }
@@ -32,10 +34,17 @@ public final class RobotPrefs {
     }
 
     public static boolean getDebugMode(){
-        if(!Preferences.containsKey("DriveControlType")){
+        if(!Preferences.containsKey("DebugMode")){
             Preferences.setBoolean("DebugMode", true);            
         }
         return Preferences.getBoolean("DebugMode", true);
+    }
+
+    public static double getBottomPickupSpeed(){
+        if(!Preferences.containsKey("BottomPickupSpeed")){
+            Preferences.setDouble("BottomPickupSpeed", 0.2);
+        }
+        return Preferences.getDouble("BottomPickupSpeed", 0.2);
     }
 
 }
