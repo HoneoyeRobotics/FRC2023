@@ -4,10 +4,12 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.PneumaticsControlModule;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Arms extends SubsystemBase {
   /** Creates a new Arms. */
+  private PneumaticsControlModule pcm;
   public Arms() {}
 
   @Override
