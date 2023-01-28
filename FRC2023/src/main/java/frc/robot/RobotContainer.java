@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.ArcadeDrive;
+import frc.robot.commands.ResetEncoders;
 import frc.robot.subsystems.DriveTrain;
 
 public class RobotContainer {
@@ -37,8 +38,11 @@ public class RobotContainer {
     () -> driverJoystick.getLeftTriggerAxis(),
     () -> driverJoystick.getLeftX()
     ));
+
     configureBindings();
     SmartDashboard.putString("CommandState", "Setting default command");
+    
+    SmartDashboard.putData("ResetEncoders", new ResetEncoders(drivetrain));
   }
 
   private void configureBindings() {}

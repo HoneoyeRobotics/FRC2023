@@ -25,11 +25,11 @@ public final class Constants {
   }
 
     public static final class DriveConstants {
-
+        public static final double kNeoCPR_none = (42);
         public static final double kNeoCPR_10_71 = (449.82);
         public static final double kNeoCPR_5_95 = (249.9);
         public static final double kNeoCPR_8_45= (354.9);
-        public static final double kNeoCPR= (kNeoCPR_10_71);
+        public static final double kNeoCPR= (kNeoCPR_none);
         public static final double kWheelDiameterMeters = 0.1524;
         public static final double kEncoderDistancePerPulse =
           (kWheelDiameterMeters * Math.PI) / kNeoCPR;
@@ -58,8 +58,8 @@ public final class Constants {
       }
     
       public static final class AutoConstants {
-        public static final double kMaxSpeedMetersPerSecond = 3;
-        public static final double kMaxAccelerationMetersPerSecondSquared = 1;
+        public static final double kMaxSpeedMetersPerSecond = 1;
+        public static final double kMaxAccelerationMetersPerSecondSquared = .5;
     
         // Reasonable baseline values for a RAMSETE follower in units of meters and seconds
         public static final double kRamseteB = 2;

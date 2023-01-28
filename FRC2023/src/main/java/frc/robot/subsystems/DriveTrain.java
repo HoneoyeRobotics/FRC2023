@@ -11,6 +11,8 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
@@ -50,21 +52,17 @@ public class DriveTrain extends SubsystemBase {
 
     drive = new DifferentialDrive(leftMotors, rightMotors);
 
-    leftFrontMotor.getEncoder().setVelocityConversionFactor(DriveConstants.kEncoderDistancePerPulse);
-    rightFrontMotor.getEncoder().setVelocityConversionFactor(DriveConstants.kEncoderDistancePerPulse);
+  //  leftFrontMotor.getEncoder().setVelocityConversionFactor(DriveConstants.kEncoderDistancePerPulse);
+  //  rightFrontMotor.getEncoder().setVelocityConversionFactor(DriveConstants.kEncoderDistancePerPulse);
     
-    leftFrontMotor.getEncoder().setPositionConversionFactor(DriveConstants.kEncoderDistancePerPulse);
-    rightFrontMotor.getEncoder().setPositionConversionFactor(DriveConstants.kEncoderDistancePerPulse);
+  //  leftFrontMotor.getEncoder().setPositionConversionFactor(DriveConstants.kEncoderDistancePerPulse);
+  //  rightFrontMotor.getEncoder().setPositionConversionFactor(DriveConstants.kEncoderDistancePerPulse);
 
-    leftFrontMotor.getEncoder().setPosition(0);    
-    leftRearMotor.getEncoder().setPosition(0);
-    rightFrontMotor.getEncoder().setPosition(0);    
-    rightRearMotor.getEncoder().setPosition(0);
 
     resetEncoders();
     m_odometry =
-        new DifferentialDriveOdometry(
-            m_gyro.getRotation2d(), leftFrontMotor.getEncoder().getPosition(), rightFrontMotor.getEncoder().getPosition());
+       new DifferentialDriveOdometry(
+           m_gyro.getRotation2d(), leftFrontMotor.getEncoder().getPosition(), rightFrontMotor.getEncoder().getPosition());
   
   }
 
@@ -77,8 +75,8 @@ public class DriveTrain extends SubsystemBase {
     SmartDashboard.putNumber("RR Encoder", rightRearMotor.getEncoder().getPosition());
 
     // Update the odometry in the periodic block
-    m_odometry.update(
-      m_gyro.getRotation2d(), leftFrontMotor.getEncoder().getPosition(), rightFrontMotor.getEncoder().getPosition());
+    //m_odometry.update(
+    //  m_gyro.getRotation2d(), leftFrontMotor.getEncoder().getPosition(), rightFrontMotor.getEncoder().getPosition());
     }
 
   /**
@@ -130,6 +128,8 @@ public class DriveTrain extends SubsystemBase {
   public void resetEncoders() {
     leftFrontMotor.getEncoder().setPosition(0.0);
     rightFrontMotor.getEncoder().setPosition(0.0);
+    leftRearMotor.getEncoder().setPosition(0.0);
+    rightRearMotor.getEncoder().setPosition(0.0);
   }
 
   /**
@@ -190,4 +190,6 @@ public class DriveTrain extends SubsystemBase {
   public double getTurnRate() {
     return -m_gyro.getRate();
   }
+
+
 }
