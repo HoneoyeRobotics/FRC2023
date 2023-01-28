@@ -17,6 +17,7 @@ import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
@@ -52,10 +53,10 @@ public class RobotContainer {
         // A split-stick arcade command, with forward/backward controlled by the left
         // hand, and turning controlled by the right.
         new RunCommand(
-            () ->
-                m_robotDrive.arcadeDrive(
-                    -m_driverController.getLeftY(), -m_driverController.getRightX()),
+            () -> m_robotDrive.arcadeDrive(
+            -m_driverController.getLeftY(), -m_driverController.getRightX()),
             m_robotDrive));
+        SmartDashboard.putString("Commandstate", "Setting a default command");
   }
 
   /**
@@ -103,7 +104,7 @@ public class RobotContainer {
             // Start at the origin facing the +X direction
             new Pose2d(0, 0, new Rotation2d(0)),
             // Pass through these two interior waypoints, making an 's' curve path
-            List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
+            List.of(new Translation2d(1, 0), new Translation2d(2, 0)),
             // End 3 meters straight ahead of where we started, facing forward
             new Pose2d(3, 0, new Rotation2d(0)),
             // Pass config
@@ -127,6 +128,7 @@ public class RobotContainer {
             m_robotDrive);
 
     // Reset odometry to the starting pose of the trajectory.
+        SmartDashboard.putString("Commandstate", "Seting auto command");
     m_robotDrive.resetOdometry(exampleTrajectory.getInitialPose());
 
     // Run path following command, then stop at the end.

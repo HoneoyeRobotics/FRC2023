@@ -6,13 +6,11 @@ package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.SparkMaxAbsoluteEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
@@ -33,7 +31,6 @@ public class DriveTrain extends SubsystemBase {
   private DifferentialDrive drive;
   
   // The gyro sensor
-  //TODO: this is the wrong gyro
   private final Gyro m_gyro = new AHRS(SerialPort.Port.kUSB);
 
   // Odometry class for tracking robot pose

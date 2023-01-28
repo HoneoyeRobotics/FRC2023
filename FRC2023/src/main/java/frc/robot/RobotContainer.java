@@ -17,6 +17,7 @@ import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import frc.robot.Constants.AutoConstants;
@@ -37,14 +38,13 @@ public class RobotContainer {
     () -> driverJoystick.getLeftX()
     ));
     configureBindings();
-
-
+    SmartDashboard.putString("CommandState", "Setting default command");
   }
 
   private void configureBindings() {}
 
   public Command getAutonomousCommand() {
-    
+    SmartDashboard.putString("CommandState", "Setting Auto");
     // Create a voltage constraint to ensure we don't accelerate too fast
     var autoVoltageConstraint =
         new DifferentialDriveVoltageConstraint(
@@ -92,7 +92,8 @@ public class RobotContainer {
             new PIDController(DriveConstants.kPDriveVel, 0, 0),
             drivetrain::tankDriveVolts, 
             drivetrain);
-    
+
+    SmartDashboard.putString("Command Select", "Autonomus");
           // Reset odometry to the starting pose of the trajectory.
      drivetrain.resetOdometry(exampleTrajectory.getInitialPose());
  
