@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.Constants.CanIDs;
 import frc.robot.Constants.DriveConstants;
 
@@ -52,12 +53,14 @@ public class DriveTrain extends SubsystemBase {
 
     drive = new DifferentialDrive(leftMotors, rightMotors);
 
-  //  leftFrontMotor.getEncoder().setVelocityConversionFactor(DriveConstants.kEncoderDistancePerPulse);
-  //  rightFrontMotor.getEncoder().setVelocityConversionFactor(DriveConstants.kEncoderDistancePerPulse);
+    if (Constants.testcode) {
+  
+    leftFrontMotor.getEncoder().setVelocityConversionFactor(DriveConstants.kEncoderDistancePerPulse);
+    rightFrontMotor.getEncoder().setVelocityConversionFactor(DriveConstants.kEncoderDistancePerPulse);
     
-  //  leftFrontMotor.getEncoder().setPositionConversionFactor(DriveConstants.kEncoderDistancePerPulse);
-  //  rightFrontMotor.getEncoder().setPositionConversionFactor(DriveConstants.kEncoderDistancePerPulse);
-
+    leftFrontMotor.getEncoder().setPositionConversionFactor(DriveConstants.kEncoderDistancePerPulse);
+    rightFrontMotor.getEncoder().setPositionConversionFactor(DriveConstants.kEncoderDistancePerPulse);
+   }
 
     resetEncoders();
     m_odometry =
@@ -75,8 +78,8 @@ public class DriveTrain extends SubsystemBase {
     SmartDashboard.putNumber("RR Encoder", rightRearMotor.getEncoder().getPosition());
 
     // Update the odometry in the periodic block
-    //m_odometry.update(
-    //  m_gyro.getRotation2d(), leftFrontMotor.getEncoder().getPosition(), rightFrontMotor.getEncoder().getPosition());
+    m_odometry.update(
+      m_gyro.getRotation2d(), leftFrontMotor.getEncoder().getPosition(), rightFrontMotor.getEncoder().getPosition());
     }
 
   /**
