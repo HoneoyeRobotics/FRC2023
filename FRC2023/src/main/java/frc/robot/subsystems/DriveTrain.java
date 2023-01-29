@@ -65,7 +65,7 @@ public class DriveTrain extends SubsystemBase {
     resetEncoders();
     m_odometry =
        new DifferentialDriveOdometry(
-           m_gyro.getRotation2d(), leftFrontMotor.getEncoder().getPosition(), rightFrontMotor.getEncoder().getPosition());
+           m_gyro.getRotation2d(), leftRearMotor.getEncoder().getPosition(), rightRearMotor.getEncoder().getPosition());
   
   }
 
@@ -79,7 +79,7 @@ public class DriveTrain extends SubsystemBase {
 
     // Update the odometry in the periodic block
     m_odometry.update(
-      m_gyro.getRotation2d(), leftFrontMotor.getEncoder().getPosition(), rightFrontMotor.getEncoder().getPosition());
+      m_gyro.getRotation2d(), leftRearMotor.getEncoder().getPosition(), rightRearMotor.getEncoder().getPosition());
     }
 
   /**
@@ -97,7 +97,7 @@ public class DriveTrain extends SubsystemBase {
    * @return The current wheel speeds.
    */
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {
-    return new DifferentialDriveWheelSpeeds(leftFrontMotor.getEncoder().getVelocity(), rightFrontMotor.getEncoder().getVelocity());
+    return new DifferentialDriveWheelSpeeds(leftRearMotor.getEncoder().getVelocity(), rightRearMotor.getEncoder().getVelocity());
   }
 
   /**
@@ -108,7 +108,7 @@ public class DriveTrain extends SubsystemBase {
   public void resetOdometry(Pose2d pose) {
     resetEncoders();
     m_odometry.resetPosition(
-        m_gyro.getRotation2d(), leftFrontMotor.getEncoder().getPosition(), rightFrontMotor.getEncoder().getPosition(), pose);
+        m_gyro.getRotation2d(), leftRearMotor.getEncoder().getPosition(), rightRearMotor.getEncoder().getPosition(), pose);
   }
 
   public void drive(double xspeed, double zrotation) {
@@ -141,7 +141,7 @@ public class DriveTrain extends SubsystemBase {
    * @return the average of the two encoder readings
    */
   public double getAverageEncoderDistance() {
-    return (leftFrontMotor.getEncoder().getPosition() + rightFrontMotor.getEncoder().getPosition()) / 2.0;
+    return (leftRearMotor.getEncoder().getPosition() + rightRearMotor.getEncoder().getPosition()) / 2.0;
   }
 
   /**
@@ -150,7 +150,7 @@ public class DriveTrain extends SubsystemBase {
    * @return the left drive encoder
    */
   public CANSparkMax getLeftEncoder() {
-    return leftFrontMotor;
+    return leftRearMotor;
   }
 
   /**
@@ -159,7 +159,7 @@ public class DriveTrain extends SubsystemBase {
    * @return the right drive encoder
    */
   public CANSparkMax getRightEncoder() {
-    return rightFrontMotor;
+    return rightRearMotor;
   }
 
   /**
