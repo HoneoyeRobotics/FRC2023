@@ -11,8 +11,6 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
-import edu.wpi.first.util.sendable.Sendable;
-import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
@@ -43,9 +41,10 @@ public class DriveTrain extends SubsystemBase {
   public DriveTrain() {
     leftFrontMotor = new CANSparkMax(CanIDs.LeftFrontDrive, MotorType.kBrushless);
     leftRearMotor = new CANSparkMax(CanIDs.LeftRearDrive, MotorType.kBrushless);
-    leftFrontMotor.setInverted(true);
-    leftRearMotor.setInverted(true);
+    //leftFrontMotor.setInverted(true);
+    //leftRearMotor.setInverted(true);
     leftMotors = new MotorControllerGroup(leftFrontMotor, leftRearMotor);
+    leftMotors.setInverted(true);
 
     rightFrontMotor = new CANSparkMax(CanIDs.RightFrontDrive, MotorType.kBrushless);
     rightRearMotor = new CANSparkMax(CanIDs.RightRearDrive, MotorType.kBrushless);
@@ -65,7 +64,7 @@ public class DriveTrain extends SubsystemBase {
     resetEncoders();
     m_odometry =
        new DifferentialDriveOdometry(
-           m_gyro.getRotation2d(), leftRearMotor.getEncoder().getPosition(), rightRearMotor.getEncoder().getPosition());
+           m_gyro.getRotation2d(), leftFrontMotor.getEncoder().getPosition(), rightFrontMotor.getEncoder().getPosition());
   
   }
 
@@ -76,10 +75,11 @@ public class DriveTrain extends SubsystemBase {
     SmartDashboard.putNumber("LR Encoder", leftRearMotor.getEncoder().getPosition());
     SmartDashboard.putNumber("RF Encoder", rightFrontMotor.getEncoder().getPosition());
     SmartDashboard.putNumber("RR Encoder", rightRearMotor.getEncoder().getPosition());
+    SmartDashboard.putNumber("Gyro heading", m_gyro.getRotation2d().getDegrees());
 
     // Update the odometry in the periodic block
     m_odometry.update(
-      m_gyro.getRotation2d(), leftRearMotor.getEncoder().getPosition(), rightRearMotor.getEncoder().getPosition());
+      m_gyro.getRotation2d(), leftFrontMotor.getEncoder().getPosition(), rightFrontMotor.getEncoder().getPosition());
     }
 
   /**
@@ -97,7 +97,7 @@ public class DriveTrain extends SubsystemBase {
    * @return The current wheel speeds.
    */
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {
-    return new DifferentialDriveWheelSpeeds(leftRearMotor.getEncoder().getVelocity(), rightRearMotor.getEncoder().getVelocity());
+    return new DifferentialDriveWheelSpeeds(leftFrontMotor.getEncoder().getVelocity(), rightFrontMotor.getEncoder().getVelocity());
   }
 
   /**
@@ -108,7 +108,7 @@ public class DriveTrain extends SubsystemBase {
   public void resetOdometry(Pose2d pose) {
     resetEncoders();
     m_odometry.resetPosition(
-        m_gyro.getRotation2d(), leftRearMotor.getEncoder().getPosition(), rightRearMotor.getEncoder().getPosition(), pose);
+        m_gyro.getRotation2d(), leftFrontMotor.getEncoder().getPosition(), rightFrontMotor.getEncoder().getPosition(), pose);
   }
 
   public void drive(double xspeed, double zrotation) {
@@ -122,6 +122,12 @@ public class DriveTrain extends SubsystemBase {
    * @param rightVolts the commanded right output
    */
   public void tankDriveVolts(double leftVolts, double rightVolts) {
+    /* 
+    if (leftVolts > 2.0 ) {leftVolts = 2.0;}
+    if (rightVolts > 2.0) {leftVolts = 2.0;}
+    if (leftVolts < -2.0 ) {leftVolts = -2.0;}
+    if (rightVolts < -2.0) {leftVolts = -2.0;}
+    */
     leftMotors.setVoltage(leftVolts);
     rightMotors.setVoltage(rightVolts);
     drive.feed();
@@ -141,7 +147,7 @@ public class DriveTrain extends SubsystemBase {
    * @return the average of the two encoder readings
    */
   public double getAverageEncoderDistance() {
-    return (leftRearMotor.getEncoder().getPosition() + rightRearMotor.getEncoder().getPosition()) / 2.0;
+    return (leftFrontMotor.getEncoder().getPosition() + rightFrontMotor.getEncoder().getPosition()) / 2.0;
   }
 
   /**
@@ -150,7 +156,7 @@ public class DriveTrain extends SubsystemBase {
    * @return the left drive encoder
    */
   public CANSparkMax getLeftEncoder() {
-    return leftRearMotor;
+    return leftFrontMotor;
   }
 
   /**
@@ -159,7 +165,7 @@ public class DriveTrain extends SubsystemBase {
    * @return the right drive encoder
    */
   public CANSparkMax getRightEncoder() {
-    return rightRearMotor;
+    return rightFrontMotor;
   }
 
   /**

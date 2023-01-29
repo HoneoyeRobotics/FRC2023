@@ -38,17 +38,17 @@ public class RobotContainer {
     () -> driverJoystick.getLeftTriggerAxis(),
     () -> driverJoystick.getLeftX()
     ));
-
-    configureBindings();
+    SmartDashboard.putData("ResetEncoders", new ResetEncoders(drivetrain));
     SmartDashboard.putString("CommandState", "Setting default command");
     
-    SmartDashboard.putData("ResetEncoders", new ResetEncoders(drivetrain));
+    configureBindings();
   }
 
   private void configureBindings() {}
 
   public Command getAutonomousCommand() {
     SmartDashboard.putString("CommandState", "Setting Auto");
+    drivetrain.zeroHeading();
     // Create a voltage constraint to ensure we don't accelerate too fast
     var autoVoltageConstraint =
         new DifferentialDriveVoltageConstraint(
@@ -73,11 +73,11 @@ public class RobotContainer {
      Trajectory exampleTrajectory =
      TrajectoryGenerator.generateTrajectory(
          // Start at the origin facing the +X direction
-         new Pose2d(0, 0, new Rotation2d(0)),
+         new Pose2d(0, 0, new Rotation2d(-180)),
          // Pass through these two interior waypoints, making an straight path
-         List.of(new Translation2d(0, 1), new Translation2d(0, 2)),
+         List.of(new Translation2d(-1, 0), new Translation2d(-2, 0)),
          // End 3 meters straight ahead of where we started, facing forward
-         new Pose2d(0, 3, new Rotation2d(0)),
+         new Pose2d(-3, 0, new Rotation2d(0)),
          // Pass config
          config);
          

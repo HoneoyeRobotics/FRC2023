@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import javax.xml.stream.events.StartDocument;
+
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.util.Units;
 
@@ -16,6 +18,8 @@ import edu.wpi.first.math.util.Units;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+
+  public static final boolean testcode = true;
 
   public final class CanIDs{
     public static final int LeftFrontDrive = 25;
@@ -50,7 +54,7 @@ public final class Constants {
         // Example value only - as above, this must be tuned for your drive!
         //TODO: tune this value
         //public static final double kPDriveVel = 8.5;
-        public static final double kPDriveVel = .0013871;
+        public static final double kPDriveVel = .084125;
       }
     
       public static final class OIConstants {
@@ -58,8 +62,8 @@ public final class Constants {
       }
     
       public static final class AutoConstants {
-        public static final double kMaxSpeedMetersPerSecond = 1;
-        public static final double kMaxAccelerationMetersPerSecondSquared = .5;
+        public static final double kMaxSpeedMetersPerSecond = .003;
+        public static final double kMaxAccelerationMetersPerSecondSquared = .001;
     
         // Reasonable baseline values for a RAMSETE follower in units of meters and seconds
         public static final double kRamseteB = 2;
