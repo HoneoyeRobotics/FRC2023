@@ -15,6 +15,7 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
@@ -37,9 +38,7 @@ public class RobotContainer {
       () -> driverJoystick.getLeftX()
     ));
    
-
     SmartDashboard.putData("ResetEncoders", new ResetEncoders(drivetrain));
-    SmartDashboard.putString("CommandState", "Setting default command");
     
     configureBindings();
   }
@@ -50,8 +49,6 @@ public class RobotContainer {
 
     Trajectory myTrajectory;
     int trajectoryChoice;
-    
-    SmartDashboard.putString("CommandState", "Setting Auto");
 
     drivetrain.zeroHeading();
 
@@ -76,9 +73,12 @@ public class RobotContainer {
         .addConstraint(autoVoltageConstraint);
 
         
-    //Get the trajectory choice from the dashboard for the switch statement
-    trajectoryChoice = (int) SmartDashboard.getNumber("TrajectoryChoice", 10);
-    
+    //Get the trajectory choice from the dashboard for the switch statement (If there is no key there it creates one)
+    if(!Preferences.containsKey("TrajectoryChoice")){
+        Preferences.setInt("TrajectoryChoice", 10);
+    }
+    trajectoryChoice = Preferences.getInt("TrajectoryChoice", 10);
+  
     // Create a switch statement to switch between multiple trajectories
     switch (trajectoryChoice) {
       case 1:
@@ -126,7 +126,7 @@ public class RobotContainer {
         TrajectoryGenerator.generateTrajectory(
             // Start at the origin facing the +X direction
             new Pose2d(0, 0, new Rotation2d(0)),
-            // Pass through these two interior waypoints, making an "S" curve
+            // Pass through these two interior waypoints, making an Circular curve
             List.of(new Translation2d(2.24, 1), new Translation2d(2.83, 2)),
             // End 5.7 meters diagonally of where we started, facing 0 degrees
             new Pose2d(3, 3, new Rotation2d(90)),
@@ -163,9 +163,8 @@ public class RobotContainer {
         drivetrain::tankDriveVolts, 
         drivetrain);
 
-    SmartDashboard.putString("Command Select", "Autonomus");
-          // Reset odometry to the starting pose of the trajectory.
-     drivetrain.resetOdometry(myTrajectory.getInitialPose());
+    // Reset odometry to the starting pose of the trajectory.
+    drivetrain.resetOdometry(myTrajectory.getInitialPose());
  
      // Run path following command, then stop at the end.
      return ramseteCommand.andThen(() -> drivetrain.tankDriveVolts(0, 0));
