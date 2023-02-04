@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.CanIDs;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.commands.GetPose;
 
 public class DriveTrain extends SubsystemBase {
   private CANSparkMax leftFrontMotor;
@@ -71,7 +72,7 @@ public class DriveTrain extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    
+
     SmartDashboard.putNumber("LF Encoder", leftFrontMotor.getEncoder().getPosition());    
     SmartDashboard.putNumber("LR Encoder", leftRearMotor.getEncoder().getPosition());
     SmartDashboard.putNumber("RF Encoder", rightFrontMotor.getEncoder().getPosition());

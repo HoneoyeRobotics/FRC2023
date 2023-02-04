@@ -53,8 +53,8 @@ public final class Constants {
     
         // Example value only - as above, this must be tuned for your drive!
         //TODO: tune this value
-        //public static final double kPDriveVel = 8.5;
-        public static final double kPDriveVel = .084125;
+        //public static final double kPDriveVel = 8.5; .084125;
+        public static final double kPDriveVel = 0.4125;;
       }
     
       public static final class OIConstants {
@@ -62,8 +62,8 @@ public final class Constants {
       }
     
       public static final class AutoConstants {
-        public static final double kMaxSpeedMetersPerSecond = .003;
-        public static final double kMaxAccelerationMetersPerSecondSquared = .001;
+        public static final double kMaxSpeedMetersPerSecond = 1;
+        public static final double kMaxAccelerationMetersPerSecondSquared = .3333;
     
         // Reasonable baseline values for a RAMSETE follower in units of meters and seconds
         public static final double kRamseteB = 2;
