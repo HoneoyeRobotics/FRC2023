@@ -8,13 +8,14 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class Pickup extends SubsystemBase {
   /** Creates a new Pickup. */
 
   private CANSparkMax bottomPickupMotor;
   public Pickup() {
-    bottomPickupMotor = new CANSparkMax(23, MotorType.kBrushless);
+    bottomPickupMotor = new CANSparkMax(Constants.CanIDs.BottomPickupMotor, MotorType.kBrushless);
   }
 
   public void runBottomPickupMotor(double speed){

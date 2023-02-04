@@ -21,6 +21,8 @@ public final class Constants {
         public static final int LeftRearDrive = 26;
         public static final int RightFrontDrive = 21;
         public static final int RightRearDrive = 22;
+
+        public static final int BottomPickupMotor = 23;
         
         public static final int ArmRotateMotor = 0;
         public static final int ArmLiftMotor = 0;
