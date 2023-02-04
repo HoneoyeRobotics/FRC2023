@@ -6,5 +6,5 @@ package frc.robot.enums;
 
 /** Add your docs here. */
 public enum DriveControlType {
-    SingleStick, TriggersForward, TriggersTurn, TriggersTurnDoubleForward
+    SingleStick, TriggersForward, TriggersTurn, TriggersTurnDoubleForward, Tank
 }

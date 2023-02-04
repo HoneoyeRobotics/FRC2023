@@ -7,7 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.commands.ArcadeDrive;
+import frc.robot.commands.TeleopDrive;
 import frc.robot.commands.RunBottomPickup;
 import frc.robot.commands.ToggleClaw;
 import frc.robot.commands.ToggleVisionState;
@@ -32,7 +32,7 @@ public class RobotContainer {
     arms = new Arms();
 
     //wire default commands
-    drivetrain.setDefaultCommand(new ArcadeDrive(drivetrain,
+    drivetrain.setDefaultCommand(new TeleopDrive(drivetrain,
       () -> driverJoystick.getLeftTriggerAxis(),
       () -> driverJoystick.getRightTriggerAxis(),
       () -> driverJoystick.getLeftX(),

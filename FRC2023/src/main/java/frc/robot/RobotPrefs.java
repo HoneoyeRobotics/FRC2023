@@ -24,8 +24,10 @@ public final class RobotPrefs {
             return DriveControlType.TriggersForward;
         case "triggersturn":
             return DriveControlType.TriggersTurn;
-        case "triggersturndoubleforward":
+        case "triggersturndoubleforward":        
             return DriveControlType.TriggersTurnDoubleForward;
+        case "tank":
+            return DriveControlType.Tank;
         default:
             return DriveControlType.SingleStick;
        }

@@ -32,14 +32,13 @@ public class DriveTrain extends SubsystemBase {
   public DriveTrain() {
     leftFrontMotor = new CANSparkMax(Constants.CanIDs.LeftFrontDrive, MotorType.kBrushless);
     leftRearMotor = new CANSparkMax(Constants.CanIDs.LeftRearDrive, MotorType.kBrushless);
-    leftFrontMotor.setInverted(true);
-    leftRearMotor.setInverted(true);
+   
     leftMotors = new MotorControllerGroup(leftFrontMotor, leftRearMotor);
 
     rightFrontMotor = new CANSparkMax(Constants.CanIDs.RightFrontDrive, MotorType.kBrushless);
     rightRearMotor = new CANSparkMax(Constants.CanIDs.RightRearDrive, MotorType.kBrushless);
     rightMotors = new MotorControllerGroup(rightFrontMotor, rightRearMotor);
-
+    
     drive = new DifferentialDrive(leftMotors, rightMotors);
 
     leftFrontMotor.getEncoder().setPosition(0);    
@@ -53,8 +52,13 @@ public class DriveTrain extends SubsystemBase {
     navx.reset();
   }
 
-  public void drive(double xspeed, double zrotation) {
+  public void arcadeDrive(double xspeed, double zrotation) {
     drive.arcadeDrive(xspeed, zrotation);
+  }
+
+  public void tankDrive(double left, double right)
+  {
+    drive.tankDrive(left, right);
   }
 
   @Override

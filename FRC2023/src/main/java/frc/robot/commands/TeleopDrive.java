@@ -12,7 +12,7 @@ import frc.robot.RobotPrefs;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.enums.*;
 
-public class ArcadeDrive extends CommandBase {
+public class TeleopDrive extends CommandBase {
   private DriveTrain drivetrain;
   private DoubleSupplier leftTriggerSupplier;
   private DoubleSupplier rightTriggerSupplier;
@@ -21,7 +21,7 @@ public class ArcadeDrive extends CommandBase {
   private BooleanSupplier slowSupplier;
   private DoubleSupplier rightStickYSupplier;
   /** Creates a new ArcadeDrive. */
-  public ArcadeDrive(DriveTrain drivetrain, DoubleSupplier leftTriggerSupplier, DoubleSupplier rightTriggerSupplier, DoubleSupplier leftStickXSupplier, DoubleSupplier leftStickYSupplier, BooleanSupplier slowSupplier, DoubleSupplier rightStickYSupplier) {
+  public TeleopDrive(DriveTrain drivetrain, DoubleSupplier leftTriggerSupplier, DoubleSupplier rightTriggerSupplier, DoubleSupplier leftStickXSupplier, DoubleSupplier leftStickYSupplier, BooleanSupplier slowSupplier, DoubleSupplier rightStickYSupplier) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drivetrain);
     this.drivetrain = drivetrain;
@@ -55,38 +55,45 @@ public class ArcadeDrive extends CommandBase {
     
     //get preferences based on drive type
     switch(controlType){
-      case TriggersForward:
-        xSpeed = rightTriggerSupplier.getAsDouble() - leftTriggerSupplier.getAsDouble();
-        tempZ = leftStickXSupplier.getAsDouble();
+      case Tank:
+        drivetrain.tankDrive(leftStickYSupplier.getAsDouble() * -1, rightStickYSupplier.getAsDouble() * -1);
         break;
-      case TriggersTurn:
-        xSpeed = leftStickYSupplier.getAsDouble() * -1;
-        tempZ = rightTriggerSupplier.getAsDouble() - leftTriggerSupplier.getAsDouble();
-        break;
-      case TriggersTurnDoubleForward:      
-          xSpeed = (leftStickYSupplier.getAsDouble() + rightStickYSupplier.getAsDouble()) / 2 * -1;
-          tempZ = rightTriggerSupplier.getAsDouble() - leftTriggerSupplier.getAsDouble();
-        break;
-      case SingleStick:
       default:
-        xSpeed = leftStickYSupplier.getAsDouble() * -1;
-        tempZ = leftStickXSupplier.getAsDouble();
-        break;
-    }
+        switch(controlType){
+          case TriggersForward:
+            xSpeed = rightTriggerSupplier.getAsDouble() - leftTriggerSupplier.getAsDouble();
+            tempZ = leftStickXSupplier.getAsDouble();
+            break;
+          case TriggersTurn:
+            xSpeed = leftStickYSupplier.getAsDouble() * -1;
+            tempZ = leftTriggerSupplier.getAsDouble() - rightTriggerSupplier.getAsDouble();
+            break;
+          case TriggersTurnDoubleForward:      
+              xSpeed = (leftStickYSupplier.getAsDouble() + rightStickYSupplier.getAsDouble()) / 2 * -1;
+              
+            tempZ = leftTriggerSupplier.getAsDouble() - rightTriggerSupplier.getAsDouble(); 
+            break;
+          case SingleStick:
+          default:
+            xSpeed = leftStickYSupplier.getAsDouble() * -1;
+            tempZ = leftStickXSupplier.getAsDouble();
+            break;
+        }
 
- 
-    tempZ = tempZ * .8;
-    zRotation = tempZ * tempZ * ((tempZ < 0) ? -1 : 1);
     
-    // if(drivetrain.getReverse() == true)
-    // xSpeed = xSpeed * -1;
-    if(slowSupplier.getAsBoolean()){
-      xSpeed *= 0.1;
-      zRotation *= 0.5;
-    }
-    SmartDashboard.putNumber("xspeed", xSpeed);
-    SmartDashboard.putNumber("zrotation", zRotation);
-    drivetrain.drive(xSpeed, zRotation); 
+        tempZ = tempZ * .8;
+        zRotation = tempZ * tempZ * ((tempZ < 0) ? -1 : 1);
+        
+        // if(drivetrain.getReverse() == true)
+        // xSpeed = xSpeed * -1;
+        if(slowSupplier.getAsBoolean()){
+          xSpeed *= 0.1;
+          zRotation *= 0.5;
+        }    
+        SmartDashboard.putNumber("xspeed", xSpeed);
+        SmartDashboard.putNumber("zrotation", zRotation);
+        drivetrain.arcadeDrive(xSpeed, zRotation); 
+      }
   }
 
   // Called once the command ends or is interrupted.
