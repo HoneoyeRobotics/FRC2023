@@ -28,12 +28,12 @@ public final class Constants {
         public static final int ArmLiftMotor = 0;
         public static final int ArmLengthMotor = 0;
 
-        public static final int PCM = 7;
+        public static final int PCM = 10;
         
     }
 
     public final class PCMIDs{
-        public static final int Claw_Forward = 1;
-        public static final int Claw_Reverse = 2;
+        public static final int Claw_Forward = 4;
+        public static final int Claw_Reverse = 5;
     }
 }

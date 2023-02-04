@@ -3,8 +3,10 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.subsystems;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -12,9 +14,13 @@ public class Arms extends SubsystemBase {
   /** Creates a new Arms. */
   private boolean clawOpened=false;
   private final DoubleSolenoid clawSolenoid;
+ // private final Compressor compressor;
   public Arms() {
-    clawSolenoid = new DoubleSolenoid (PneumaticsModuleType.CTREPCM, Constants.PCMIDs.Claw_Forward, Constants.PCMIDs.Claw_Reverse);    
+    clawSolenoid = new DoubleSolenoid (Constants.CanIDs.PCM, PneumaticsModuleType.CTREPCM, Constants.PCMIDs.Claw_Forward, Constants.PCMIDs.Claw_Reverse);    
     clawSolenoid.set(DoubleSolenoid.Value.kForward);
+    //compressor = new Compressor(PneumaticsModuleType.CTREPCM);
+
+    
   }
 
   public boolean isClawOpened(){
@@ -35,5 +41,6 @@ public class Arms extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putBoolean("clawOpened", clawOpened);
   }
 }
