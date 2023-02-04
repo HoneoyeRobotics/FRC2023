@@ -41,10 +41,7 @@ public class DriveTrain extends SubsystemBase {
   public DriveTrain() {
     leftFrontMotor = new CANSparkMax(CanIDs.LeftFrontDrive, MotorType.kBrushless);
     leftRearMotor = new CANSparkMax(CanIDs.LeftRearDrive, MotorType.kBrushless);
-    //leftFrontMotor.setInverted(true);
-    //leftRearMotor.setInverted(true);
     leftMotors = new MotorControllerGroup(leftFrontMotor, leftRearMotor);
-    leftMotors.setInverted(true);
 
     rightFrontMotor = new CANSparkMax(CanIDs.RightFrontDrive, MotorType.kBrushless);
     rightRearMotor = new CANSparkMax(CanIDs.RightRearDrive, MotorType.kBrushless);
@@ -61,23 +58,27 @@ public class DriveTrain extends SubsystemBase {
     rightFrontMotor.getEncoder().setPositionConversionFactor(DriveConstants.kEncoderDistancePerPulse);
    }
 
+   // Reset Gyro and encoder values before creating a DifferntialDriveOdometry object
+    m_gyro.calibrate();
     resetEncoders();
+
     m_odometry =
        new DifferentialDriveOdometry(
            m_gyro.getRotation2d(), leftFrontMotor.getEncoder().getPosition(), rightFrontMotor.getEncoder().getPosition());
-  
+           
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    
     SmartDashboard.putNumber("LF Encoder", leftFrontMotor.getEncoder().getPosition());    
     SmartDashboard.putNumber("LR Encoder", leftRearMotor.getEncoder().getPosition());
     SmartDashboard.putNumber("RF Encoder", rightFrontMotor.getEncoder().getPosition());
     SmartDashboard.putNumber("RR Encoder", rightRearMotor.getEncoder().getPosition());
     SmartDashboard.putNumber("Gyro heading", m_gyro.getRotation2d().getDegrees());
 
-    // Update the odometry in the periodic block
+    // Update the odometry (current robot Pose) in the periodic block with current gyro angle and wheel encoders
     m_odometry.update(
       m_gyro.getRotation2d(), leftFrontMotor.getEncoder().getPosition(), rightFrontMotor.getEncoder().getPosition());
     }
@@ -107,6 +108,8 @@ public class DriveTrain extends SubsystemBase {
    */
   public void resetOdometry(Pose2d pose) {
     resetEncoders();
+    m_gyro.calibrate();
+
     m_odometry.resetPosition(
         m_gyro.getRotation2d(), leftFrontMotor.getEncoder().getPosition(), rightFrontMotor.getEncoder().getPosition(), pose);
   }
