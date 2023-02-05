@@ -20,7 +20,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.CanIDs;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.commands.GetPose;
+//trying to fix some stuff
 
 public class DriveTrain extends SubsystemBase {
   private CANSparkMax leftFrontMotor;
