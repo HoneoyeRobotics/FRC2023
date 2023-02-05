@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import javax.xml.stream.events.StartDocument;
-
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.util.Units;
 
