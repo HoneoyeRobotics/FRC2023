@@ -4,10 +4,14 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.TeleopDrive;
+import frc.robot.commands.MoveArmIn;
+import frc.robot.commands.MoveArmOut;
+import frc.robot.commands.ResetArmLengthEncoder;
 import frc.robot.commands.RunBottomPickup;
 import frc.robot.commands.ToggleClaw;
 import frc.robot.commands.ToggleVisionState;
@@ -41,7 +45,8 @@ public class RobotContainer {
       () -> driverJoystick.getRightY()
       ));
     configureBindings();
-
+    arms.resetArmLengthEncoder();
+    SmartDashboard.putData(new ResetArmLengthEncoder(arms));
   }
 
   private void configureBindings() {
@@ -49,6 +54,9 @@ public class RobotContainer {
     driverJoystick.rightBumper().debounce(0.1).onTrue(new ToggleVisionState(vision));
     driverJoystick.b().debounce(0.1).whileTrue(new RunBottomPickup(pickup));
     driverJoystick.x().debounce(0.1).onTrue(new ToggleClaw(arms));
+    driverJoystick.povUp().whileTrue(new MoveArmOut(arms));
+    driverJoystick.povDown().whileTrue(new MoveArmIn(arms));
+
   }
 
   public Command getAutonomousCommand() {

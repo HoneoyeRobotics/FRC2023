@@ -47,5 +47,24 @@ public final class RobotPrefs {
         }
         return Preferences.getDouble("BottomPickupSpeed", 0.2);
     }
+    public static double getArmLengthMax   (){
+        if(!Preferences.containsKey("ArmLengthMax")){
+            Preferences.setDouble("ArmLengthMax", 80);
+        }
+        return Preferences.getDouble("ArmLengthMax", 80);
+    }
+    public static double getArmLengthInSpeed(){
+        if(!Preferences.containsKey("ArmLengthInSpeed")){
+            Preferences.setDouble("ArmLengthInSpeed", 1 );
+        }
+        return Preferences.getDouble("ArmLengthInSpeed", 1);
+    }
+
+    public static double getArmLengthOutSpeed(){
+        if(!Preferences.containsKey("ArmLengthOutSpeed")){
+            Preferences.setDouble("ArmLengthOutSpeed", 0.5);
+        }
+        return Preferences.getDouble("ArmLengthOutSpeed", 0.5);
+    }
 
 }

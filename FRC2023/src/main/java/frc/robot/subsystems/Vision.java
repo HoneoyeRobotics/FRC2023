@@ -15,7 +15,7 @@ import frc.robot.enums.LimeLightState;
 public class Vision extends SubsystemBase {
 
 
-  private UsbCamera frontCamera;
+  // private UsbCamera frontCamera;
   
   private NetworkTable main_limelight = NetworkTableInstance.getDefault().getTable("limelight-suits");
   private NetworkTableEntry main_tx = main_limelight.getEntry("tx");
@@ -27,8 +27,8 @@ public class Vision extends SubsystemBase {
   public Vision() {
     setState(LimeLightState.ForwardDrive);
 
-    frontCamera = CameraServer.startAutomaticCapture("front", 0);
-    frontCamera.setFPS(15);
+    // frontCamera = CameraServer.startAutomaticCapture("front", 0);
+    // frontCamera.setFPS(15);
   }
 
   public void toggleState(){

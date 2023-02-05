@@ -26,7 +26,7 @@ public final class Constants {
         
         public static final int ArmRotateMotor = 0;
         public static final int ArmLiftMotor = 0;
-        public static final int ArmLengthMotor = 0;
+        public static final int ArmLengthMotor = 9;
 
         public static final int PCM = 10;
         

@@ -1,0 +1,27 @@
+[
+  {
+    "name": "/Preferences/DebugMode",
+    "type": "boolean",
+    "value": true,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Preferences/DriveControlType",
+    "type": "string",
+    "value": "TriggersTurnDoubleForward",
+    "properties": {
+      "persistent": true,
+      "retained": true
+    }
+  },
+  {
+    "name": "/Preferences/BottomPickupSpeed",
+    "type": "double",
+    "value": 0.2,
+    "properties": {
+      "persistent": true
+    }
+  }
+]
