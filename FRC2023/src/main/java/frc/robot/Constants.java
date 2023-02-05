@@ -19,11 +19,18 @@ public final class Constants {
 
   public static final boolean testcode = true;
 
+  // public final class CanIDs{
+  //   public static final int LeftFrontDrive = 25;
+  //   public static final int LeftRearDrive = 26;
+  //   public static final int RightFrontDrive = 21;
+  //   public static final int RightRearDrive = 22;
+  // }
+  
   public final class CanIDs{
-    public static final int LeftFrontDrive = 25;
-    public static final int LeftRearDrive = 26;
-    public static final int RightFrontDrive = 21;
-    public static final int RightRearDrive = 22;
+    public static final int LeftFrontDrive = 33;
+    public static final int LeftRearDrive = 34;
+    public static final int RightFrontDrive = 31;
+    public static final int RightRearDrive = 32;
   }
 
     public static final class DriveConstants {
@@ -52,7 +59,7 @@ public final class Constants {
         // Example value only - as above, this must be tuned for your drive!
         //TODO: tune this value
         //public static final double kPDriveVel = 8.5; .084125;
-        public static final double kPDriveVel = 0.4125;;
+        public static final double kPDriveVel = 0.08125;;
       }
     
       public static final class OIConstants {
@@ -60,8 +67,8 @@ public final class Constants {
       }
     
       public static final class AutoConstants {
-        public static final double kMaxSpeedMetersPerSecond = 1;
-        public static final double kMaxAccelerationMetersPerSecondSquared = .333;
+        public static final double kMaxSpeedMetersPerSecond = .3;
+        public static final double kMaxAccelerationMetersPerSecondSquared = .1;
     
         // Reasonable baseline values for a RAMSETE follower in units of meters and seconds
         public static final double kRamseteB = 2;

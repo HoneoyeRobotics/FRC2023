@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -42,16 +43,20 @@ public class DriveTrain extends SubsystemBase {
   public DriveTrain() {
     leftFrontMotor = new CANSparkMax(CanIDs.LeftFrontDrive, MotorType.kBrushless);
     leftRearMotor = new CANSparkMax(CanIDs.LeftRearDrive, MotorType.kBrushless);
-    leftMotors = new MotorControllerGroup(leftFrontMotor, leftRearMotor);
-
     rightFrontMotor = new CANSparkMax(CanIDs.RightFrontDrive, MotorType.kBrushless);
     rightRearMotor = new CANSparkMax(CanIDs.RightRearDrive, MotorType.kBrushless);
+    
+    leftFrontMotor.setIdleMode(IdleMode.kBrake);
+    leftRearMotor.setIdleMode(IdleMode.kBrake);
+    rightFrontMotor.setIdleMode(IdleMode.kBrake);
+    rightRearMotor.setIdleMode(IdleMode.kBrake);
+    
+    leftMotors = new MotorControllerGroup(leftFrontMotor, leftRearMotor);
     rightMotors = new MotorControllerGroup(rightFrontMotor, rightRearMotor);
 
     drive = new DifferentialDrive(leftMotors, rightMotors);
 
     if (Constants.testcode) {
-  
     leftFrontMotor.getEncoder().setVelocityConversionFactor(DriveConstants.kEncoderDistancePerPulse);
     rightFrontMotor.getEncoder().setVelocityConversionFactor(DriveConstants.kEncoderDistancePerPulse);
     

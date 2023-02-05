@@ -4,7 +4,13 @@
 
 package frc.robot;
 
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.List;
+
+import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -14,7 +20,10 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.math.trajectory.TrajectoryUtil;
 import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -82,7 +91,7 @@ public class RobotContainer {
     // Create a switch statement to switch between multiple trajectories
     switch (trajectoryChoice) {
       case 1:
-        // An example trajectory to follow.  All units in meters.
+        // An example trajectory to follow.  All units in meters. Goes Straight 3 meters
         myTrajectory =
         TrajectoryGenerator.generateTrajectory(
           // Start at the origin facing the +X direction
@@ -132,6 +141,17 @@ public class RobotContainer {
             new Pose2d(3, 3, new Rotation2d(90)),
             // Pass config
             config);
+        break;
+      case 5:  
+       myTrajectory = PathPlanner.loadPath("Test1", null);
+
+        try{
+        Path jsonPath = Filesystem.getDeployDirectory().toPath().resolve("C:/SuitsGIT/FRC2023/FRC2023/src/main/deploy/pathplanner/generatedJSON/New Path.wpilib.json");
+        myTrajectory = TrajectoryUtil.fromPathweaverJson(jsonPath);
+        }catch (IOException exception) {
+          DriverStation.reportError("fail", null);
+        }
+
         break;
       default:
         // A safe trajectory of 1 meter straight ahead.
