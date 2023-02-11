@@ -27,6 +27,7 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.AutoConstants;
@@ -52,13 +53,44 @@ public class RobotContainer {
     configureBindings();
   }
 
+  // public Command pathPlannerToRamsete(String filename) {
+  //   Trajectory myPathPlannerTrajectory;
+  //   try {
+  //     Path myPath = Filesystem.getDeployDirectory().toPath().resolve(filename);
+  //     myPathPlannerTrajectory = TrajectoryUtil.fromPathweaverJson(myPath);
+
+  //   } catch (IOException exception) {
+  //     DriverStation.reportError("Error making the following file a path " + filename, exception.getStackTrace());
+  //     System.out.println("Unable to use " + filename);
+  //     return new InstantCommand();
+  //   }
+  //   RamseteCommand ramseteCommand = 
+  //   new RamseteCommand(
+  //     myPathPlannerTrajectory, 
+  //     drivetrain::getPose, 
+  //     new RamseteController(AutoConstants.kRamseteB, AutoConstants.kRamseteZeta), 
+  //     new SimpleMotorFeedforward(
+  //       DriveConstants.ksVolts,
+  //       DriveConstants.kvVoltSecondsPerMeter,
+  //       DriveConstants.kaVoltSecondsSquaredPerMeter), 
+  //     DriveConstants.kDriveKinematics, 
+  //     drivetrain::getWheelSpeeds, 
+  //     new PIDController(DriveConstants.kPDriveVel, 0, 0),
+  //     new PIDController(DriveConstants.kPDriveVel, 0, 0),
+  //     drivetrain::tankDriveVolts, 
+  //     drivetrain);
+
+  //   return ramseteCommand;
+  // }
+
   private void configureBindings() {}
 
   public Command getAutonomousCommand() {
 
     Trajectory myTrajectory;
     int trajectoryChoice;
-
+    boolean test = false;
+    Path jsonPath;
     drivetrain.zeroHeading();
 
     // Create a voltage constraint to ensure we don't accelerate too fast
@@ -142,17 +174,41 @@ public class RobotContainer {
             // Pass config
             config);
         break;
-      case 5:  
-       myTrajectory = PathPlanner.loadPath("Test1", null);
-
+      case 5:
+        jsonPath = Filesystem.getDeployDirectory().toPath().resolve("pathplanner/generatedJSON/Test1.wpilib.json");
+        //System.out.println("Path: " + jsonPath);
         try{
-        Path jsonPath = Filesystem.getDeployDirectory().toPath().resolve("C:/SuitsGIT/FRC2023/FRC2023/src/main/deploy/pathplanner/generatedJSON/New Path.wpilib.json");
         myTrajectory = TrajectoryUtil.fromPathweaverJson(jsonPath);
-        }catch (IOException exception) {
-          DriverStation.reportError("fail", null);
+        } catch (IOException exception) {
+          DriverStation.reportError("Unable to use file" + jsonPath, exception.getStackTrace());
+          System.out.println("Unable to use file");
+
+
+          myTrajectory = TrajectoryGenerator.generateTrajectory(
+            new Pose2d(0, 0, new Rotation2d(0)),
+            List.of(new Translation2d(.33, 0), new Translation2d(.67, 0)),
+            new Pose2d(1, 0, new Rotation2d(0)),
+            config);
         }
 
         break;
+      case 6:
+      jsonPath = Filesystem.getDeployDirectory().toPath().resolve("pathplanner/generatedJSON/Test3.wpilib.json");
+      //System.out.println("Path: " + jsonPath);
+      try{
+      myTrajectory = TrajectoryUtil.fromPathweaverJson(jsonPath);
+      } catch (IOException exception) {
+        DriverStation.reportError("Unable to use file" + jsonPath, exception.getStackTrace());
+        System.out.println("Unable to use file");
+
+        myTrajectory = TrajectoryGenerator.generateTrajectory(
+          new Pose2d(0, 0, new Rotation2d(0)),
+          List.of(new Translation2d(.33, 0), new Translation2d(.67, 0)),
+          new Pose2d(1, 0, new Rotation2d(0)),
+          config);
+      }
+
+      break;
       default:
         // A safe trajectory of 1 meter straight ahead.
         myTrajectory =
@@ -167,6 +223,7 @@ public class RobotContainer {
           config);
         break;
     }
+
     RamseteCommand ramseteCommand = 
       new RamseteCommand(
         myTrajectory, 
@@ -182,11 +239,12 @@ public class RobotContainer {
         new PIDController(DriveConstants.kPDriveVel, 0, 0),
         drivetrain::tankDriveVolts, 
         drivetrain);
-
+    
     // Reset odometry to the starting pose of the trajectory.
     drivetrain.resetOdometry(myTrajectory.getInitialPose());
  
      // Run path following command, then stop at the end.
      return ramseteCommand.andThen(() -> drivetrain.tankDriveVolts(0, 0));
-   }
+   
+  }
 }
