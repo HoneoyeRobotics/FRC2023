@@ -7,10 +7,6 @@ package frc.robot;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
-
-import com.pathplanner.lib.PathPlanner;
-import com.pathplanner.lib.PathPlannerTrajectory;
-
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -27,13 +23,10 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.Constants.AutoConstants;
-import frc.robot.Constants.DriveConstants;
-import frc.robot.commands.ArcadeDrive;
-import frc.robot.commands.ResetEncoders;
+import frc.robot.Constants.*;
+import frc.robot.commands.*;
 import frc.robot.subsystems.DriveTrain;
 
 public class RobotContainer {
@@ -87,9 +80,17 @@ public class RobotContainer {
 
   public Command getAutonomousCommand() {
 
+    int AprilTagNumber = 1;
+    Pose2d endpoint;
+
+    double distanceToTag = 1;
+    double angleToTag = 1;
+    double currentXPosition = 1;
+    double currentYPosition = 1;
+    double currentAngle = 1;
+
     Trajectory myTrajectory;
     int trajectoryChoice;
-    boolean test = false;
     Path jsonPath;
     drivetrain.zeroHeading();
 
@@ -183,7 +184,6 @@ public class RobotContainer {
           DriverStation.reportError("Unable to use file" + jsonPath, exception.getStackTrace());
           System.out.println("Unable to use file");
 
-
           myTrajectory = TrajectoryGenerator.generateTrajectory(
             new Pose2d(0, 0, new Rotation2d(0)),
             List.of(new Translation2d(.33, 0), new Translation2d(.67, 0)),
@@ -193,22 +193,80 @@ public class RobotContainer {
 
         break;
       case 6:
-      jsonPath = Filesystem.getDeployDirectory().toPath().resolve("pathplanner/generatedJSON/Test3.wpilib.json");
-      //System.out.println("Path: " + jsonPath);
-      try{
-      myTrajectory = TrajectoryUtil.fromPathweaverJson(jsonPath);
-      } catch (IOException exception) {
-        DriverStation.reportError("Unable to use file" + jsonPath, exception.getStackTrace());
-        System.out.println("Unable to use file");
+        jsonPath = Filesystem.getDeployDirectory().toPath().resolve("pathplanner/generatedJSON/Test3.wpilib.json");
+        //System.out.println("Path: " + jsonPath);
+        try{
+        myTrajectory = TrajectoryUtil.fromPathweaverJson(jsonPath);
+        } catch (IOException exception) {
+          DriverStation.reportError("Unable to use file" + jsonPath, exception.getStackTrace());
+          System.out.println("Unable to use file");
 
-        myTrajectory = TrajectoryGenerator.generateTrajectory(
-          new Pose2d(0, 0, new Rotation2d(0)),
-          List.of(new Translation2d(.33, 0), new Translation2d(.67, 0)),
-          new Pose2d(1, 0, new Rotation2d(0)),
+          myTrajectory = TrajectoryGenerator.generateTrajectory(
+            new Pose2d(0, 0, new Rotation2d(0)),
+            List.of(new Translation2d(.33, 0), new Translation2d(.67, 0)),
+            new Pose2d(1, 0, new Rotation2d(0)),
+            config);
+        }
+
+        break;
+      case 7:
+        currentAngle = 180 - angleToTag;
+        switch(AprilTagNumber) {
+          case 1:
+            if(angleToTag > 0) {
+              currentXPosition = AprilTags.Tag1X + (Math.sin(angleToTag) * distanceToTag);
+              currentYPosition = AprilTags.Tag1Y - (Math.cos(angleToTag) * distanceToTag);
+            }
+            else {
+              currentXPosition = AprilTags.Tag1X + (Math.sin(Math.abs(angleToTag)) * distanceToTag);
+              currentYPosition = AprilTags.Tag1Y + (Math.cos(Math.abs(angleToTag)) * distanceToTag);
+            }
+            endpoint = new Pose2d(AprilTags.Tag1X, AprilTags.Tag1Y, new Rotation2d(180));
+            break;
+
+          case 2:
+            if(angleToTag > 0) {
+              currentXPosition = AprilTags.Tag2X + (Math.sin(angleToTag) * distanceToTag);
+              currentYPosition = AprilTags.Tag2Y - (Math.cos(angleToTag) * distanceToTag);
+            }
+            else {
+              currentXPosition = AprilTags.Tag2X + (Math.sin(Math.abs(angleToTag)) * distanceToTag);
+              currentYPosition = AprilTags.Tag2Y + (Math.cos(Math.abs(angleToTag)) * distanceToTag);
+            }
+            endpoint = new Pose2d(AprilTags.Tag2X, AprilTags.Tag2Y, new Rotation2d(180));
+            break;
+
+          case 3:
+            if(angleToTag > 0) {
+              currentXPosition = AprilTags.Tag3X + (Math.sin(angleToTag) * distanceToTag);
+              currentYPosition = AprilTags.Tag3Y - (Math.cos(angleToTag) * distanceToTag);
+            }
+            else {
+              currentXPosition = AprilTags.Tag3X + (Math.sin(Math.abs(angleToTag)) * distanceToTag);
+              currentYPosition = AprilTags.Tag3Y + (Math.cos(Math.abs(angleToTag)) * distanceToTag);
+            }
+              endpoint = new Pose2d(AprilTags.Tag3X, AprilTags.Tag3Y, new Rotation2d(180));
+            break;
+          default:
+            endpoint = new Pose2d(1,1, new Rotation2d(180));
+            break;
+              
+        }
+
+        myTrajectory = 
+        TrajectoryGenerator.generateTrajectory(
+          List.of(new Pose2d(currentXPosition, currentYPosition, new Rotation2d(currentAngle)), endpoint), 
           config);
-      }
+        break;
 
-      break;
+      case 8:
+        myTrajectory = 
+        TrajectoryGenerator.generateTrajectory(
+          //A trajectory that only uses Pose2d objects and goes straigh 3 meters
+          List.of(new Pose2d(0, 0, new Rotation2d(0)), new Pose2d(3, 0, new Rotation2d(0))), 
+          config);
+        break;
+
       default:
         // A safe trajectory of 1 meter straight ahead.
         myTrajectory =

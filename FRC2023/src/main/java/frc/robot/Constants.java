@@ -28,9 +28,9 @@ public final class Constants {
   
   public final class CanIDs{
     public static final int LeftFrontDrive = 33;
-    public static final int LeftRearDrive = 34;
+    public static final int LeftRearDrive = 34; 
     public static final int RightFrontDrive = 31;
-    public static final int RightRearDrive = 32;
+    public static final int RightRearDrive = 32; 
   }
 
     public static final class DriveConstants {
@@ -67,11 +67,21 @@ public final class Constants {
       }
     
       public static final class AutoConstants {
-        public static final double kMaxSpeedMetersPerSecond = 4;
-        public static final double kMaxAccelerationMetersPerSecondSquared = 3;
+        public static final double kMaxSpeedMetersPerSecond = .3;
+        public static final double kMaxAccelerationMetersPerSecondSquared = .1;
     
         // Reasonable baseline values for a RAMSETE follower in units of meters and seconds
         public static final double kRamseteB = 2;
         public static final double kRamseteZeta = 0.7;
       }
+
+    public static final class AprilTags {
+        public static final double Tag1X = 0;
+        public static final double Tag1Y = 0;
+        public static final double Tag2X = 0;
+        public static final double Tag2Y = 0;
+        public static final double Tag3X = 0;
+        public static final double Tag3Y = 0;
+
+    }
 }

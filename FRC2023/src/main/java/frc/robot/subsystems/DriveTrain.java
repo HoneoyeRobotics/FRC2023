@@ -84,6 +84,8 @@ public class DriveTrain extends SubsystemBase {
     SmartDashboard.putNumber("RR Encoder", rightRearMotor.getEncoder().getPosition());
     SmartDashboard.putNumber("Gyro heading", m_gyro.getRotation2d().getDegrees());
 
+    SmartDashboard.putNumber("speed", leftFrontMotor.getAppliedOutput());
+
     // Update the odometry (current robot Pose) in the periodic block with current gyro angle and wheel encoders
     m_odometry.update(
       m_gyro.getRotation2d(), leftFrontMotor.getEncoder().getPosition(), rightFrontMotor.getEncoder().getPosition());
