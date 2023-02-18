@@ -18,10 +18,10 @@ public class TeleopDrive extends CommandBase {
   private DoubleSupplier rightTriggerSupplier;
   private DoubleSupplier leftStickXSupplier;
   private DoubleSupplier leftStickYSupplier;
-  private BooleanSupplier slowSupplier;
+  private BooleanSupplier fastSupplier;
   private DoubleSupplier rightStickYSupplier;
   /** Creates a new ArcadeDrive. */
-  public TeleopDrive(DriveTrain drivetrain, DoubleSupplier leftTriggerSupplier, DoubleSupplier rightTriggerSupplier, DoubleSupplier leftStickXSupplier, DoubleSupplier leftStickYSupplier, BooleanSupplier slowSupplier, DoubleSupplier rightStickYSupplier) {
+  public TeleopDrive(DriveTrain drivetrain, DoubleSupplier leftTriggerSupplier, DoubleSupplier rightTriggerSupplier, DoubleSupplier leftStickXSupplier, DoubleSupplier leftStickYSupplier, BooleanSupplier fastSupplier, DoubleSupplier rightStickYSupplier) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drivetrain);
     this.drivetrain = drivetrain;
@@ -30,7 +30,7 @@ public class TeleopDrive extends CommandBase {
     this.leftTriggerSupplier = leftTriggerSupplier;
     this.leftStickXSupplier = leftStickXSupplier;
     this.leftStickYSupplier = leftStickYSupplier;
-    this.slowSupplier = slowSupplier;
+    this.fastSupplier = fastSupplier;
 
   }
 
@@ -66,6 +66,10 @@ public class TeleopDrive extends CommandBase {
             break;
           case TriggersTurn:
             xSpeed = leftStickYSupplier.getAsDouble() * -1;
+            
+            if(fastSupplier.getAsBoolean() == false){
+              xSpeed *= 0.5;
+            }    
             tempZ = leftTriggerSupplier.getAsDouble() - rightTriggerSupplier.getAsDouble();
             break;
           case TriggersTurnDoubleForward:      
@@ -85,11 +89,7 @@ public class TeleopDrive extends CommandBase {
         
         // if(drivetrain.getReverse() == true)
         // xSpeed = xSpeed * -1;
-        if(slowSupplier.getAsBoolean()){
-          xSpeed *= 0.1;
-          zRotation *= 0.5;
-        }    
-        SmartDashboard.putNumber("xspeed", xSpeed);
+       SmartDashboard.putNumber("xspeed", xSpeed);
         SmartDashboard.putNumber("zrotation", zRotation);
         drivetrain.arcadeDrive(xSpeed, zRotation); 
       }

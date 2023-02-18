@@ -45,7 +45,6 @@ public class DriveTrain extends SubsystemBase {
     leftRearMotor.getEncoder().setPosition(0);
     rightFrontMotor.getEncoder().setPosition(0);    
     rightRearMotor.getEncoder().setPosition(0);
-  
 
     navx = new AHRS(SerialPort.Port.kUSB);
     //reset navx when robot boots

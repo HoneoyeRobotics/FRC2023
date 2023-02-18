@@ -4,9 +4,8 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.networktables.*;
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotPrefs;
@@ -16,7 +15,9 @@ public class Vision extends SubsystemBase {
 
 
   // private UsbCamera frontCamera;
-  
+
+  private AnalogInput proxSensor = new AnalogInput(0);
+
   private NetworkTable main_limelight = NetworkTableInstance.getDefault().getTable("limelight-suits");
   private NetworkTableEntry main_tx = main_limelight.getEntry("tx");
   private NetworkTableEntry main_ty = main_limelight.getEntry("ty");
@@ -78,5 +79,7 @@ public class Vision extends SubsystemBase {
       SmartDashboard.putNumber("Main LL: TY", main_ty.getDouble(0));      
       SmartDashboard.putNumber("Main LL: TA", main_ta.getDouble(0));
     }
+
+    SmartDashboard.putNumber("proxSensor", proxSensor.getValue());
   }
 }

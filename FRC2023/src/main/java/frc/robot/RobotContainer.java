@@ -7,12 +7,12 @@ package frc.robot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.TeleopDrive;
 import frc.robot.commands.MoveArmIn;
 import frc.robot.commands.MoveArmOut;
 import frc.robot.commands.ResetArmLengthEncoder;
-import frc.robot.commands.ReverseBottomPickup;
 import frc.robot.commands.RunBottomPickup;
 import frc.robot.commands.ToggleClaw;
 import frc.robot.commands.ToggleVisionState;
@@ -27,6 +27,7 @@ public class RobotContainer {
   public Vision vision;
   public Pickup pickup;
   public Arms arms;
+  public Fingers fingers;
   CommandXboxController driverJoystick = new CommandXboxController(0);
 
   public RobotContainer() {
@@ -35,6 +36,7 @@ public class RobotContainer {
     vision = new Vision();
     pickup = new Pickup();
     arms = new Arms();
+    fingers = new Fingers();
 
     //wire default commands
     drivetrain.setDefaultCommand(new TeleopDrive(drivetrain,
@@ -47,7 +49,11 @@ public class RobotContainer {
       ));
     configureBindings();
     arms.resetArmLengthEncoder();
+    arms.resetArmRotateEncoder();
     SmartDashboard.putData(new ResetArmLengthEncoder(arms));
+    SmartDashboard.putData(new ResetArmRotateEncoder(arms));
+    SmartDashboard.putData(new ToggleArmRotateBrake(arms));
+    SmartDashboard.putData(new ToggleArmLengthBrake(arms));
   }
 
   private void configureBindings() {
@@ -58,7 +64,25 @@ public class RobotContainer {
     driverJoystick.povUp().whileTrue(new MoveArmOut(arms));
     driverJoystick.povDown().whileTrue(new MoveArmIn(arms));
     driverJoystick.povLeft().whileTrue(new RunBottomPickup(pickup));
-    driverJoystick.povRight().whileTrue(new ReverseBottomPickup(pickup));
+    driverJoystick.povRight().whileTrue(new ReverseBottomPickup(pickup));    driverJoystick.a().debounce(.1).whileTrue(new FingersIn(fingers));
+    driverJoystick.y().debounce(.1).whileTrue(new FingersOut(fingers));
+
+    //driverJoystick.povRight().onTrue(new RotateArmToPosition(arms, ArmRotate.maxPosition));
+    //driverJoystick.povLeft().onTrue(new RotateArmToPosition(arms, ArmRotate.minPosition));
+    driverJoystick.povRight().whileTrue(new RotateArm(arms, .25));
+    driverJoystick.povLeft().whileTrue(new RotateArm(arms, -.25));
+    configureButtonBoard();
+  }
+
+  private CommandJoystick buttonBoard = new CommandJoystick(1);
+  private void configureButtonBoard(){
+    buttonBoard.button(11).whileTrue(new RotateArm(arms, RobotPrefs.getArmRotateUpSpeed()));
+    buttonBoard.button(12).whileTrue(new RotateArm(arms, RobotPrefs.getArmRotateDownSpeed()));
+
+    buttonBoard.button(9).whileTrue(new MoveArmOut(arms));
+    
+    buttonBoard.button(10).whileTrue(new MoveArmIn(arms));
+    buttonBoard.button(5).onTrue(new ToggleClaw(arms));
   }
 
   public Command getAutonomousCommand() {

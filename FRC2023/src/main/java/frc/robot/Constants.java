@@ -22,10 +22,13 @@ public final class Constants {
         public static final int RightFrontDrive = 21;
         public static final int RightRearDrive = 22;
 
-        public static final int BottomPickupMotor = 23;
+
+        public static final int leftFingerMotor = 10;
+        public static final int rightFingerMotor = 11;
+
+        public static final int BottomPickupMotor = 12;
         
-        public static final int ArmRotateMotor = 0;
-        public static final int ArmLiftMotor = 0;
+        public static final int ArmRotateMotor = 24;
         public static final int ArmLengthMotor = 9;
 
         public static final int PCM = 10;
@@ -35,5 +38,30 @@ public final class Constants {
     public final class PCMIDs{
         public static final int Claw_Forward = 4;
         public static final int Claw_Reverse = 5;
+
+        public static final int Arm_Rotate_Brake_On = 6;
+        public static final int Arm_Rotate_Brake_Off = 7;
+    //TODO: Fix these PCM IDs when they add them
+        public static final int Arm_Length_Brake_On = 2;
+        public static final int Arm_Length_Brake_Off = 3;
+    }
+    //TODO: tune these values
+    public final class ArmRotate{
+        public static final double deadband = 3.0;
+        
+        public static final double maxPosition = 60.0;
+        public static final double minPosition = 0.0;
+        public static final double midAPosition = 45;
+        public static final double midBPosition = 30;
+    }
+
+    //TODO: tune these values
+    public final class ArmLength{
+        public static final double deadband = 15.0;
+        
+        public static final double maxPosition = 400.0;
+        public static final double minPosition = 0.0;
+        public static final double midAPosition = 300;
+        public static final double midBPosition = 200;
     }
 }

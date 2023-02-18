@@ -67,4 +67,17 @@ public final class RobotPrefs {
         return Preferences.getDouble("ArmLengthOutSpeed", 0.5);
     }
 
+    public static double getArmRotateUpSpeed(){
+        if(!Preferences.containsKey("ArmRotateUpSpeed")){
+            Preferences.setDouble("ArmRotateUpSpeed", .25 );
+        }
+        return Preferences.getDouble("ArmRotateUpSpeed", .25);
+    }
+    public static double getArmRotateDownSpeed(){
+        if(!Preferences.containsKey("ArmRotateDownSpeed")){
+            Preferences.setDouble("ArmRotateDownSpeed", -.25 );
+        }
+        return Preferences.getDouble("ArmRotateDownSpeed", -.25);
+    }
+
 }
