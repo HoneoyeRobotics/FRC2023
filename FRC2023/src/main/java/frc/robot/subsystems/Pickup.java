@@ -4,22 +4,21 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Pickup extends SubsystemBase {
   /** Creates a new Pickup. */
 
-  private CANSparkMax bottomPickupMotor;
+  private VictorSPX bottomPickupMotor;
   public Pickup() {
-    bottomPickupMotor = new CANSparkMax(Constants.CanIDs.BottomPickupMotor, MotorType.kBrushless);
+    bottomPickupMotor = new VictorSPX(Constants.CanIDs.BottomPickupMotor);
   }
 
   public void runBottomPickupMotor(double speed){
-    bottomPickupMotor.set(speed);
+    bottomPickupMotor.set(ControlMode.PercentOutput, speed);
   }
   @Override
   public void periodic() {

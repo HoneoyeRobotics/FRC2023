@@ -5,40 +5,37 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.RobotPrefs;
 import frc.robot.subsystems.Arms;
 
-public class MoveArmOut extends CommandBase {
-  /** Creates a new MoveArmOut. */
-  private Arms arms;
-  public MoveArmOut(Arms arms) {
+public class ToggleArmLengthBrake extends CommandBase {
+  private Arms m_arms;
+  /** Creates a new ToggleArmRotateBrake. */
+  public ToggleArmLengthBrake(Arms arms) {
+    m_arms = arms;
+
     // Use addRequirements() here to declare subsystem dependencies.
-    this.arms = arms;
-    addRequirements(arms);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    arms.armLenghtBrakeOff();
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    arms.moveArmInOut(1 * RobotPrefs.getArmLengthOutSpeed());
+    if(m_arms.isArmLengthBrakeOn())
+      m_arms.armLenghtBrakeOff();
+    else
+      m_arms.armLengthBrakeOn();
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    arms.moveArmInOut(0);
-    arms.armLengthBrakeOn();
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }

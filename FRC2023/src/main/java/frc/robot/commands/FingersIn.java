@@ -5,35 +5,31 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.RobotPrefs;
-import frc.robot.subsystems.Arms;
+import frc.robot.subsystems.Fingers;
 
-public class MoveArmOut extends CommandBase {
-  /** Creates a new MoveArmOut. */
-  private Arms arms;
-  public MoveArmOut(Arms arms) {
+public class FingersIn extends CommandBase {
+  private Fingers m_fingers;
+  /** Creates a new FingersIn. */
+  public FingersIn(Fingers fingers) {
+    m_fingers = fingers;
+    addRequirements(m_fingers);
     // Use addRequirements() here to declare subsystem dependencies.
-    this.arms = arms;
-    addRequirements(arms);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    arms.armLenghtBrakeOff();
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    arms.moveArmInOut(1 * RobotPrefs.getArmLengthOutSpeed());
+    m_fingers.moveFingers(1);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    arms.moveArmInOut(0);
-    arms.armLengthBrakeOn();
+    m_fingers.moveFingers(0);
   }
 
   // Returns true when the command should end.
