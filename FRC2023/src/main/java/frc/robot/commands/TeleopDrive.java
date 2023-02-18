@@ -62,21 +62,20 @@ public class TeleopDrive extends CommandBase {
         switch(controlType){
           case TriggersForward:
             xSpeed = rightTriggerSupplier.getAsDouble() - leftTriggerSupplier.getAsDouble();
-            tempZ = leftStickXSupplier.getAsDouble();
+            tempZ = leftStickXSupplier.getAsDouble() * -1;
             break;
           case TriggersTurn:
             xSpeed = leftStickYSupplier.getAsDouble() * -1;
             tempZ = leftTriggerSupplier.getAsDouble() - rightTriggerSupplier.getAsDouble();
             break;
           case TriggersTurnDoubleForward:      
-              xSpeed = (leftStickYSupplier.getAsDouble() + rightStickYSupplier.getAsDouble()) / 2 * -1;
-              
+            xSpeed = (leftStickYSupplier.getAsDouble() + rightStickYSupplier.getAsDouble()) / 2 * -1;
             tempZ = leftTriggerSupplier.getAsDouble() - rightTriggerSupplier.getAsDouble(); 
             break;
           case SingleStick:
           default:
             xSpeed = leftStickYSupplier.getAsDouble() * -1;
-            tempZ = leftStickXSupplier.getAsDouble();
+            tempZ = leftStickXSupplier.getAsDouble() * -1;
             break;
         }
 

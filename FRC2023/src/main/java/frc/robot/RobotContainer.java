@@ -12,6 +12,7 @@ import frc.robot.commands.TeleopDrive;
 import frc.robot.commands.MoveArmIn;
 import frc.robot.commands.MoveArmOut;
 import frc.robot.commands.ResetArmLengthEncoder;
+import frc.robot.commands.ReverseBottomPickup;
 import frc.robot.commands.RunBottomPickup;
 import frc.robot.commands.ToggleClaw;
 import frc.robot.commands.ToggleVisionState;
@@ -52,11 +53,12 @@ public class RobotContainer {
   private void configureBindings() {
     
     driverJoystick.rightBumper().debounce(0.1).onTrue(new ToggleVisionState(vision));
-    driverJoystick.b().debounce(0.1).whileTrue(new RunBottomPickup(pickup));
+    
     driverJoystick.x().debounce(0.1).onTrue(new ToggleClaw(arms));
     driverJoystick.povUp().whileTrue(new MoveArmOut(arms));
     driverJoystick.povDown().whileTrue(new MoveArmIn(arms));
-
+    driverJoystick.povLeft().whileTrue(new RunBottomPickup(pickup));
+    driverJoystick.povRight().whileTrue(new ReverseBottomPickup(pickup));
   }
 
   public Command getAutonomousCommand() {
