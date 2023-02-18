@@ -219,57 +219,6 @@ public class Arms extends SubsystemBase {
       myTable.getEntry(l_position).setBoolean(true);
   }
 
-  // public void updateShuffleBoard(ScoringHeight scoringHeight, int scoringSlot) {
-  //     boolean ScorePos1Low;
-  //     boolean ScorePos2Low;
-  //     boolean ScorePos3Low;
-  //     boolean ScorePos4Low;
-  //     boolean ScorePos5Low;
-  //     boolean ScorePos6Low;
-  //     boolean ScorePos7Low;
-  //     boolean ScorePos8Low;
-  //     boolean ScorePos9Low;
-  //     boolean ScorePos1Med;
-  //     boolean ScorePos2Med;
-  //     boolean ScorePos3Med;
-  //     boolean ScorePos4Med;
-  //     boolean ScorePos5Med;
-  //     boolean ScorePos6Med;
-  //     boolean ScorePos7Med;
-  //     boolean ScorePos8Med;
-  //     boolean ScorePos9Med;
-  //     boolean ScorePos1High;
-  //     boolean ScorePos2High;
-  //     boolean ScorePos3High;
-  //     boolean ScorePos4High;
-  //     boolean ScorePos5High;
-  //     boolean ScorePos6High;
-  //     boolean ScorePos7High;
-  //     boolean ScorePos8High;
-  //     boolean ScorePos9High;
-
-  //   if(scoringSlot == 1 && scoringHeight == scoringHeight.Low)
-  //     ScorePos1Low = true;
-  //   else
-  //     ScorePos2Low = false;
-  //   if(scoringSlot == 2 && scoringHeight == scoringHeight.Low)
-  //     ScorePos2Low = true;
-  //   else
-  //     ScorePos2Low = false;
-  //   if(scoringSlot == 3 && scoringHeight == scoringHeight.Low)
-  //     ScorePos3Low = true;
-  //   else
-  //     ScorePos3Low = false;
-  //   if(scoringSlot == 4 && scoringHeight == scoringHeight.Low)
-  //     ScorePos4Low = true;
-  //   else
-  //     ScorePos4Low = false;
-  //   if(scoringSlot == 5 && scoringHeight == scoringHeight.Low)
-  //     ScorePos5Low = true;
-  //   else
-  //     ScorePos5Low = false;
-  // }
-
 
   @Override
   public void periodic() {

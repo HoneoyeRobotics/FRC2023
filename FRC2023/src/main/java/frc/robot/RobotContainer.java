@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -53,15 +54,16 @@ public class RobotContainer {
   }
 
   private void initializeScorePosition() {
+    ShuffleboardTab tab2 = Shuffleboard.getTab("Tab 2");
     int i;      
     String l_position;
     for(i = 1; i < 10; ++i) {
       l_position = String.format("ScorePos%d%s", i, scoringHeight.High.toString());
-      Shuffleboard.getTab("Tab 2").add(l_position, false).withPosition(i - 1, 0);
+      tab2.add(l_position, false).withPosition(i - 1, 0);
       l_position = String.format("ScorePos%d%s", i, scoringHeight.Med.toString());
-      Shuffleboard.getTab("Tab 2").add(l_position, false).withPosition(i - 1, 1);
+      tab2.add(l_position, false).withPosition(i - 1, 1);
       l_position = String.format("ScorePos%d%s", i, scoringHeight.Low.toString());
-      Shuffleboard.getTab("Tab 2").add(l_position, false).withPosition(i - 1, 2);
+      tab2.add(l_position, false).withPosition(i - 1, 2);
     }
 
   }
@@ -75,12 +77,12 @@ public class RobotContainer {
     driverJoystick.a().debounce(.1).whileTrue(new FingersIn(fingers));
     driverJoystick.y().debounce(.1).whileTrue(new FingersOut(fingers));
 
-    driverJoystick.axisGreaterThan(4, .5).onTrue(new ChangeScoringSlot(arms, true));
-    driverJoystick.axisLessThan(4, -.5).onTrue(new ChangeScoringSlot(arms, false));
+    //driverJoystick.axisGreaterThan(4, .5).onTrue(new ChangeScoringSlot(arms, true));
+    //driverJoystick.axisLessThan(4, -.5).onTrue(new ChangeScoringSlot(arms, false));
 
     
-    driverJoystick.axisGreaterThan(5, .5).onTrue(new ChangeScoringHeight(arms, false));
-    driverJoystick.axisLessThan(5, -.5).onTrue(new ChangeScoringHeight(arms, true));
+    //driverJoystick.axisGreaterThan(5, .5).onTrue(new ChangeScoringHeight(arms, false));
+    //driverJoystick.axisLessThan(5, -.5).onTrue(new ChangeScoringHeight(arms, true));
 
     //driverJoystick.povRight().onTrue(new RotateArmToPosition(arms, ArmRotate.maxPosition));
     //driverJoystick.povLeft().onTrue(new RotateArmToPosition(arms, ArmRotate.minPosition));
@@ -91,26 +93,26 @@ public class RobotContainer {
 
   private CommandJoystick buttonBoard = new CommandJoystick(1);
   private void configureButtonBoard(){
-    buttonBoard.button(11).whileTrue(new RotateArm(arms, RobotPrefs.getArmRotateUpSpeed()));
-    buttonBoard.button(12).whileTrue(new RotateArm(arms, RobotPrefs.getArmRotateDownSpeed()));
+    buttonBoard.button(10).whileTrue(new RotateArm(arms, RobotPrefs.getArmRotateUpSpeed()));
+    buttonBoard.button(11).whileTrue(new RotateArm(arms, RobotPrefs.getArmRotateDownSpeed()));
 
-    buttonBoard.button(10).whileTrue(new MoveArmOut(arms));
-    buttonBoard.button(4).whileTrue(new MoveArmIn(arms));
+    buttonBoard.button(9).whileTrue(new MoveArmOut(arms));
+    buttonBoard.button(3).whileTrue(new MoveArmIn(arms));
 
-    buttonBoard.button(5).onTrue(new ToggleClaw(arms));
+    buttonBoard.button(4).onTrue(new ToggleClaw(arms));
     
-    buttonBoard.button(3).whileTrue(new RunBottomPickup(pickup));
-    buttonBoard.button(9).whileTrue(new RunBottomPickup(pickup).alongWith(new FingersIn(fingers)));
+    buttonBoard.button(2).whileTrue(new RunBottomPickup(pickup));
+    buttonBoard.button(8).whileTrue(new RunBottomPickup(pickup).alongWith(new FingersIn(fingers)));
 
-    buttonBoard.button(7).onTrue(new CycleGrabPosition(arms));
+    buttonBoard.button(6).onTrue(new CycleGrabPosition(arms));
 
-    buttonBoard.axisGreaterThan(1, .5).onTrue(new ChangeScoringHeight(arms, true));
-    buttonBoard.axisLessThan(1, -.5).onTrue(new ChangeScoringHeight(arms, false));
+    buttonBoard.axisGreaterThan(1, .5).onTrue(new ChangeScoringHeight(arms, false));
+    buttonBoard.axisLessThan(1, -.5).onTrue(new ChangeScoringHeight(arms, true));
     
     buttonBoard.axisGreaterThan(0, .5).onTrue(new ChangeScoringSlot(arms, true));
     buttonBoard.axisLessThan(0, -.5).onTrue(new ChangeScoringSlot(arms, false));
 
-    buttonBoard.button(6).onTrue(new MoveArmToPosition(arms, 0).andThen(new RotateArmToPosition(arms, 0)));
+    buttonBoard.button(5).onTrue(new MoveArmToPosition(arms, 0).andThen(new RotateArmToPosition(arms, 0)));
   }
 
   public Command getAutonomousCommand() {
