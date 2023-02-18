@@ -20,7 +20,7 @@ public class MoveArmIn extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    arms.armLenghtBrakeOff();
+    arms.armLengthBrakeOff();
   }
 
   // Called every time the scheduler runs while the command is scheduled.

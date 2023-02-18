@@ -29,7 +29,7 @@ public class MoveArmToPosition extends CommandBase {
     else
       speed = RobotPrefs.getArmLengthInSpeed();
 
-    m_arms.armLenghtBrakeOff();
+    m_arms.armLengthBrakeOff();
   }
 
   // Called every time the scheduler runs while the command is scheduled.

@@ -4,17 +4,20 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.Constants.ArmRotate;
 import frc.robot.commands.*;
+import frc.robot.enums.ScoringHeight;
+import frc.robot.enums.ScoringSlot;
 import frc.robot.subsystems.*;
 
 public class RobotContainer {
 
+  public ScoringHeight scoringHeight;
   public DriveTrain drivetrain;
   public Vision vision;
   public Pickup pickup;
@@ -39,6 +42,7 @@ public class RobotContainer {
       () -> driverJoystick.getHID().getLeftBumper(),
       () -> driverJoystick.getRightY()
       ));
+    initializeScorePosition();
     configureBindings();
     arms.resetArmLengthEncoder();
     arms.resetArmRotateEncoder();
@@ -48,6 +52,19 @@ public class RobotContainer {
     SmartDashboard.putData(new ToggleArmLengthBrake(arms));
   }
 
+  private void initializeScorePosition() {
+    int i;      
+    String l_position;
+    for(i = 1; i < 10; ++i) {
+      l_position = String.format("ScorePos%d%s", i, scoringHeight.High.toString());
+      Shuffleboard.getTab("Tab 2").add(l_position, false).withPosition(i - 1, 0);
+      l_position = String.format("ScorePos%d%s", i, scoringHeight.Med.toString());
+      Shuffleboard.getTab("Tab 2").add(l_position, false).withPosition(i - 1, 1);
+      l_position = String.format("ScorePos%d%s", i, scoringHeight.Low.toString());
+      Shuffleboard.getTab("Tab 2").add(l_position, false).withPosition(i - 1, 2);
+    }
+
+  }
   private void configureBindings() {
     
     driverJoystick.rightBumper().debounce(0.1).onTrue(new ToggleVisionState(vision));
@@ -57,6 +74,13 @@ public class RobotContainer {
     driverJoystick.povDown().whileTrue(new MoveArmIn(arms));
     driverJoystick.a().debounce(.1).whileTrue(new FingersIn(fingers));
     driverJoystick.y().debounce(.1).whileTrue(new FingersOut(fingers));
+
+    driverJoystick.axisGreaterThan(4, .5).onTrue(new ChangeScoringSlot(arms, true));
+    driverJoystick.axisLessThan(4, -.5).onTrue(new ChangeScoringSlot(arms, false));
+
+    
+    driverJoystick.axisGreaterThan(5, .5).onTrue(new ChangeScoringHeight(arms, false));
+    driverJoystick.axisLessThan(5, -.5).onTrue(new ChangeScoringHeight(arms, true));
 
     //driverJoystick.povRight().onTrue(new RotateArmToPosition(arms, ArmRotate.maxPosition));
     //driverJoystick.povLeft().onTrue(new RotateArmToPosition(arms, ArmRotate.minPosition));
@@ -70,10 +94,23 @@ public class RobotContainer {
     buttonBoard.button(11).whileTrue(new RotateArm(arms, RobotPrefs.getArmRotateUpSpeed()));
     buttonBoard.button(12).whileTrue(new RotateArm(arms, RobotPrefs.getArmRotateDownSpeed()));
 
-    buttonBoard.button(9).whileTrue(new MoveArmOut(arms));
-    
-    buttonBoard.button(10).whileTrue(new MoveArmIn(arms));
+    buttonBoard.button(10).whileTrue(new MoveArmOut(arms));
+    buttonBoard.button(4).whileTrue(new MoveArmIn(arms));
+
     buttonBoard.button(5).onTrue(new ToggleClaw(arms));
+    
+    buttonBoard.button(3).whileTrue(new RunBottomPickup(pickup));
+    buttonBoard.button(9).whileTrue(new RunBottomPickup(pickup).alongWith(new FingersIn(fingers)));
+
+    buttonBoard.button(7).onTrue(new CycleGrabPosition(arms));
+
+    buttonBoard.axisGreaterThan(1, .5).onTrue(new ChangeScoringHeight(arms, true));
+    buttonBoard.axisLessThan(1, -.5).onTrue(new ChangeScoringHeight(arms, false));
+    
+    buttonBoard.axisGreaterThan(0, .5).onTrue(new ChangeScoringSlot(arms, true));
+    buttonBoard.axisLessThan(0, -.5).onTrue(new ChangeScoringSlot(arms, false));
+
+    buttonBoard.button(6).onTrue(new MoveArmToPosition(arms, 0).andThen(new RotateArmToPosition(arms, 0)));
   }
 
   public Command getAutonomousCommand() {

@@ -24,7 +24,7 @@ public class ToggleArmLengthBrake extends CommandBase {
   @Override
   public void execute() {
     if(m_arms.isArmLengthBrakeOn())
-      m_arms.armLenghtBrakeOff();
+      m_arms.armLengthBrakeOff();
     else
       m_arms.armLengthBrakeOn();
   }
