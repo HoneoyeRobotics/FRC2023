@@ -26,7 +26,7 @@ public class MoveArmOut extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    arms.moveArmInOut(-1 * RobotPrefs.getArmLengthOutSpeed());
+    arms.moveArmInOut(1 * RobotPrefs.getArmLengthOutSpeed());
   }
 
   // Called once the command ends or is interrupted.

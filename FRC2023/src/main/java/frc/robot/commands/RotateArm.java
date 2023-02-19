@@ -27,20 +27,27 @@ public class RotateArm extends CommandBase {
       m_speed = RobotPrefs.getArmRotateUpSpeed();
     else
       m_speed = RobotPrefs.getArmRotateDownSpeed();
-    m_arms.armRotateBrakeOff();
+    // m_arms.armRotateBrakeOff();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_arms.rotateArm(m_speed);
+    if(m_arms.isArmRotateIPDEnabled()){
+        
+      double movement = RobotPrefs.getArmRotatePIDMovement() * (up ? 1 : -1);
+      m_arms.moveArmRotatePIDPosition(movement, false);
+    }
+    else{
+      m_arms.rotateArm(m_speed);
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     m_arms.rotateArm(0.0);
-    m_arms.armRotateBrakeOn();
+    // m_arms.armRotateBrakeOn();
   }
 
   // Returns true when the command should end.

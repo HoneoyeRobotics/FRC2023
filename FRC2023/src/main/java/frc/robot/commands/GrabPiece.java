@@ -52,7 +52,6 @@ public class GrabPiece extends CommandBase {
       default:
         break;
     }
-    arms.armRotateBrakeOff();  
     arms.armLengthBrakeOff();
   }
 
@@ -67,7 +66,6 @@ public class GrabPiece extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     arms.rotateArmToPosition(0.0, arms.armRotateMotorCurrentPosition());
-    arms.armRotateBrakeOn();
     arms.moveArmToPosition(0.0, arms.armLengthMotorCurrentPosition());
     arms.armLengthBrakeOn();
   }

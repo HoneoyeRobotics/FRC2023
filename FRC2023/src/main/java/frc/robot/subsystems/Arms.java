@@ -10,6 +10,8 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -27,12 +29,12 @@ public class Arms extends SubsystemBase {
   /** Creates a new Arms. */
   private boolean clawOpened=false;
   private final DoubleSolenoid clawSolenoid;
-  private final TalonSRX armLengthMotor;
+  private final CANSparkMax armLengthMotor;
   private final CANSparkMax armRotateMotor;
   private final DoubleSolenoid armLengthBrakeSolenoid;
-  private final DoubleSolenoid armRotateBrakeSolenoid;
+  //private final DoubleSolenoid armRotateBrakeSolenoid;
   private boolean armLengthBrake = false;
-  private boolean armRotateBrake = false;
+  //private boolean armRotateBrake = false;
   private double currentPosition;
   private GrabPosition grabPosition = GrabPosition.Cube;
   private ScoringHeight scoringHeight = ScoringHeight.Low;
@@ -40,20 +42,25 @@ public class Arms extends SubsystemBase {
   private String l_position;
   private NetworkTableInstance table = NetworkTableInstance.getDefault();
   private NetworkTable myTable = table.getTable("Shuffleboard/Tab 2");
+  private boolean armRotatePIDEnabled = false;
+  private PIDController armRotatePIDController;
+  private double armRotatePIDSetpoint = 0;
 
  // private final Compressor compressor;
   public Arms() {
     armLengthBrakeSolenoid = new DoubleSolenoid(Constants.CanIDs.PCM, PneumaticsModuleType.CTREPCM, Constants.PCMIDs.Arm_Length_Brake_On, Constants.PCMIDs.Arm_Length_Brake_Off);
-    armRotateBrakeSolenoid = new DoubleSolenoid(Constants.CanIDs.PCM, PneumaticsModuleType.CTREPCM, Constants.PCMIDs.Arm_Rotate_Brake_On, Constants.PCMIDs.Arm_Rotate_Brake_Off);
+    //armRotateBrakeSolenoid = new DoubleSolenoid(Constants.CanIDs.PCM, PneumaticsModuleType.CTREPCM, Constants.PCMIDs.Arm_Rotate_Brake_On, Constants.PCMIDs.Arm_Rotate_Brake_Off);
     
     clawSolenoid = new DoubleSolenoid (Constants.CanIDs.PCM, PneumaticsModuleType.CTREPCM, Constants.PCMIDs.Claw_Forward, Constants.PCMIDs.Claw_Reverse);    
     clawSolenoid.set(DoubleSolenoid.Value.kForward);
     //compressor = new Compressor(PneumaticsModuleType.CTREPCM);
-    armLengthMotor = new TalonSRX(Constants.CanIDs.ArmLengthMotor);
-    armLengthMotor.setNeutralMode(NeutralMode.Brake);
+    armLengthMotor = new CANSparkMax(Constants.CanIDs.ArmLengthMotor, MotorType.kBrushless);
+    armLengthMotor.setIdleMode(IdleMode.kBrake);
     armRotateMotor = new CANSparkMax(Constants.CanIDs.ArmRotateMotor, MotorType.kBrushless);
     armRotateMotor.setInverted(true);
     armRotateMotor.setIdleMode(IdleMode.kBrake);
+
+    armRotatePIDController= new PIDController(Constants.ArmRotate.RotateKp, 0, 0);
   }
 
   public boolean isArmLengthBrakeOn(){
@@ -68,21 +75,6 @@ public class Arms extends SubsystemBase {
   public void armLengthBrakeOff(){
     armLengthBrakeSolenoid.set(DoubleSolenoid.Value.kReverse);
     armLengthBrake = false;
-  }
-
-
-  public boolean isArmRotateBrakeOn(){
-    return armRotateBrake;
-  }
-
-  public void armRotateBrakeOn(){
-    armRotateBrakeSolenoid.set(DoubleSolenoid.Value.kForward);
-    armRotateBrake = true;
-  }
-
-  public void armRotateBrakeOff(){
-    armRotateBrakeSolenoid.set(DoubleSolenoid.Value.kReverse);
-    armRotateBrake = false;
   }
 
 
@@ -102,11 +94,11 @@ public class Arms extends SubsystemBase {
   }
 
   public void resetArmLengthEncoder(){
-    armLengthMotor.setSelectedSensorPosition(0);
+    armLengthMotor.getEncoder().setPosition(0);
   }
 
   public double armLengthMotorCurrentPosition() {
-    return armLengthMotor.getSelectedSensorPosition();
+    return armLengthMotor.getEncoder().getPosition();
   }
 
   public void moveArmInOut(double speed){
@@ -114,7 +106,7 @@ public class Arms extends SubsystemBase {
     //   speed = 0;
     // if(speed > 0 && armLengthMotor.getSelectedSensorPosition() >= 0)
     //   speed = 0;
-    armLengthMotor.set(ControlMode.PercentOutput, speed);
+    armLengthMotor.set(speed);
   }
 
   public void moveArmToPosition(double speed, double position) {
@@ -124,6 +116,24 @@ public class Arms extends SubsystemBase {
     }
 
     armRotateMotor.set(speed);
+  }
+
+  public void toggleArmRotatePID(){
+    armRotatePIDEnabled = !armRotatePIDEnabled;
+    //if flipping to false, turn off motor
+    if(armRotatePIDEnabled == false)
+      armRotateMotor.set(0);
+    else
+    armRotatePIDSetpoint = 0;
+  }
+  public boolean isArmRotateIPDEnabled(){
+    return armRotatePIDEnabled;
+  }
+  public void moveArmRotatePIDPosition(double position, boolean setPosition){
+    if(setPosition)
+    armRotatePIDSetpoint = position;
+    else
+    armRotatePIDSetpoint += position;
   }
 
   public  void resetArmRotateEncoder() {
@@ -227,7 +237,13 @@ public class Arms extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putBoolean("clawOpened", clawOpened);
-    SmartDashboard.putNumber("Arm Length Encoder", armLengthMotor.getSelectedSensorPosition());
+    SmartDashboard.putNumber("Arm Length Encoder", armLengthMotor.getEncoder().getPosition());
     SmartDashboard.putNumber("ArmRotatePosition", armRotateMotor.getEncoder().getPosition());
+SmartDashboard.putBoolean("ArmRotatePIDEnabled", armRotatePIDEnabled);
+    if(armRotatePIDEnabled){
+      double rotateSpeed = armRotatePIDController.calculate(armRotateMotorCurrentPosition(), armRotatePIDSetpoint);
+      armRotateMotor.set(rotateSpeed);
+      SmartDashboard.putNumber("ArmRotatePIDSpeed", rotateSpeed);
+    }
   }
 }

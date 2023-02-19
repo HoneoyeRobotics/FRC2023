@@ -201,5 +201,11 @@ public final class RobotPrefs {
         }
         return Preferences.getDouble("ArmRotateScoreCubeHigh", 80);
     }
+    public static double getArmRotatePIDMovement(){
+        if(!Preferences.containsKey("getArmRotatePIDMovement")){
+            Preferences.setDouble("getArmRotatePIDMovement", 1);
+        }
+        return Preferences.getDouble("getArmRotatePIDMovement", 1);
+    }
 
 }

@@ -24,11 +24,18 @@ public class RotateArmToPosition extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_arms.armRotateBrakeOff();
+    // m_arms.armRotateBrakeOff();
+    if(m_arms.isArmRotateIPDEnabled() == false){
+
+    
     if(m_position > m_arms.armRotateMotorCurrentPosition())
       speed = RobotPrefs.getArmRotateUpSpeed();
     else
       speed = RobotPrefs.getArmRotateDownSpeed();
+    }
+    else{
+      m_arms.moveArmRotatePIDPosition(0, true);
+    }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -40,14 +47,15 @@ public class RotateArmToPosition extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    if(m_arms.isArmRotateIPDEnabled() == false)
     m_arms.rotateArmToPosition(0.0, (m_arms.armRotateMotorCurrentPosition()));
-    m_arms.armRotateBrakeOn();
+    // m_arms.armRotateBrakeOn();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     return ((m_arms.armRotateMotorCurrentPosition() + ArmRotate.deadband) > m_position && 
-            (m_arms.armRotateMotorCurrentPosition() - ArmRotate.deadband) < m_position);
+            (m_arms.armRotateMotorCurrentPosition() - ArmRotate.deadband) < m_position) || m_arms.isArmRotateIPDEnabled();
   }
 }

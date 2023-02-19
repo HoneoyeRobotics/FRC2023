@@ -29,7 +29,7 @@ public final class Constants {
         public static final int BottomPickupMotor = 12;
         
         public static final int ArmRotateMotor = 24;
-        public static final int ArmLengthMotor = 9;
+        public static final int ArmLengthMotor = 23;
 
         public static final int PCM = 10;
         
@@ -53,6 +53,10 @@ public final class Constants {
         public static final double minPosition = 0.0;
         public static final double midAPosition = 45;
         public static final double midBPosition = 30;
+
+        
+        public static final double RotateKp = 0.2;
+
     }
 
     //TODO: tune these values

@@ -71,7 +71,7 @@ public class ScorePiece extends CommandBase {
     }
     }
 
-    m_arms.armRotateBrakeOff();  
+    // m_arms.armRotateBrakeOff();  
     m_arms.armLengthBrakeOff();
   }
 
@@ -86,7 +86,7 @@ public class ScorePiece extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     m_arms.rotateArmToPosition(0.0, m_arms.armRotateMotorCurrentPosition());
-    m_arms.armRotateBrakeOn();
+    // m_arms.armRotateBrakeOn();
     m_arms.moveArmToPosition(0.0, m_arms.armLengthMotorCurrentPosition());
     m_arms.armLengthBrakeOn();
   }
