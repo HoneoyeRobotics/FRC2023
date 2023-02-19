@@ -10,6 +10,8 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -18,6 +20,8 @@ import frc.robot.Constants;
 import frc.robot.RobotPrefs;
 import frc.robot.Constants.ArmLength;
 import frc.robot.Constants.ArmRotate;
+import frc.robot.enums.GrabPosition;
+import frc.robot.enums.ScoringHeight;
 
 public class Arms extends SubsystemBase {
   /** Creates a new Arms. */
@@ -30,6 +34,12 @@ public class Arms extends SubsystemBase {
   private boolean armLengthBrake = false;
   private boolean armRotateBrake = false;
   private double currentPosition;
+  private GrabPosition grabPosition = GrabPosition.Cube;
+  private ScoringHeight scoringHeight = ScoringHeight.Low;
+  private int scoringSlot = 1;
+  private String l_position;
+  private NetworkTableInstance table = NetworkTableInstance.getDefault();
+  private NetworkTable myTable = table.getTable("Shuffleboard/Tab 2");
 
  // private final Compressor compressor;
   public Arms() {
@@ -55,7 +65,7 @@ public class Arms extends SubsystemBase {
     armLengthBrake = true;
   }
 
-  public void armLenghtBrakeOff(){
+  public void armLengthBrakeOff(){
     armLengthBrakeSolenoid.set(DoubleSolenoid.Value.kReverse);
     armLengthBrake = false;
   }
@@ -136,6 +146,80 @@ public class Arms extends SubsystemBase {
 
   public void rotateArm(double speed) {
     armRotateMotor.set(speed);
+  }
+
+  public void changeGrabPosition() {
+    switch(grabPosition){
+      case Cube:
+        grabPosition = GrabPosition.ConePointIn;
+        break;
+      case ConePointIn:
+        grabPosition = GrabPosition.ConePointUp;
+        break;
+      case ConePointUp:
+        grabPosition = GrabPosition.ConePointOut;
+        break;
+      case ConePointOut:
+        grabPosition = GrabPosition.Cube;
+        break;
+      default:
+        grabPosition = GrabPosition.Cube;
+        break;
+    }
+    SmartDashboard.putString("GrabPosition", grabPosition.toString());
+  }
+
+  public void changeScoringHeight(boolean up) {
+    switch(scoringHeight) {
+      case Low: 
+        if (up) 
+          scoringHeight = ScoringHeight.Med;
+        break;
+      case Med:
+        if(up) 
+          scoringHeight = ScoringHeight.High;
+        else 
+          scoringHeight = ScoringHeight.Low;
+        break;
+      case High:
+        if(!up) 
+          scoringHeight = ScoringHeight.Med;
+        break;
+      default:
+        scoringHeight = ScoringHeight.Med;
+        break;
+    }
+    SmartDashboard.putString("ScoringHeight", scoringHeight.toString());
+    smartDashboardScorePosition();
+  }
+
+  public int changeScoringSlot(boolean right) {
+    if(right) {
+      if(scoringSlot == 9)
+        scoringSlot = 1;
+      else 
+        ++scoringSlot;
+    }
+    else {
+      if(scoringSlot == 1) 
+        scoringSlot = 9; 
+      else
+        --scoringSlot;
+    }
+    SmartDashboard.putNumber("Scoring Slot", scoringSlot);
+    smartDashboardScorePosition();
+    return scoringSlot;
+  }
+
+  public void smartDashboardScorePosition() {
+    //NetworkTableEntry myEntry = myTable.getEntry("ScorePos1High");
+    //myEntry.setBoolean(true);
+
+    if (l_position != null) {
+      myTable.getEntry(l_position).setBoolean(false);
+    }
+    l_position = String.format("ScorePos%d%s", scoringSlot, scoringHeight.toString());
+      myTable.getEntry(l_position).setBoolean(true);
   }
 
 

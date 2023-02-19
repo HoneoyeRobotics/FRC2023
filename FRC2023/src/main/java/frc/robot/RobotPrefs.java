@@ -80,4 +80,126 @@ public final class RobotPrefs {
         return Preferences.getDouble("ArmRotateDownSpeed", -.25);
     }
 
+
+
+    public static double getArmLengthGrabCube(){
+        if(!Preferences.containsKey("ArmLengthGrabCube")){
+            Preferences.setDouble("ArmLengthGrabCube", 10);
+        }
+        return Preferences.getDouble("ArmLengthGrabCube", 10);
+    }
+
+    public static double getArmLengthGrabConePointIn(){
+        if(!Preferences.containsKey("ArmLengthConePointIn")){
+            Preferences.setDouble("ArmLengthGrabConePointIn", 10);
+        }
+        return Preferences.getDouble("ArmLengthGrabConePointIn", 10);
+    }
+
+    public static double getArmLengthGrabConePointUp(){
+        if(!Preferences.containsKey("ArmLengthConePointUp")){
+            Preferences.setDouble("ArmLengthGrabConePointUp", 10);
+        }
+        return Preferences.getDouble("ArmLengthGrabConePointUp", 10);
+    }
+
+    public static double getArmLengthGrabConePointOut(){
+        if(!Preferences.containsKey("ArmLengthConePointOut")){
+            Preferences.setDouble("ArmLengthGrabConePointOut", 10);
+        }
+        return Preferences.getDouble("ArmLengthGrabConePointOut", 10);
+    }
+    public static double getArmRotateGrabCube(){
+        if(!Preferences.containsKey("ArmRotateGrabCube")){
+            Preferences.setDouble("ArmRotateGrabCube", 10);
+        }
+        return Preferences.getDouble("ArmRotateGrabCube", 10);
+    }
+
+    public static double getArmRotateGrabConePointIn(){
+        if(!Preferences.containsKey("ArmRotateConePointIn")){
+            Preferences.setDouble("ArmRotateGrabConePointIn", 10);
+        }
+        return Preferences.getDouble("ArmRotateGrabConePointIn", 10);
+    }
+
+    public static double getArmRotateGrabConePointUp(){
+        if(!Preferences.containsKey("ArmRotateConePointUp")){
+            Preferences.setDouble("ArmRotateGrabConePointUp", 10);
+        }
+        return Preferences.getDouble("ArmRotateGrabConePointUp", 10);
+    }
+
+    public static double getArmRotateGrabConePointOut(){
+        if(!Preferences.containsKey("ArmRotateConePointOut")){
+            Preferences.setDouble("ArmRotateGrabConePointOut", 10);
+        }
+        return Preferences.getDouble("ArmRotateGrabConePointOut", 10);
+    }
+
+    public static double getArmLengthScoreLow(){
+        if(!Preferences.containsKey("ArmLengthScoreLow")){
+            Preferences.setDouble("ArmLengthScoreLow", 80);
+        }
+        return Preferences.getDouble("ArmLengthScoreLow", 80);
+    }
+    public static double getArmRotateScoreLow(){
+        if(!Preferences.containsKey("ArmRotateScoreLow")){
+            Preferences.setDouble("ArmRotateScoreLow", 80);
+        }
+        return Preferences.getDouble("ArmRotateScoreLow", 80);
+    }
+    
+    public static double getArmLengthScoreConeMed(){
+        if(!Preferences.containsKey("ArmLengthScoreConeMed")){
+            Preferences.setDouble("ArmLengthScoreConeMed", 80);
+        }
+        return Preferences.getDouble("ArmLengthScoreConeMed", 80);
+    }
+    public static double getArmRotateScoreConeMed(){
+        if(!Preferences.containsKey("ArmRotateScoreConeMed")){
+            Preferences.setDouble("ArmRotateScoreConeMed", 80);
+        }
+        return Preferences.getDouble("ArmRotateScoreConeMed", 80);
+    }
+
+    public static double getArmLengthScoreConeHigh(){
+        if(!Preferences.containsKey("ArmLengthScoreConeHigh")){
+            Preferences.setDouble("ArmLengthScoreConeHigh", 80);
+        }
+        return Preferences.getDouble("ArmLengthScoreConeHigh", 80);
+    }
+    public static double getArmRotateScoreConeHigh(){
+        if(!Preferences.containsKey("ArmRotateScoreConeHigh")){
+            Preferences.setDouble("ArmRotateScoreConeHigh", 80);
+        }
+        return Preferences.getDouble("ArmRotateScoreConeHigh", 80);
+    }
+
+    public static double getArmLengthScoreCubeMed(){
+        if(!Preferences.containsKey("ArmLengthScoreCubeMed")){
+            Preferences.setDouble("ArmLengthScoreCubeMed", 80);
+        }
+        return Preferences.getDouble("ArmLengthScoreCubeMed", 80);
+    }
+    public static double getArmRotateScoreCubeMed(){
+        if(!Preferences.containsKey("ArmRotateScoreCubeMed")){
+            Preferences.setDouble("ArmRotateScoreCubeMed", 80);
+        }
+        return Preferences.getDouble("ArmRotateScoreCubeMed", 80);
+    }
+
+    public static double getArmLengthScoreCubeHigh(){
+        if(!Preferences.containsKey("ArmLengthScoreCubeHigh")){
+            Preferences.setDouble("ArmLengthScoreCubeHigh", 80);
+        }
+        return Preferences.getDouble("ArmLengthScoreCubeHigh", 80);
+    }
+    public static double getArmRotateScoreCubeHigh(){
+        if(!Preferences.containsKey("ArmRotateScoreCubeHigh")){
+            Preferences.setDouble("ArmRotateScoreCubeHigh", 80);
+        }
+        return Preferences.getDouble("ArmRotateScoreCubeHigh", 80);
+    }
+
 }
