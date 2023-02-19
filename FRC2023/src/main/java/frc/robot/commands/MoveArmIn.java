@@ -14,7 +14,7 @@ public class MoveArmIn extends CommandBase {
   public MoveArmIn(Arms arms) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.arms = arms;
-    addRequirements(arms);
+    //addRequirements(arms);
   }
 
   // Called when the command is initially scheduled.
@@ -26,7 +26,7 @@ public class MoveArmIn extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    arms.moveArmInOut(-1 * RobotPrefs.getArmLengthInSpeed());
+    arms.moveArmInOut(1 * RobotPrefs.getArmLengthInSpeed());
   }
 
   // Called once the command ends or is interrupted.

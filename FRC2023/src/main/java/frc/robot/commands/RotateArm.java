@@ -5,22 +5,28 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.RobotPrefs;
 import frc.robot.subsystems.Arms;
 
 public class RotateArm extends CommandBase {
   private Arms m_arms;
+  private boolean up;
   private double m_speed;
   /** Creates a new RotateArm. */
-  public RotateArm(Arms arms, double speed) {
+  public RotateArm(Arms arms, boolean up) {
     m_arms = arms;
-    m_speed = speed;
-    addRequirements(arms);
+    this.up = up;
+   // addRequirements(arms);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    if(up)
+      m_speed = RobotPrefs.getArmRotateUpSpeed();
+    else
+      m_speed = RobotPrefs.getArmRotateDownSpeed();
     m_arms.armRotateBrakeOff();
   }
 

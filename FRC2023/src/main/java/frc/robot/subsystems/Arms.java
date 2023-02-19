@@ -5,8 +5,10 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
@@ -38,9 +40,10 @@ public class Arms extends SubsystemBase {
     clawSolenoid.set(DoubleSolenoid.Value.kForward);
     //compressor = new Compressor(PneumaticsModuleType.CTREPCM);
     armLengthMotor = new TalonSRX(Constants.CanIDs.ArmLengthMotor);
-
+    armLengthMotor.setNeutralMode(NeutralMode.Brake);
     armRotateMotor = new CANSparkMax(Constants.CanIDs.ArmRotateMotor, MotorType.kBrushless);
     armRotateMotor.setInverted(true);
+    armRotateMotor.setIdleMode(IdleMode.kBrake);
   }
 
   public boolean isArmLengthBrakeOn(){
@@ -97,10 +100,10 @@ public class Arms extends SubsystemBase {
   }
 
   public void moveArmInOut(double speed){
-    if(speed < 0 && armLengthMotor.getSelectedSensorPosition() <= 0)
-      speed = 0;
-    if(speed > 0 && armLengthMotor.getSelectedSensorPosition() >= RobotPrefs.getArmLengthMax())
-      speed = 0;
+    // if(speed < 0 && armLengthMotor.getSelectedSensorPosition() <= RobotPrefs.getArmLengthMax() * -1)
+    //   speed = 0;
+    // if(speed > 0 && armLengthMotor.getSelectedSensorPosition() >= 0)
+    //   speed = 0;
     armLengthMotor.set(ControlMode.PercentOutput, speed);
   }
 
