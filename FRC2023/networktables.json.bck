@@ -15,5 +15,13 @@
       "persistent": true,
       "retained": true
     }
+  },
+  {
+    "name": "/Preferences/BottomPickupSpeed",
+    "type": "double",
+    "value": 0.2,
+    "properties": {
+      "persistent": true
+    }
   }
 ]

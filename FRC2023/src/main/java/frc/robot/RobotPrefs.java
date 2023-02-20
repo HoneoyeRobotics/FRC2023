@@ -80,4 +80,10 @@ public final class RobotPrefs {
         return Preferences.getDouble("ArmRotateDownSpeed", -.25);
     }
 
+    public static double getReflectiveTagOffset(){
+        if(!Preferences.containsKey("ReflectiveTagOffset")){
+            Preferences.setDouble("ReflectiveTagOffset", -6 );
+        }
+        return Preferences.getDouble("ReflectiveTagOffset", -6);
+    }
 }

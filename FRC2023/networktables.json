@@ -23,5 +23,21 @@
     "properties": {
       "persistent": true
     }
+  },
+  {
+    "name": "/Preferences/ArmRotateUpSpeed",
+    "type": "double",
+    "value": 0.25,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Preferences/ArmRotateDownSpeed",
+    "type": "double",
+    "value": -0.25,
+    "properties": {
+      "persistent": true
+    }
   }
 ]
