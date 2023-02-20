@@ -80,6 +80,7 @@ public final class RobotPrefs {
         return Preferences.getDouble("ArmRotateDownSpeed", -.25);
     }
 
+<<<<<<< HEAD
 
 
     public static double getArmLengthGrabCube(){
@@ -208,4 +209,12 @@ public final class RobotPrefs {
         return Preferences.getDouble("getArmRotatePIDMovement", 1);
     }
 
+=======
+    public static double getReflectiveTagOffset(){
+        if(!Preferences.containsKey("ReflectiveTagOffset")){
+            Preferences.setDouble("ReflectiveTagOffset", -6 );
+        }
+        return Preferences.getDouble("ReflectiveTagOffset", -6);
+    }
+>>>>>>> balance
 }

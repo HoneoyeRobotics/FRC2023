@@ -32,6 +32,10 @@ public class Vision extends SubsystemBase {
     // frontCamera.setFPS(15);
   }
 
+  public double getX(){
+    return main_tx.getDouble(0);
+  }
+
   public void toggleState(){
     switch(currentState){
       case ForwardDrive:
@@ -56,7 +60,7 @@ public class Vision extends SubsystemBase {
         main_limelight.getEntry("pipeline").setNumber(2);
         
         break;
-        case ForwardRefletive:
+      case ForwardRefletive:
         main_limelight.getEntry("ledMode").setNumber(0);
         main_limelight.getEntry("camMode").setNumber(0);
         main_limelight.getEntry("pipeline").setNumber(1 );

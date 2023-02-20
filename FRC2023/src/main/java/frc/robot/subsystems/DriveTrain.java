@@ -50,6 +50,16 @@ public class DriveTrain extends SubsystemBase {
     //reset navx when robot boots
     navx.reset();
   }
+  public double getYaw(){
+    return navx.getYaw();
+  }
+  public double getAngle(){
+    return navx.getAngle();
+  }
+  public double getPitch(){
+    return navx.getPitch();
+  }
+
 
   public void arcadeDrive(double xspeed, double zrotation) {
     drive.arcadeDrive(xspeed, zrotation);
