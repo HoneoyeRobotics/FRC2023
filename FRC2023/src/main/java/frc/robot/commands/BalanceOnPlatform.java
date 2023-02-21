@@ -5,7 +5,10 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.spline.PoseWithCurvature;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.RobotPrefs;
 import frc.robot.subsystems.DriveTrain;
 
 public class BalanceOnPlatform extends CommandBase {
@@ -18,24 +21,33 @@ public class BalanceOnPlatform extends CommandBase {
     this.driveTrain = driveTrain;
     this.endWhenBalanced = endWhenBalanced;
     addRequirements(driveTrain);  
-    pidController = new PIDController(2, 0, 0);    
-    pidController.setTolerance(5,10);
+  
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    pidController = new PIDController(RobotPrefs.getBalanceP(), RobotPrefs.getBalanceI(), RobotPrefs.getBalanceD());    
+    pidController.setTolerance(5,10);
+    pidController.setIntegratorRange(-0.5, 0.5);
+    driveTrain.setBreakMode();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {   
-    driveTrain.arcadeDrive(0, pidController.calculate(driveTrain.getPitch(), 0));
+    double balanceSpeed = pidController.calculate(driveTrain.getPitch() * -1, 0);
+    if(driveTrain.getPitch() < 1 && driveTrain.getPitch() > -1)
+    balanceSpeed = 0;
+    SmartDashboard.putNumber("PID Balance Speed", balanceSpeed);
+    driveTrain.arcadeDrive(balanceSpeed, 0);
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    driveTrain.setCoastMode();
+  }
 
   // Returns true when the command should end.
   @Override

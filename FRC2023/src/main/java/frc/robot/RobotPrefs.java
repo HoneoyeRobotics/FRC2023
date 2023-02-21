@@ -80,7 +80,6 @@ public final class RobotPrefs {
         return Preferences.getDouble("ArmRotateDownSpeed", -.25);
     }
 
-<<<<<<< HEAD
 
 
     public static double getArmLengthGrabCube(){
@@ -209,12 +208,35 @@ public final class RobotPrefs {
         return Preferences.getDouble("getArmRotatePIDMovement", 1);
     }
 
-=======
     public static double getReflectiveTagOffset(){
         if(!Preferences.containsKey("ReflectiveTagOffset")){
-            Preferences.setDouble("ReflectiveTagOffset", -6 );
+            Preferences.setDouble("ReflectiveTagOffset", 1.5 );
         }
-        return Preferences.getDouble("ReflectiveTagOffset", -6);
+        return Preferences.getDouble("ReflectiveTagOffset", 1.5);
     }
->>>>>>> balance
+
+
+    
+    public static double getBalanceP(){
+        if(!Preferences.containsKey("BalanceP")){
+            Preferences.setDouble("BalanceP", 0.2 );
+        }
+        return Preferences.getDouble("BalanceP", 0.2);
+    }
+
+    
+    public static double getBalanceI(){
+        if(!Preferences.containsKey("BalanceI")){
+            Preferences.setDouble("BalanceI", 0.2 );
+        }
+        return Preferences.getDouble("BalanceI", 0.2);
+    }
+
+    
+    public static double getBalanceD(){
+        if(!Preferences.containsKey("BalanceD")){
+            Preferences.setDouble("BalanceD", 0.2 );
+        }
+        return Preferences.getDouble("BalanceD", 0.2);
+    }
 }

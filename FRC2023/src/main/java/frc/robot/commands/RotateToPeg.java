@@ -23,17 +23,15 @@ public class RotateToPeg extends CommandBase {
     this.vision = vision;
     addRequirements(driveTrain);
 
-    pidController = new PIDController(2, 0, 0);
+    pidController = new PIDController(0.2, 0, 0);
     pidController.setTolerance(5,10);
 
   }
-  private boolean onTarget;
   private double offset;
   private PIDController pidController;
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {    
-    onTarget = false;
+  public void initialize() {   
     //set pipeline to get the forward reflective tags
     vision.setState(LimeLightState.ForwardRefletive);
     

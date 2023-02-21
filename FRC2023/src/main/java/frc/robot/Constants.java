@@ -41,7 +41,6 @@ public final class Constants {
 
         public static final int Arm_Rotate_Brake_On = 6;
         public static final int Arm_Rotate_Brake_Off = 7;
-    //TODO: Fix these PCM IDs when they add them
         public static final int Arm_Length_Brake_On = 0;
         public static final int Arm_Length_Brake_Off = 1;
     }

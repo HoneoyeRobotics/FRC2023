@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.SerialPort;
@@ -60,6 +61,26 @@ public class DriveTrain extends SubsystemBase {
     return navx.getPitch();
   }
 
+  public void setBreakMode(){
+    leftFrontMotor.setIdleMode(IdleMode.kBrake);
+    
+    leftRearMotor.setIdleMode(IdleMode.kBrake);
+    
+    rightFrontMotor.setIdleMode(IdleMode.kBrake);
+    
+    rightRearMotor.setIdleMode(IdleMode.kBrake);
+  }
+
+  
+  public void setCoastMode(){
+    leftFrontMotor.setIdleMode(IdleMode.kCoast);
+    
+    leftRearMotor.setIdleMode(IdleMode.kCoast);
+    
+    rightFrontMotor.setIdleMode(IdleMode.kCoast);
+    
+    rightRearMotor.setIdleMode(IdleMode.kCoast);
+  }
 
   public void arcadeDrive(double xspeed, double zrotation) {
     drive.arcadeDrive(xspeed, zrotation);

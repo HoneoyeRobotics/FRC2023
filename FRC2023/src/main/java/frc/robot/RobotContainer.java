@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.*;
@@ -50,6 +49,8 @@ public class RobotContainer {
     SmartDashboard.putData(new ResetArmLengthEncoder(arms));
     SmartDashboard.putData(new ResetArmRotateEncoder(arms));
     SmartDashboard.putData(new ToggleArmLengthBrake(arms));
+    SmartDashboard.putData(new RotateToPeg(vision, drivetrain));
+    SmartDashboard.putData(new BalanceOnPlatform(drivetrain, false));
   }
 
   private void initializeScorePosition() {
@@ -57,18 +58,18 @@ public class RobotContainer {
     int i;      
     String l_position;
     for(i = 1; i < 10; ++i) {
-      l_position = String.format("ScorePos%d%s", i, scoringHeight.High.toString());
+      l_position = String.format("ScorePos%d%s", i, ScoringHeight.High.toString());
       tab2.add(l_position, false).withPosition(i - 1, 0);
-      l_position = String.format("ScorePos%d%s", i, scoringHeight.Med.toString());
+      l_position = String.format("ScorePos%d%s", i, ScoringHeight.Med.toString());
       tab2.add(l_position, false).withPosition(i - 1, 1);
-      l_position = String.format("ScorePos%d%s", i, scoringHeight.Low.toString());
+      l_position = String.format("ScorePos%d%s", i, ScoringHeight.Low.toString());
       tab2.add(l_position, false).withPosition(i - 1, 2);
     }
 
   }
   private void configureBindings() {
     
-    driverJoystick.rightBumper().debounce(0.1).onTrue(new ToggleVisionState(vision));
+    driverJoystick.rightBumper().whileTrue(new BrakeRobot(drivetrain));
     
     driverJoystick.x().debounce(0.1).onTrue(new ToggleClaw(arms));
     driverJoystick.povUp().whileTrue(new MoveArmOut(arms));
@@ -78,7 +79,7 @@ public class RobotContainer {
     driverJoystick.y().debounce(.1).whileTrue(new FingersIn(fingers));
     driverJoystick.povRight().whileTrue(new RotateArm(arms, true));
     driverJoystick.povLeft().whileTrue(new RotateArm(arms, false));
-
+    driverJoystick.back().whileTrue(new BalanceOnPlatform(drivetrain, false));
     driverJoystick.start().onTrue(new ToggleArmRotatePID(arms));
     configureButtonBoard();
   }

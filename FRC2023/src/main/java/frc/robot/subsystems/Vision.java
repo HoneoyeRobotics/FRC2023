@@ -26,7 +26,7 @@ public class Vision extends SubsystemBase {
   private LimeLightState currentState = LimeLightState.ForwardDrive;
    /** Creates a new Vision. */
   public Vision() {
-    setState(LimeLightState.ForwardDrive);
+    setState(LimeLightState.ForwardRefletive);
 
     // frontCamera = CameraServer.startAutomaticCapture("front", 0);
     // frontCamera.setFPS(15);
@@ -61,7 +61,7 @@ public class Vision extends SubsystemBase {
         
         break;
       case ForwardRefletive:
-        main_limelight.getEntry("ledMode").setNumber(0);
+        main_limelight.getEntry("ledMode").setNumber(1);
         main_limelight.getEntry("camMode").setNumber(0);
         main_limelight.getEntry("pipeline").setNumber(1 );
         break;
