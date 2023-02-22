@@ -18,6 +18,7 @@ public class ScorePiece extends CommandBase {
   private double rotatePosition;
   private double lengthPosition;
   private int m_scoringSlot;
+  private boolean isCone;
   private ScoringHeight m_scoringHeight;
   /** Creates a new ScorePiece. */
   public ScorePiece(Arms arms, int scoringSlot, ScoringHeight scoringHeight) {
@@ -34,44 +35,43 @@ public class ScorePiece extends CommandBase {
     rotateSpeed = RobotPrefs.getArmRotateUpSpeed();
     lengthSpeed = RobotPrefs.getArmLengthOutSpeed();
 
+    switch(m_scoringSlot) {
+      case 1: case 3: case 4: case 6: case 7: case 9:
+        isCone = true;
+        break;
+      case 2: case 5: case 8:
+        isCone = false;
+        break;
+    }
 
-  if(m_scoringHeight == ScoringHeight.Low) {
-    rotatePosition = RobotPrefs.getArmRotateScoreLow();
-    lengthPosition = RobotPrefs.getArmLengthScoreLow();
-  }
-  else {
-    if(m_scoringHeight == ScoringHeight.Med) {
-      switch(m_scoringSlot) {
-        case 1: case 3: case 4: case 6: case 7: case 9:
-          rotatePosition = RobotPrefs.getArmRotateScoreConeMed();
-          lengthPosition = RobotPrefs.getArmLengthScoreConeMed();
-          break;
-        case 2: case 5: case 8:
-          rotatePosition = RobotPrefs.getArmRotateScoreCubeMed();
-          lengthPosition = RobotPrefs.getArmLengthScoreCubeMed();
-          break;
-        default:
-          break;
-      }
+
+    if(m_scoringHeight == ScoringHeight.Low) {
+      rotatePosition = RobotPrefs.getArmRotateScoreLow();
+      lengthPosition = RobotPrefs.getArmLengthScoreLow();
     }
     else {
-      switch(m_scoringSlot) {
-        case 1: case 3: case 4: case 6: case 7: case 9:
-          
+      if(m_scoringHeight == ScoringHeight.Med) {
+        if(isCone) {
+          rotatePosition = RobotPrefs.getArmRotateScoreConeMed();
+          lengthPosition = RobotPrefs.getArmLengthScoreConeMed();
+        }
+        else {
+          rotatePosition = RobotPrefs.getArmRotateScoreCubeMed();
+          lengthPosition = RobotPrefs.getArmLengthScoreCubeMed();
+        }
+        }
+      else {
+        if(isCone) {
           rotatePosition = RobotPrefs.getArmRotateScoreConeHigh();
           lengthPosition = RobotPrefs.getArmLengthScoreConeHigh();
-          break;
-        case 2: case 5: case 8:
-          rotatePosition = RobotPrefs.getArmRotateScoreCubeHigh();
-          lengthPosition = RobotPrefs.getArmLengthScoreCubeHigh();
-          break;
-        default:
-          break;
+        }
+        else {
+            rotatePosition = RobotPrefs.getArmRotateScoreCubeHigh();
+            lengthPosition = RobotPrefs.getArmLengthScoreCubeHigh();
+        }
       }
     }
-    }
 
-    // m_arms.armRotateBrakeOff();  
     m_arms.armLengthBrakeOff();
   }
 
@@ -86,7 +86,6 @@ public class ScorePiece extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     m_arms.rotateArmToPosition(0.0, m_arms.armRotateMotorCurrentPosition());
-    // m_arms.armRotateBrakeOn();
     m_arms.moveArmToPosition(0.0, m_arms.armLengthMotorCurrentPosition());
     m_arms.armLengthBrakeOn();
   }
