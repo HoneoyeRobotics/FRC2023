@@ -75,7 +75,8 @@ public class RobotContainer {
     driverJoystick.povUp().whileTrue(new MoveArmOut(arms));
     driverJoystick.povDown().whileTrue(new MoveArmIn(arms));
     driverJoystick.povLeft().whileTrue(new RunBottomPickup(pickup));
-    driverJoystick.povRight().whileTrue(new ReverseBottomPickup(pickup));    driverJoystick.a().debounce(.1).whileTrue(new FingersIn(fingers));
+    driverJoystick.povRight().whileTrue(new ReverseBottomPickup(pickup));    
+    driverJoystick.a().debounce(.1).whileTrue(new FingersIn(fingers));
     driverJoystick.y().debounce(.1).whileTrue(new FingersIn(fingers));
     driverJoystick.povRight().whileTrue(new RotateArm(arms, true));
     driverJoystick.povLeft().whileTrue(new RotateArm(arms, false));

@@ -42,7 +42,9 @@ public class Arms extends SubsystemBase {
   private PIDController armRotatePIDController;
   private double armRotatePIDSetpoint = 0;
 
- // private final Compressor compressor;
+  //todo: add limit switch for having the arm length move all the way in. also would reset the encoder when it hits the switch.
+
+  // private final Compressor compressor;
   public Arms() {
     armLengthBrakeSolenoid = new DoubleSolenoid(Constants.CanIDs.PCM, PneumaticsModuleType.CTREPCM, Constants.PCMIDs.Arm_Length_Brake_On, Constants.PCMIDs.Arm_Length_Brake_Off);
     //armRotateBrakeSolenoid = new DoubleSolenoid(Constants.CanIDs.PCM, PneumaticsModuleType.CTREPCM, Constants.PCMIDs.Arm_Rotate_Brake_On, Constants.PCMIDs.Arm_Rotate_Brake_Off);

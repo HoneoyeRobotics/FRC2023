@@ -37,7 +37,7 @@ public class BalanceOnPlatform extends CommandBase {
   public void execute() {   
     double balanceSpeed = pidController.calculate(driveTrain.getPitch() * -1, 0);
     if(driveTrain.getPitch() < 1 && driveTrain.getPitch() > -1)
-    balanceSpeed = 0;
+      balanceSpeed = 0;
     SmartDashboard.putNumber("PID Balance Speed", balanceSpeed);
     driveTrain.arcadeDrive(balanceSpeed, 0);
   }
