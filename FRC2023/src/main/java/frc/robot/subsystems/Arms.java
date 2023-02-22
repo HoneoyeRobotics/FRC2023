@@ -16,7 +16,6 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.RobotPrefs;
 import frc.robot.Constants.ArmLength;
 import frc.robot.Constants.ArmRotate;
 import frc.robot.enums.GrabPosition;
