@@ -49,8 +49,10 @@ public class DriveTrain extends SubsystemBase {
 
     navx = new AHRS(SerialPort.Port.kUSB);
     //reset navx when robot boots
+    navx.calibrate();
     navx.reset();
   }
+
   public double getYaw(){
     return navx.getYaw();
   }
@@ -59,6 +61,10 @@ public class DriveTrain extends SubsystemBase {
   }
   public double getPitch(){
     return navx.getPitch();
+  }
+
+  public void resetNavX(){
+    navx.reset();
   }
 
   public void setBreakMode(){

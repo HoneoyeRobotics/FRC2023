@@ -14,21 +14,25 @@ import frc.robot.subsystems.DriveTrain;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class Autonomous1 extends SequentialCommandGroup {
 
-  private Arms m_arms;
+  //private Arms m_arms;
   private DriveTrain m_drivetrain;
-  private ScoringHeight m_scoringHeight;
+  //private ScoringHeight m_scoringHeight;
 
   /** Creates a new Autonomous1. */
   public Autonomous1(Arms arms, DriveTrain drivetrain, ScoringHeight scoringHeight) {
-    m_arms = arms;
+    //m_arms = arms;
     m_drivetrain = drivetrain;
-    m_scoringHeight = scoringHeight;
+    //m_scoringHeight = scoringHeight;
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new ScorePiece(m_arms, 5, scoringHeight.Low),
-      new DriveBackwardUntilTipping(m_drivetrain),
-      new BalanceOnPlatform(m_drivetrain, true)
+      //new ScorePiece(m_arms, 5, scoringHeight.Low),
+      new ResetNavX(m_drivetrain),
+      new DriveUntilTipping(m_drivetrain, false).withTimeout(.25),
+      new RotateToDegree(m_drivetrain, 180),
+      new DriveUntilTipping(m_drivetrain, true),
+      new BalanceOnPlatform(m_drivetrain, true),
+      new BrakeRobot(m_drivetrain).withTimeout(10)
     );
   }
 }
