@@ -103,12 +103,13 @@ public class RobotContainer {
     buttonBoard.button(8).whileTrue(new RunBottomPickup(pickup).alongWith(new FingersIn(fingers)));
 
     buttonBoard.button(6).onTrue(new CycleGrabPosition(arms));
+    buttonBoard.button(7).onTrue(new  GrabPiece(arms));
     
     // buttonBoard.button(5).onTrue(new MoveArmToPosition(arms, 0).andThen(new RotateArmToPosition(arms, 0)));
     buttonBoard.button(5).onTrue(new RotateArmToPosition(arms, 0));
 
-    buttonBoard.axisGreaterThan(1, .5).onTrue(new ChangeScoringHeight(arms, false));
-    buttonBoard.axisLessThan(1, -.5).onTrue(new ChangeScoringHeight(arms, true));
+    buttonBoard.axisGreaterThan(1, .5).onTrue(new ChangeScoringHeight(arms, true));
+    buttonBoard.axisLessThan(1, -.5).onTrue(new ChangeScoringHeight(arms, false));
     
     buttonBoard.axisGreaterThan(0, .5).onTrue(new ChangeScoringSlot(arms, true));
     buttonBoard.axisLessThan(0, -.5).onTrue(new ChangeScoringSlot(arms, false));
