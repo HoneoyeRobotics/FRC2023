@@ -7,11 +7,13 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrain;
 
-public class DriveBackwardUntilTipping extends CommandBase {
+public class DriveUntilTipping extends CommandBase {
   private DriveTrain m_drivetrain;
+  private boolean forward;
   /** Creates a new DriveForwardUntilTipping. */
-  public DriveBackwardUntilTipping(DriveTrain drivetrain) {
+  public DriveUntilTipping(DriveTrain drivetrain, boolean forward) {
     m_drivetrain = drivetrain;
+    this.forward = forward;
     addRequirements(m_drivetrain);
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -19,12 +21,13 @@ public class DriveBackwardUntilTipping extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_drivetrain.arcadeDrive(-.25, 0);
+    m_drivetrain.arcadeDrive(forward ? .5 : -.5, 0);
   }
 
   // Called once the command ends or is interrupted.
