@@ -240,4 +240,27 @@ public final class RobotPrefs {
         return Preferences.getDouble("BalanceD", 0.2);
     }
 
+    public static double getRotateP(){
+        if(!Preferences.containsKey("RotateP")){
+            Preferences.setDouble("RotateP", 0.2 );
+        }
+        return Preferences.getDouble("RotateP", 0.2);
+    }
+
+    
+    public static double getRotateI(){
+        if(!Preferences.containsKey("RotateI")){
+            Preferences.setDouble("RotateI", 0.2 );
+        }
+        return Preferences.getDouble("RotateI", 0.2);
+    }
+
+    
+    public static double getRotateD(){
+        if(!Preferences.containsKey("RotateD")){
+            Preferences.setDouble("RotateD", 0.2 );
+        }
+        return Preferences.getDouble("RotateD", 0.2);
+    }
+
 }

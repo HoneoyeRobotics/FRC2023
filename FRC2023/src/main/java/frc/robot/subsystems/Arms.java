@@ -11,6 +11,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -42,6 +43,9 @@ public class Arms extends SubsystemBase {
   private PIDController armRotatePIDController;
   private double armRotatePIDSetpoint = 0;
 
+  private DigitalInput armLengthLimitSwitch;
+
+
   //todo: add limit switch for having the arm length move all the way in. also would reset the encoder when it hits the switch.
 
   // private final Compressor compressor;
@@ -58,8 +62,16 @@ public class Arms extends SubsystemBase {
     armRotateMotor.setInverted(true);
     armRotateMotor.setIdleMode(IdleMode.kBrake);
 
+    armLengthLimitSwitch = new DigitalInput(ArmLength.armLengthLimitSwitch);
+
     armRotatePIDController= new PIDController(Constants.ArmRotate.RotateKp, 0, 0);
   }
+
+  public boolean isArmLengthLimitSwitchOn() {
+    return armLengthLimitSwitch.get();
+  }
+
+
 
   public boolean isArmLengthBrakeOn(){
     return armLengthBrake;
@@ -104,7 +116,12 @@ public class Arms extends SubsystemBase {
     //   speed = 0;
     // if(speed > 0 && armLengthMotor.getSelectedSensorPosition() >= 0)
     //   speed = 0;
-    armLengthMotor.set(speed);
+    if (isArmLengthLimitSwitchOn()) {
+      armLengthMotor.getEncoder().setPosition(0);
+      speed = 0;
+    } else{
+      armLengthMotor.set(speed);
+    }
   }
 
   public void moveArmToPosition(double speed, double position) {

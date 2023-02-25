@@ -14,8 +14,6 @@ package frc.robot;
  */
 public final class Constants {
 
-
-
     public final class CanIDs{
         public static final int LeftFrontDrive = 25;
         public static final int LeftRearDrive = 26;
@@ -60,6 +58,8 @@ public final class Constants {
 
     //TODO: tune these values
     public final class ArmLength{
+        public static final int armLengthLimitSwitch = 0;
+
         public static final double deadband = 15.0;
         
         public static final double maxPosition = 400.0;
