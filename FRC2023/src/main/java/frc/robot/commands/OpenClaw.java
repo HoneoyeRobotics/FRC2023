@@ -15,7 +15,6 @@ public class OpenClaw extends InstantCommand {
   
   public OpenClaw(Arms arms) {
     m_arms = arms;
-    addRequirements(m_arms);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 

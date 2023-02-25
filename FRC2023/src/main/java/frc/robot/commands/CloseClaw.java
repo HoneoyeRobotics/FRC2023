@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.Arms;
 
@@ -15,13 +16,13 @@ public class CloseClaw extends InstantCommand {
 
   public CloseClaw(Arms arms) {
     m_arms = arms;
-    addRequirements(m_arms);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    //SmartDashboard.putBoolean("commandCalled", true);
     m_arms.closeClaw();
   }
 }

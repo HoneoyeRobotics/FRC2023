@@ -7,14 +7,13 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotPrefs;
 import frc.robot.Constants.ArmLength;
-import frc.robot.Constants.ArmRotate;
+import frc.robot.Constants.GrabPositions;
 import frc.robot.enums.GrabPosition;
 import frc.robot.subsystems.Arms;
 
 public class GrabPiece extends CommandBase {
   private Arms arms;
   private GrabPosition grabPosition;
-  private double rotateSpeed;
   private double lengthSpeed;
   private double rotatePosition;
   private double lengthPosition;  
@@ -22,50 +21,50 @@ public class GrabPiece extends CommandBase {
   /** Creates a new GrabPiece. */
   public GrabPiece(Arms m_arms) {
     arms = m_arms;
-    addRequirements(arms);
+    grabPosition = arms.getGrabPosition();
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    rotateSpeed = RobotPrefs.getArmRotateUpSpeed();
     lengthSpeed = RobotPrefs.getArmLengthOutSpeed();
 
     switch(grabPosition){
       case Cube:
-        rotatePosition = RobotPrefs.getArmRotateGrabCube();
-        lengthPosition = RobotPrefs.getArmLengthGrabCube();
+        rotatePosition = GrabPositions.cubeHeight;
+        lengthPosition = GrabPositions.cubeLength;
         break;
       case ConePointIn:
-      rotatePosition = RobotPrefs.getArmRotateGrabConePointIn();
-      lengthPosition = RobotPrefs.getArmLengthGrabConePointIn();
+      rotatePosition = GrabPositions.coneInHeight;
+      lengthPosition = GrabPositions.coneInLength;
         break;
       case ConePointUp:
-      rotatePosition = RobotPrefs.getArmRotateGrabConePointUp();
-      lengthPosition = RobotPrefs.getArmLengthGrabConePointUp();
+      rotatePosition = GrabPositions.coneUpHeight;
+      lengthPosition = GrabPositions.coneUpLength;
         break;
       case ConePointOut:
-      rotatePosition = RobotPrefs.getArmRotateGrabConePointOut();
-      lengthPosition = RobotPrefs.getArmLengthGrabConePointOut();
+      rotatePosition = GrabPositions.coneOutHeight;
+      lengthPosition = GrabPositions.coneOutLength;
         break;
       default:
         break;
     }
-    arms.armLengthBrakeOff();
+    arms.moveArmRotatePIDPosition(rotatePosition, true);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    arms.rotateArmToPosition(rotateSpeed, rotatePosition);
-    arms.moveArmToPosition(lengthSpeed, lengthPosition);
+    if (arms.isArmRotateAtPosition()) {
+      arms.armLengthBrakeOff();
+      arms.moveArmToPosition(lengthSpeed, lengthPosition);
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    arms.rotateArmToPosition(0.0, arms.armRotateMotorCurrentPosition());
     arms.moveArmToPosition(0.0, arms.armLengthMotorCurrentPosition());
     arms.armLengthBrakeOn();
   }
@@ -73,10 +72,7 @@ public class GrabPiece extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (((arms.armLengthMotorCurrentPosition() + ArmLength.deadband) > lengthPosition && 
-             (arms.armLengthMotorCurrentPosition() - ArmLength.deadband) < lengthPosition) 
-             &&
-            ((arms.armRotateMotorCurrentPosition() + ArmRotate.deadband) > rotatePosition && 
-             (arms.armRotateMotorCurrentPosition() - ArmRotate.deadband) < rotatePosition));
+    return ((arms.armLengthMotorCurrentPosition() + ArmLength.deadband) > lengthPosition && 
+             (arms.armLengthMotorCurrentPosition() - ArmLength.deadband) < lengthPosition);
   }
 }

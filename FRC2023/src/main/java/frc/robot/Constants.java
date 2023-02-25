@@ -44,7 +44,7 @@ public final class Constants {
     }
     //TODO: tune these values
     public final class ArmRotate{
-        public static final double deadband = 3.0;
+        public static final double deadband = 2.0;
         
         public static final double maxPosition = 60.0;
         public static final double minPosition = 0.0;
@@ -52,19 +52,45 @@ public final class Constants {
         public static final double midBPosition = 30;
 
         
-        public static final double RotateKp = 0.2;
+        public static final double RotateKp = 0.08;
 
     }
 
     //TODO: tune these values
     public final class ArmLength{
         public static final int armLengthLimitSwitch = 0;
+        public static final int armLenghtCurrentOverload = 30;
+        public static final int armLengthTempOverload = 30;
 
-        public static final double deadband = 15.0;
+        public static final double deadband = 2.0;
         
-        public static final double maxPosition = 400.0;
+        public static final double maxPosition = 68.0;
         public static final double minPosition = 0.0;
-        public static final double midAPosition = 300;
-        public static final double midBPosition = 200;
+        public static final double midAPosition = 30;
+        public static final double midBPosition = 20;
+    }
+
+    public final class GrabPositions{
+        public static final double cubeLength = 0;
+        public static final double cubeHeight = 5;
+        public static final double coneUpLength = 0;
+        public static final double coneUpHeight = 5;
+        public static final double coneOutLength = 0;
+        public static final double coneOutHeight = 5;
+        public static final double coneInLength = 0;
+        public static final double coneInHeight = 5;
+    }
+
+    public final class ScorePositions{
+        public static final double lowLength = 0;
+        public static final double lowHeight = 18;
+        public static final double cubeMedLength = 19;
+        public static final double cubeMedHeight = 43;
+        public static final double cubeHighLength = 67;
+        public static final double cubeHighHeight = 53;
+        public static final double coneMedLength = 8.5;
+        public static final double coneMedHeight = 53;
+        public static final double coneHighLength = 52;
+        public static final double coneHighHeight = 61;
     }
 }

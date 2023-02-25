@@ -55,23 +55,14 @@ public class Vision extends SubsystemBase {
     switch(state){
 
       case ForwardApril:
-        main_limelight.getEntry("ledMode").setNumber(0);
-        main_limelight.getEntry("camMode").setNumber(0);
         main_limelight.getEntry("pipeline").setNumber(2);
         
         break;
+      default:
       case ForwardRefletive:
-        main_limelight.getEntry("ledMode").setNumber(1);
-        main_limelight.getEntry("camMode").setNumber(0);
         main_limelight.getEntry("pipeline").setNumber(1 );
         break;
-      case ForwardDrive:
-      default:
-        main_limelight.getEntry("pipeline").setNumber(0);
-        main_limelight.getEntry("ledMode").setNumber(1);
-        main_limelight.getEntry("camMode").setNumber(1);
-        break;
-    }
+          }
   }
 
   @Override

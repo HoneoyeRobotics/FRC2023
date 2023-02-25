@@ -51,6 +51,8 @@ public class RobotContainer {
     SmartDashboard.putData(new ToggleArmLengthBrake(arms));
     SmartDashboard.putData(new RotateToPeg(vision, drivetrain));
     SmartDashboard.putData(new BalanceOnPlatform(drivetrain, false));
+    SmartDashboard.putData(new CloseClaw(arms));
+    SmartDashboard.putData(new OpenClaw(arms));
   }
 
   private void initializeScorePosition() {
@@ -99,19 +101,26 @@ public class RobotContainer {
 
     buttonBoard.button(4).onTrue(new ToggleClaw(arms));
 
-    buttonBoard.button(2).whileTrue(new RunBottomPickup(pickup));
+    //buttonBoard.button(2).whileTrue(new RunBottomPickup(pickup));
     buttonBoard.button(8).whileTrue(new RunBottomPickup(pickup).alongWith(new FingersIn(fingers)));
 
     buttonBoard.button(6).onTrue(new CycleGrabPosition(arms));
     buttonBoard.button(7).onTrue(new  GrabPiece(arms));
     
-    buttonBoard.button(5).onTrue(new CloseClaw(arms).andThen(new MoveArmToPosition(arms, 0)).andThen(new RotateArmToPosition(arms, 0)).andThen(new OpenClaw(arms)));
+    buttonBoard.button(5).onTrue(new CloseClaw(arms)
+      .andThen(new MoveArmCompletelyIn(arms))
+      .andThen(new RotateArmToPositionPID(arms, 0))
+      .andThen(new OpenClaw(arms)));
 
     buttonBoard.axisGreaterThan(1, .5).onTrue(new ChangeScoringHeight(arms, true));
     buttonBoard.axisLessThan(1, -.5).onTrue(new ChangeScoringHeight(arms, false));
+
+
     
     buttonBoard.axisGreaterThan(0, .5).onTrue(new ChangeScoringSlot(arms, true));
     buttonBoard.axisLessThan(0, -.5).onTrue(new ChangeScoringSlot(arms, false));
+
+    buttonBoard.button(2).onTrue(new ScorePiece(arms));
 
   }
 

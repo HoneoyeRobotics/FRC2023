@@ -39,11 +39,11 @@ public class Arms extends SubsystemBase {
   private String l_position;
   private NetworkTableInstance table = NetworkTableInstance.getDefault();
   private NetworkTable myTable = table.getTable("Shuffleboard/Tab 2");
-  private boolean armRotatePIDEnabled = false;
+  private boolean armRotatePIDEnabled = true;
   private PIDController armRotatePIDController;
   private double armRotatePIDSetpoint = 0;
 
-  private DigitalInput armLengthLimitSwitch;
+  //private DigitalInput armLengthLimitSwitch;
 
 
   //todo: add limit switch for having the arm length move all the way in. also would reset the encoder when it hits the switch.
@@ -62,14 +62,16 @@ public class Arms extends SubsystemBase {
     armRotateMotor.setInverted(true);
     armRotateMotor.setIdleMode(IdleMode.kBrake);
 
-    armLengthLimitSwitch = new DigitalInput(ArmLength.armLengthLimitSwitch);
+    armLengthMotor.setSmartCurrentLimit(40);
+
+    //armLengthLimitSwitch = new DigitalInput(ArmLength.armLengthLimitSwitch);
 
     armRotatePIDController= new PIDController(Constants.ArmRotate.RotateKp, 0, 0);
   }
 
-  public boolean isArmLengthLimitSwitchOn() {
-    return armLengthLimitSwitch.get();
-  }
+  // public boolean isArmLengthLimitSwitchOn() {
+  //   return armLengthLimitSwitch.get();
+  // }
 
 
 
@@ -111,26 +113,34 @@ public class Arms extends SubsystemBase {
     return armLengthMotor.getEncoder().getPosition();
   }
 
+  public boolean armLengthOverload() {
+    if(armLengthMotor.getMotorTemperature() > ArmLength.armLengthTempOverload){
+      return true;
+    } else
+      return false;
+  }
+
   public void moveArmInOut(double speed){
-    // if(speed < 0 && armLengthMotor.getSelectedSensorPosition() <= RobotPrefs.getArmLengthMax() * -1)
+    //  if((speed < 0) && (armLengthMotor.getEncoder().getPosition() <= ArmLength.minPosition))
+    //    speed = 0;
+    //  if((speed > 0) && (armLengthMotor.getEncoder().getPosition() >= ArmLength.maxPosition)) 
+    //    speed = 0;
+
+    // if (speed < 0 && isArmLengthLimitSwitchOn()) {
+    //   armLengthMotor.getEncoder().setPosition(0);
     //   speed = 0;
-    // if(speed > 0 && armLengthMotor.getSelectedSensorPosition() >= 0)
-    //   speed = 0;
-    if (isArmLengthLimitSwitchOn()) {
-      armLengthMotor.getEncoder().setPosition(0);
-      speed = 0;
-    } else{
-      armLengthMotor.set(speed);
-    }
+    // }
+    SmartDashboard.putNumber("Inoutspeed", speed);
+    armLengthMotor.set(speed);
   }
 
   public void moveArmToPosition(double speed, double position) {
-    currentPosition = armRotateMotor.getEncoder().getPosition();
+    currentPosition = armLengthMotor.getEncoder().getPosition();
     if (position > currentPosition - ArmLength.deadband && position < currentPosition + ArmLength.deadband) {
       speed = 0;
     }
 
-    armRotateMotor.set(speed);
+    armLengthMotor.set(speed);
   }
 
   public void toggleArmRotatePID(){
@@ -139,7 +149,7 @@ public class Arms extends SubsystemBase {
     if(armRotatePIDEnabled == false)
       armRotateMotor.set(0);
     else
-    armRotatePIDSetpoint = 0;
+    armRotatePIDSetpoint = armRotateMotor.getEncoder().getPosition();
   }
   public boolean isArmRotateIPDEnabled(){
     return armRotatePIDEnabled;
@@ -149,6 +159,10 @@ public class Arms extends SubsystemBase {
     armRotatePIDSetpoint = position;
     else
     armRotatePIDSetpoint += position;
+  }
+
+  public boolean isArmRotateAtPosition(){
+    return armRotatePIDController.atSetpoint();
   }
 
   public  void resetArmRotateEncoder() {
@@ -194,6 +208,10 @@ public class Arms extends SubsystemBase {
     SmartDashboard.putString("GrabPosition", grabPosition.toString());
   }
 
+  public GrabPosition getGrabPosition() {
+    return grabPosition;
+  }
+
   public void changeScoringHeight(boolean up) {
     switch(scoringHeight) {
       case Low: 
@@ -218,7 +236,11 @@ public class Arms extends SubsystemBase {
     smartDashboardScorePosition();
   }
 
-  public int changeScoringSlot(boolean right) {
+  public ScoringHeight getScoringHeight() {
+    return scoringHeight;
+  }
+
+  public void changeScoringSlot(boolean right) {
     if(right) {
       if(scoringSlot == 9)
         scoringSlot = 1;
@@ -231,8 +253,11 @@ public class Arms extends SubsystemBase {
       else
         --scoringSlot;
     }
-    SmartDashboard.putNumber("Scoring Slot", scoringSlot);
     smartDashboardScorePosition();
+    SmartDashboard.putNumber("Scoring Slot", scoringSlot);
+  }
+
+  public int getScoringSlot() {
     return scoringSlot;
   }
 
@@ -252,13 +277,16 @@ public class Arms extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putBoolean("clawOpened", clawOpened);
-    SmartDashboard.putNumber("Arm Length Encoder", armLengthMotor.getEncoder().getPosition());
-    SmartDashboard.putNumber("ArmRotatePosition", armRotateMotor.getEncoder().getPosition());
-SmartDashboard.putBoolean("ArmRotatePIDEnabled", armRotatePIDEnabled);
+    SmartDashboard.putBoolean("ArmRotatePIDEnabled", armRotatePIDEnabled);
     if(armRotatePIDEnabled){
       double rotateSpeed = armRotatePIDController.calculate(armRotateMotorCurrentPosition(), armRotatePIDSetpoint);
       armRotateMotor.set(rotateSpeed);
       SmartDashboard.putNumber("ArmRotatePIDSpeed", rotateSpeed);
     }
+
+    SmartDashboard.putNumber("ArmLengthEncoder", armLengthMotor.getEncoder().getPosition());
+    SmartDashboard.putNumber("ArmRotateEncoder", armRotateMotor.getEncoder().getPosition());
+    SmartDashboard.putNumber("InOutTemp", armLengthMotor.getMotorTemperature());
+    SmartDashboard.putNumber("InOutCurrent", armLengthMotor.getOutputCurrent());
   }
 }

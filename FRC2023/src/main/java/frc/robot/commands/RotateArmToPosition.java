@@ -26,13 +26,11 @@ public class RotateArmToPosition extends CommandBase {
   public void initialize() {
     // m_arms.armRotateBrakeOff();
     if(m_arms.isArmRotateIPDEnabled() == false){
-
-    
-    if(m_position > m_arms.armRotateMotorCurrentPosition())
-      speed = RobotPrefs.getArmRotateUpSpeed();
-    else
-      speed = RobotPrefs.getArmRotateDownSpeed();
-    }
+      if(m_position > m_arms.armRotateMotorCurrentPosition())
+        speed = RobotPrefs.getArmRotateUpSpeed();
+      else
+        speed = RobotPrefs.getArmRotateDownSpeed();
+      }
     else{
       m_arms.moveArmRotatePIDPosition(0, true);
     }

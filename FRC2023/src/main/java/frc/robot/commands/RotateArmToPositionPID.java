@@ -5,40 +5,41 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.RobotPrefs;
 import frc.robot.subsystems.Arms;
 
-public class MoveArmCompletelyIn extends CommandBase {
+public class RotateArmToPositionPID extends CommandBase {
   private Arms m_arms;
-  /** Creates a new MoveArmCompletelyIn. */
-  public MoveArmCompletelyIn(Arms arms) {
+  private double m_position;
+  /** Creates a new RotateArmToPositionPID. */
+  public RotateArmToPositionPID(Arms arms, double position) {
     m_arms = arms;
-    addRequirements(m_arms);
+    m_position = position;
+    //addRequirements(m_arms);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_arms.armLengthBrakeOff();
+    m_arms.moveArmRotatePIDPosition(m_position, true);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_arms.moveArmInOut(-1 * RobotPrefs.getArmLengthInSpeed());
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_arms.moveArmInOut(0);
-    m_arms.armLengthBrakeOn();
+   // m_arms.toggleArmRotatePID();
+//    m_arms.rotateArm(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (m_arms.armLengthMotorCurrentPosition() <= 0) || m_arms.armLengthOverload();
+    return m_arms.isArmRotateAtPosition();
+    
   }
 }

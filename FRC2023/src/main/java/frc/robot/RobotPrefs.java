@@ -55,16 +55,16 @@ public final class RobotPrefs {
     }
     public static double getArmLengthInSpeed(){
         if(!Preferences.containsKey("ArmLengthInSpeed")){
-            Preferences.setDouble("ArmLengthInSpeed", 1 );
+            Preferences.setDouble("ArmLengthInSpeed", -.25 );
         }
-        return Preferences.getDouble("ArmLengthInSpeed", 1);
+        return Preferences.getDouble("ArmLengthInSpeed", -.25);
     }
 
     public static double getArmLengthOutSpeed(){
         if(!Preferences.containsKey("ArmLengthOutSpeed")){
-            Preferences.setDouble("ArmLengthOutSpeed", 0.5);
+            Preferences.setDouble("ArmLengthOutSpeed", 0.25);
         }
-        return Preferences.getDouble("ArmLengthOutSpeed", 0.5);
+        return Preferences.getDouble("ArmLengthOutSpeed", 0.25);
     }
 
     public static double getArmRotateUpSpeed(){
