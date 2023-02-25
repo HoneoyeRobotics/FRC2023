@@ -17,21 +17,19 @@ import edu.wpi.first.math.util.Units;
  */
 public final class Constants {
 
-  public static final boolean testcode = true;
-
-  // public final class CanIDs{
-  //   public static final int LeftFrontDrive = 25;
-  //   public static final int LeftRearDrive = 26;
-  //   public static final int RightFrontDrive = 21;
-  //   public static final int RightRearDrive = 22;
-  // }
-  
   public final class CanIDs{
-    public static final int LeftFrontDrive = 33;
-    public static final int LeftRearDrive = 34; 
-    public static final int RightFrontDrive = 31;
-    public static final int RightRearDrive = 32; 
+    public static final int LeftFrontDrive = 25;
+    public static final int LeftRearDrive = 26;
+    public static final int RightFrontDrive = 21;
+    public static final int RightRearDrive = 22;
   }
+  
+//   public final class CanIDs{
+//     public static final int LeftFrontDrive = 33;
+//     public static final int LeftRearDrive = 34; 
+//     public static final int RightFrontDrive = 31;
+//     public static final int RightRearDrive = 32; 
+//   }
 
     public static final class DriveConstants {
         public static final double kNeoCPR_none = (42);
@@ -41,7 +39,7 @@ public final class Constants {
         public static final double kNeoCPR= (kNeoCPR_none);
         public static final double kWheelDiameterMeters = 0.1524;
         public static final double kEncoderDistancePerPulse =
-          (kWheelDiameterMeters * Math.PI) / kNeoCPR;
+          (kWheelDiameterMeters * Math.PI) / 10.71;
         
         public static final double kTrackwidthMeters = Units.inchesToMeters(22);
         public static final DifferentialDriveKinematics kDriveKinematics =
@@ -52,14 +50,22 @@ public final class Constants {
         // for *your* robot's drive.
         // The Robot Characterization Toolsuite provides a convenient tool for obtaining these
         // values for your robot.
-        public static final double ksVolts = 0.16478;
-        public static final double kvVoltSecondsPerMeter = 2.2025;
-        public static final double kaVoltSecondsSquaredPerMeter = 0.16441;
+        // public static final double ksVolts = 0.16478;
+        // public static final double kvVoltSecondsPerMeter = 2.2025;
+        // public static final double kaVoltSecondsSquaredPerMeter = 0.16441;
+        //public static final double ksVolts = 0.21952;
+        //public static final double kvVoltSecondsPerMeter = 1.0472;
+        //public static final double kaVoltSecondsSquaredPerMeter = 0.090742;
+        public static final double ksVolts = 0.17012;
+        public static final double kvVoltSecondsPerMeter = 2.2082;
+        public static final double kaVoltSecondsSquaredPerMeter = 0.15066;
     
         // Example value only - as above, this must be tuned for your drive!
         //TODO: tune this value
         //public static final double kPDriveVel = 8.5; .084125;
-        public static final double kPDriveVel = 0.08125;;
+        //public static final double kPDriveVel = 0.70643;
+        //public static final double kPDriveVel = 0.21557;
+        public static final double kPDriveVel = 0.070643;
       }
     
       public static final class OIConstants {
@@ -67,8 +73,8 @@ public final class Constants {
       }
     
       public static final class AutoConstants {
-        public static final double kMaxSpeedMetersPerSecond = .3;
-        public static final double kMaxAccelerationMetersPerSecondSquared = .1;
+        public static final double kMaxSpeedMetersPerSecond = 4;
+        public static final double kMaxAccelerationMetersPerSecondSquared = 3;
     
         // Reasonable baseline values for a RAMSETE follower in units of meters and seconds
         public static final double kRamseteB = 2;

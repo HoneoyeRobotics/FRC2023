@@ -40,8 +40,6 @@ public class RobotContainer {
       () -> driverJoystick.getLeftTriggerAxis(),
       () -> driverJoystick.getLeftX()
     ));
-   
-    SmartDashboard.putData("ResetEncoders", new ResetEncoders(drivetrain));
     
     configureBindings();
   }
@@ -76,7 +74,10 @@ public class RobotContainer {
   //   return ramseteCommand;
   // }
 
-  private void configureBindings() {}
+  private void configureBindings() {
+    SmartDashboard.putData("coastmode", new coastMode(drivetrain));
+    SmartDashboard.putData("ResetEncoders", new ResetEncoders(drivetrain));
+  }
 
   public Command getAutonomousCommand() {
 
@@ -92,7 +93,10 @@ public class RobotContainer {
     Trajectory myTrajectory;
     int trajectoryChoice;
     Path jsonPath;
+
     drivetrain.zeroHeading();
+    drivetrain.resetEncoders();
+    drivetrain.resetOdometry(new Pose2d(0, 0, new Rotation2d(0)));
 
     // Create a voltage constraint to ensure we don't accelerate too fast
     var autoVoltageConstraint =
@@ -117,9 +121,9 @@ public class RobotContainer {
         
     //Get the trajectory choice from the dashboard for the switch statement (If there is no key there it creates one)
     if(!Preferences.containsKey("TrajectoryChoice")){
-        Preferences.setInt("TrajectoryChoice", 10);
+        Preferences.setInt("TrajectoryChoice", 1);
     }
-    trajectoryChoice = Preferences.getInt("TrajectoryChoice", 10);
+    trajectoryChoice = Preferences.getInt("TrajectoryChoice", 1);
   
     // Create a switch statement to switch between multiple trajectories
     switch (trajectoryChoice) {
@@ -130,7 +134,7 @@ public class RobotContainer {
           // Start at the origin facing the +X direction
           new Pose2d(0, 0, new Rotation2d(0)),
           // Pass through these two interior waypoints, making an straight path
-          List.of(new Translation2d(1, 0), new Translation2d(2, 0)),
+          List.of(new Translation2d(1, 0), new Translation2d(2.9, 0)),
           // End 3 meters straight ahead of where we started, facing 0 degrees
           new Pose2d(3, 0, new Rotation2d(0)),
           // Pass config
@@ -193,7 +197,7 @@ public class RobotContainer {
 
         break;
       case 6:
-        jsonPath = Filesystem.getDeployDirectory().toPath().resolve("pathplanner/generatedJSON/Test3.wpilib.json");
+        jsonPath = Filesystem.getDeployDirectory().toPath().resolve("pathplanner/generatedJSON/Test5.wpilib.json");
         //System.out.println("Path: " + jsonPath);
         try{
         myTrajectory = TrajectoryUtil.fromPathweaverJson(jsonPath);
@@ -262,8 +266,8 @@ public class RobotContainer {
       case 8:
         myTrajectory = 
         TrajectoryGenerator.generateTrajectory(
-          //A trajectory that only uses Pose2d objects and goes straigh 3 meters
-          List.of(new Pose2d(0, 0, new Rotation2d(0)), new Pose2d(3, 0, new Rotation2d(0))), 
+          //A trajectory that only uses Pose2d objects and goes straight 3 meters
+          List.of(new Pose2d(0, 0, new Rotation2d(0)), new Pose2d(4.5, 0, new Rotation2d(0))), 
           config);
         break;
 
@@ -299,7 +303,7 @@ public class RobotContainer {
         drivetrain);
     
     // Reset odometry to the starting pose of the trajectory.
-    drivetrain.resetOdometry(myTrajectory.getInitialPose());
+    //drivetrain.resetOdometry(myTrajectory.getInitialPose());
  
      // Run path following command, then stop at the end.
      return ramseteCommand.andThen(() -> drivetrain.tankDriveVolts(0, 0));

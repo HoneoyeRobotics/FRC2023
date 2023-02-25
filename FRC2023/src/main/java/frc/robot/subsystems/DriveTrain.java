@@ -12,13 +12,14 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 import frc.robot.Constants.CanIDs;
 import frc.robot.Constants.DriveConstants;
 //trying to fix some stuff
@@ -32,6 +33,8 @@ public class DriveTrain extends SubsystemBase {
   private MotorControllerGroup leftMotors;
   private MotorControllerGroup rightMotors;
   private DifferentialDrive drive;
+  private NetworkTableEntry m_xEntry = NetworkTableInstance.getDefault().getTable("troubleshooting").getEntry("X");
+  private NetworkTableEntry m_yEntry = NetworkTableInstance.getDefault().getTable("troubleshooting").getEntry("Y");
   
   // The gyro sensor
   private final Gyro m_gyro = new AHRS(SerialPort.Port.kUSB);
@@ -56,13 +59,12 @@ public class DriveTrain extends SubsystemBase {
 
     drive = new DifferentialDrive(leftMotors, rightMotors);
 
-    if (Constants.testcode) {
     leftFrontMotor.getEncoder().setVelocityConversionFactor(DriveConstants.kEncoderDistancePerPulse);
     rightFrontMotor.getEncoder().setVelocityConversionFactor(DriveConstants.kEncoderDistancePerPulse);
     
-    leftFrontMotor.getEncoder().setPositionConversionFactor(DriveConstants.kEncoderDistancePerPulse);
-    rightFrontMotor.getEncoder().setPositionConversionFactor(DriveConstants.kEncoderDistancePerPulse);
-   }
+    leftRearMotor.getEncoder().setPositionConversionFactor(DriveConstants.kEncoderDistancePerPulse);
+    rightRearMotor.getEncoder().setPositionConversionFactor(DriveConstants.kEncoderDistancePerPulse);
+  
 
    // Reset Gyro and encoder values before creating a DifferntialDriveOdometry object
     m_gyro.calibrate();
@@ -71,9 +73,10 @@ public class DriveTrain extends SubsystemBase {
     m_odometry =
        new DifferentialDriveOdometry(
            m_gyro.getRotation2d(), leftFrontMotor.getEncoder().getPosition(), rightFrontMotor.getEncoder().getPosition());
-           
-  }
 
+ 
+  }
+           
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
@@ -89,6 +92,11 @@ public class DriveTrain extends SubsystemBase {
     // Update the odometry (current robot Pose) in the periodic block with current gyro angle and wheel encoders
     m_odometry.update(
       m_gyro.getRotation2d(), leftFrontMotor.getEncoder().getPosition(), rightFrontMotor.getEncoder().getPosition());
+
+
+      var translation = m_odometry.getPoseMeters().getTranslation();
+      m_xEntry.setNumber(translation.getX());
+      m_yEntry.setNumber(translation.getY());
     }
 
   /**
@@ -209,6 +217,17 @@ public class DriveTrain extends SubsystemBase {
    */
   public double getTurnRate() {
     return -m_gyro.getRate();
+  }
+
+
+
+
+  public void togglecoastmode() {
+
+    leftFrontMotor.setIdleMode(IdleMode.kCoast);
+    leftRearMotor.setIdleMode(IdleMode.kCoast);
+    rightFrontMotor.setIdleMode(IdleMode.kCoast);
+    rightRearMotor.setIdleMode(IdleMode.kCoast);
   }
 
 
