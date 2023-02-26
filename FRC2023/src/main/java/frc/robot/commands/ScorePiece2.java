@@ -11,15 +11,16 @@ import frc.robot.Constants.ScorePositions;
 import frc.robot.enums.ScoringHeight;
 import frc.robot.subsystems.Arms;
 
-public class ScorePiece extends CommandBase {
+public class ScorePiece2 extends CommandBase {
   private Arms m_arms;
+  private double lengthSpeed;
   private double rotatePosition;
   private double lengthPosition;
   private int m_scoringSlot;
   private boolean isCone;
   private ScoringHeight m_scoringHeight;
   /** Creates a new ScorePiece. */
-  public ScorePiece(Arms arms) {
+  public ScorePiece2(Arms arms) {
     m_arms = arms;
 
     addRequirements(m_arms);
@@ -28,6 +29,7 @@ public class ScorePiece extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    lengthSpeed = RobotPrefs.getArmLengthOutSpeed();
     m_scoringSlot = m_arms.getScoringSlot();
     m_scoringHeight = m_arms.getScoringHeight();
 
@@ -66,22 +68,25 @@ public class ScorePiece extends CommandBase {
         }
       }
     }
-
-    m_arms.moveArmRotatePIDPosition(rotatePosition, true);
+    m_arms.armLengthBrakeOff();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+      m_arms.moveArmToPosition(lengthSpeed, lengthPosition);
+  }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    m_arms.armLengthBrakeOn();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (m_arms.isArmRotateAtPosition());
+    return (((m_arms.armLengthMotorCurrentPosition() + ArmLength.deadband) > lengthPosition && 
+             (m_arms.armLengthMotorCurrentPosition() - ArmLength.deadband) < lengthPosition));
   }
 }

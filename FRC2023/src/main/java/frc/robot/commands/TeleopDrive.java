@@ -48,10 +48,6 @@ public class TeleopDrive extends CommandBase {
 
     DriveControlType controlType = RobotPrefs.getDriveControlType();
     SmartDashboard.putString("controlType", controlType.toString());
-    SmartDashboard.putNumber("leftx", leftStickXSupplier.getAsDouble());
-    SmartDashboard.putNumber("lefty", leftStickYSupplier.getAsDouble());
-    SmartDashboard.putNumber("lefttrigger", leftTriggerSupplier.getAsDouble());
-    SmartDashboard.putNumber("righttrigger", rightTriggerSupplier.getAsDouble());
     
     //get preferences based on drive type
     switch(controlType){
@@ -66,9 +62,9 @@ public class TeleopDrive extends CommandBase {
             break;
           case TriggersTurn:
             xSpeed = leftStickYSupplier.getAsDouble() * -1;
-            
+            xSpeed = xSpeed / 2;
             if(fastSupplier.getAsBoolean() == false){
-              xSpeed *= 0.5;
+              xSpeed *= 2;
             }    
             tempZ = leftTriggerSupplier.getAsDouble() - rightTriggerSupplier.getAsDouble();
             break;
@@ -86,6 +82,9 @@ public class TeleopDrive extends CommandBase {
     
         tempZ = tempZ * .8;
         zRotation = tempZ * tempZ * ((tempZ < 0) ? -1 : 1);
+        
+        // xSpeed = xSpeed * .8;
+        // xSpeed = xSpeed * xSpeed * ((xSpeed < 0) ? -1 : 1);
         
         // if(drivetrain.getReverse() == true)
         // xSpeed = xSpeed * -1;

@@ -52,7 +52,7 @@ public class Arms extends SubsystemBase {
   public Arms() {
     armLengthBrakeSolenoid = new DoubleSolenoid(Constants.CanIDs.PCM, PneumaticsModuleType.CTREPCM, Constants.PCMIDs.Arm_Length_Brake_On, Constants.PCMIDs.Arm_Length_Brake_Off);
     clawSolenoid = new DoubleSolenoid (Constants.CanIDs.PCM, PneumaticsModuleType.CTREPCM, Constants.PCMIDs.Claw_Forward, Constants.PCMIDs.Claw_Reverse);    
-    clawSolenoid.set(DoubleSolenoid.Value.kForward);
+    //clawSolenoid.set(DoubleSolenoid.Value.kReverse);
     //compressor = new Compressor(PneumaticsModuleType.CTREPCM);
     armLengthMotor = new CANSparkMax(Constants.CanIDs.ArmLengthMotor, MotorType.kBrushless);
     armLengthMotor.setIdleMode(IdleMode.kBrake);
@@ -63,9 +63,13 @@ public class Arms extends SubsystemBase {
     //armLengthLimitSwitch = new DigitalInput(ArmLength.armLengthLimitSwitch);
 
     armRotatePIDController= new PIDController(Constants.ArmRotate.RotateKp, 0, 0);
+    armRotatePIDController.setTolerance(1);
+
+    SmartDashboard.putBoolean("TempOverload", false);
     
     resetArmLengthEncoder();
     resetArmRotateEncoder();
+    openClaw();
   }
 
   // public boolean isArmLengthLimitSwitchOn() {
@@ -112,6 +116,7 @@ public class Arms extends SubsystemBase {
 
   public boolean armLengthOverload() {
     if(armLengthMotor.getMotorTemperature() > ArmLength.armLengthTempOverload){
+      SmartDashboard.putBoolean("TempOverload", true);
       return true;
     } else
       return false;
@@ -168,6 +173,10 @@ public class Arms extends SubsystemBase {
   }
 
   public boolean isArmRotateAtPosition(){
+    // if(RobotPrefs.getDebugMode()) {
+    //   SmartDashboard.putBoolean("ArmRotateAtSetpoint", armRotatePIDController.atSetpoint());
+    //   SmartDashboard.putNumber("ArmRotateSetpoint", armRotatePIDSetpoint);
+    // }
     return armRotatePIDController.atSetpoint();
   }
 

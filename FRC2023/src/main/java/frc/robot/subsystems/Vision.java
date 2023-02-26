@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.networktables.*;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -14,7 +16,7 @@ import frc.robot.enums.LimeLightState;
 public class Vision extends SubsystemBase {
 
 
-  // private UsbCamera frontCamera;
+  private UsbCamera frontCamera;
 
   private AnalogInput proxSensor = new AnalogInput(0);
 
@@ -28,8 +30,8 @@ public class Vision extends SubsystemBase {
   public Vision() {
     setState(LimeLightState.ForwardRefletive);
 
-    // frontCamera = CameraServer.startAutomaticCapture("front", 0);
-    // frontCamera.setFPS(15);
+    frontCamera = CameraServer.startAutomaticCapture("front", 0);
+    frontCamera.setFPS(15);
   }
 
   public double getX(){
@@ -76,6 +78,6 @@ public class Vision extends SubsystemBase {
       SmartDashboard.putNumber("Main LL: TA", main_ta.getDouble(0));
     }
 
-    SmartDashboard.putNumber("proxSensor", proxSensor.getValue());
+    //SmartDashboard.putNumber("proxSensor", proxSensor.getValue());
   }
 }

@@ -56,7 +56,7 @@ public final class Constants {
     public final class ArmLength{
         public static final int armLengthLimitSwitch = 0;
         public static final int armLenghtCurrentOverload = 30;
-        public static final int armLengthTempOverload = 30;
+        public static final int armLengthTempOverload = 38;
 
         public static final double deadband = 2.0;
         
@@ -67,18 +67,18 @@ public final class Constants {
     //TODO: make the grab positions correct
     public final class GrabPositions{
         public static final double cubeLength = 0;
-        public static final double cubeHeight = 5;
+        public static final double cubeHeight = 4;
         public static final double coneUpLength = 0;
-        public static final double coneUpHeight = 5;
+        public static final double coneUpHeight = 4;
         public static final double coneOutLength = 0;
-        public static final double coneOutHeight = 5;
+        public static final double coneOutHeight = 4;
         public static final double coneInLength = 0;
-        public static final double coneInHeight = 5;
+        public static final double coneInHeight = 4;
     }
 
     public final class ScorePositions{
-        public static final double lowLength = 0;
-        public static final double lowHeight = 18;
+        public static final double lowLength = 5;
+        public static final double lowHeight = 20;
         public static final double cubeMedLength = 19;
         public static final double cubeMedHeight = 43;
         public static final double cubeHighLength = 67;

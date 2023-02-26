@@ -89,6 +89,10 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public void arcadeDrive(double xspeed, double zrotation) {
+    if(xspeed < .05 && xspeed > -.05)
+      xspeed = 0;
+    if(zrotation < .05 && zrotation > -.05)
+      zrotation = 0;
     drive.arcadeDrive(xspeed, zrotation);
   }
 
@@ -110,7 +114,6 @@ public class DriveTrain extends SubsystemBase {
       SmartDashboard.putNumber("LR Encoder", leftRearMotor.getEncoder().getPosition());
       SmartDashboard.putNumber("RF Encoder", rightFrontMotor.getEncoder().getPosition());
       SmartDashboard.putNumber("RR Encoder", rightRearMotor.getEncoder().getPosition());
-
     }
   }
 }

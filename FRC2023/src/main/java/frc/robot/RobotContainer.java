@@ -73,17 +73,17 @@ public class RobotContainer {
     
     driverJoystick.rightBumper().whileTrue(new BrakeRobot(drivetrain));
     
-    driverJoystick.x().debounce(0.1).onTrue(new ToggleClaw(arms));
-    driverJoystick.povUp().whileTrue(new MoveArmOut(arms));
-    driverJoystick.povDown().whileTrue(new MoveArmIn(arms));
-    driverJoystick.povLeft().whileTrue(new RunBottomPickup(pickup));
-    driverJoystick.povRight().whileTrue(new ReverseBottomPickup(pickup));    
-    driverJoystick.a().debounce(.1).whileTrue(new FingersIn(fingers));
-    driverJoystick.y().debounce(.1).whileTrue(new FingersIn(fingers));
-    driverJoystick.povRight().whileTrue(new RotateArm(arms, true));
-    driverJoystick.povLeft().whileTrue(new RotateArm(arms, false));
+    // driverJoystick.x().debounce(0.1).onTrue(new ToggleClaw(arms));
+    // driverJoystick.povUp().whileTrue(new MoveArmOut(arms));
+    // driverJoystick.povDown().whileTrue(new MoveArmIn(arms));
+    // driverJoystick.povLeft().whileTrue(new RunBottomPickup(pickup));
+    //driverJoystick.povRight().whileTrue(new ReverseBottomPickup(pickup));    
+    driverJoystick.a().whileTrue(new RotateToPeg(vision,drivetrain));
+    driverJoystick.y().whileTrue(new FingersOut(fingers));
+    // driverJoystick.povRight().whileTrue(new RotateArm(arms, true));
+    // driverJoystick.povLeft().whileTrue(new RotateArm(arms, false));
     driverJoystick.back().whileTrue(new BalanceOnPlatform(drivetrain, false));
-    driverJoystick.start().onTrue(new ToggleArmRotatePID(arms));
+    //driverJoystick.start().onTrue(new ToggleArmRotatePID(arms));
   }
 
   private void configureButtonBoard(){
@@ -102,25 +102,26 @@ public class RobotContainer {
     buttonBoard.button(11).whileTrue(new RotateArm(arms, false));
 
     //Brings the arm home
-    buttonBoard.button(5).onTrue(new CloseClaw(arms)
+    buttonBoard.button(5).onTrue(
+      new CloseClaw(arms)
       .andThen(new MoveArmCompletelyIn(arms))
-      .andThen(new RotateArmToPositionPID(arms, 0))
+      .andThen(new RotateArmToPositionPID(arms, 0)).withTimeout(6)
       .andThen(new OpenClaw(arms)));
 
     //Changes the scoring position grid on dashboard
-    buttonBoard.axisGreaterThan(1, .5).onTrue(new ChangeScoringHeight(arms, true));
-    buttonBoard.axisLessThan(1, -.5).onTrue(new ChangeScoringHeight(arms, false));
+    buttonBoard.axisGreaterThan(1, .5).onTrue(new ChangeScoringHeight(arms, false));
+    buttonBoard.axisLessThan(1, -.5).onTrue(new ChangeScoringHeight(arms, true));
 
     buttonBoard.axisGreaterThan(0, .5).onTrue(new ChangeScoringSlot(arms, true));
     buttonBoard.axisLessThan(0, -.5).onTrue(new ChangeScoringSlot(arms, false));
 
-    buttonBoard.button(2).onTrue(new ScorePiece(arms));
+    buttonBoard.button(2).onTrue(new ScorePiece(arms).andThen(new ScorePiece2(arms)));
   }
 
   public Command getAutonomousCommand() {
     //Autonomous 1 should back up turn 180 and balance on the platfrom
     //TODO: add Autonomous 2 that should score first then do the above
-    return new Autonomous1(arms, drivetrain, scoringHeight);
+    return new Autonomous2(arms, drivetrain);
     //Commands.print("No autonomous command configured");
   }
 }
