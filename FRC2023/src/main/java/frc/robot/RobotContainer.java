@@ -105,7 +105,7 @@ public class RobotContainer {
     buttonBoard.button(5).onTrue(
       new CloseClaw(arms)
       .andThen(new MoveArmCompletelyIn(arms))
-      .andThen(new RotateArmToPositionPID(arms, 0)).withTimeout(6)
+      .andThen(new RotateArmToPositionPID(arms, 0).withTimeout(6))
       .andThen(new OpenClaw(arms)));
 
     //Changes the scoring position grid on dashboard
