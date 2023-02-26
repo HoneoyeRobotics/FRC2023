@@ -61,9 +61,14 @@ public class DriveTrain extends SubsystemBase {
 
     leftFrontMotor.getEncoder().setVelocityConversionFactor(DriveConstants.kEncoderDistancePerPulse);
     rightFrontMotor.getEncoder().setVelocityConversionFactor(DriveConstants.kEncoderDistancePerPulse);
+    leftRearMotor.getEncoder().setVelocityConversionFactor(DriveConstants.kEncoderDistancePerPulse);
+    rightRearMotor.getEncoder().setVelocityConversionFactor(DriveConstants.kEncoderDistancePerPulse);
     
+    leftFrontMotor.getEncoder().setPositionConversionFactor(DriveConstants.kEncoderDistancePerPulse);
+    rightFrontMotor.getEncoder().setPositionConversionFactor(DriveConstants.kEncoderDistancePerPulse);
     leftRearMotor.getEncoder().setPositionConversionFactor(DriveConstants.kEncoderDistancePerPulse);
     rightRearMotor.getEncoder().setPositionConversionFactor(DriveConstants.kEncoderDistancePerPulse);
+    
   
 
    // Reset Gyro and encoder values before creating a DifferntialDriveOdometry object
