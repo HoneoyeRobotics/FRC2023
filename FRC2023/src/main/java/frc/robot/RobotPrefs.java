@@ -36,9 +36,9 @@ public final class RobotPrefs {
 
     public static boolean getDebugMode(){
         if(!Preferences.containsKey("DebugMode")){
-            Preferences.setBoolean("DebugMode", true);            
+            Preferences.setBoolean("DebugMode", false);            
         }
-        return Preferences.getBoolean("DebugMode", true);
+        return Preferences.getBoolean("DebugMode", false);
     }
 
     public static double getBottomPickupSpeed(){

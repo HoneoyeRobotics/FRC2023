@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.RobotPrefs;
 import frc.robot.Constants.ArmLength;
 import frc.robot.Constants.ArmRotate;
 import frc.robot.enums.GrabPosition;
@@ -89,8 +90,6 @@ public class Arms extends SubsystemBase {
     armLengthBrake = false;
   }
 
-
-
   public boolean isClawOpened(){
     return clawOpened;
   }
@@ -121,15 +120,14 @@ public class Arms extends SubsystemBase {
   }
 
   public void moveArmInOut(double speed){
-    //  if((speed < 0) && (armLengthMotor.getEncoder().getPosition() <= ArmLength.minPosition))
-    //    speed = 0;
-    //  if((speed > 0) && (armLengthMotor.getEncoder().getPosition() >= ArmLength.maxPosition)) 
-    //    speed = 0;
+    //If debug is on youwill ignore the max and min values
+    if(RobotPrefs.getDebugMode() == false) {
+      if((speed < 0) && (armLengthMotor.getEncoder().getPosition() <= ArmLength.minPosition))
+        speed = 0;
+      if((speed > 0) && (armLengthMotor.getEncoder().getPosition() >= ArmLength.maxPosition)) 
+        speed = 0;
+    }
 
-    // if (speed < 0 && isArmLengthLimitSwitchOn()) {
-    //   armLengthMotor.getEncoder().setPosition(0);
-    //   speed = 0;
-    // }
     SmartDashboard.putNumber("Inoutspeed", speed);
     armLengthMotor.set(speed);
   }
@@ -151,14 +149,24 @@ public class Arms extends SubsystemBase {
     else
     armRotatePIDSetpoint = armRotateMotor.getEncoder().getPosition();
   }
+
   public boolean isArmRotateIPDEnabled(){
     return armRotatePIDEnabled;
   }
+  
   public void moveArmRotatePIDPosition(double position, boolean setPosition){
     if(setPosition)
-    armRotatePIDSetpoint = position;
+      armRotatePIDSetpoint = position;
     else
-    armRotatePIDSetpoint += position;
+      armRotatePIDSetpoint += position;
+
+    //If debug mode is off this will ensure the PID does not set the position less than 0 or more than the max
+    if(RobotPrefs.getDebugMode() == false) {
+      if(position > ArmRotate.maxPosition)
+        position = ArmRotate.maxPosition;
+      if(position < ArmRotate.minPosition)
+        position = ArmRotate.minPosition;
+    }
   }
 
   public boolean isArmRotateAtPosition(){
@@ -253,8 +261,8 @@ public class Arms extends SubsystemBase {
       else
         --scoringSlot;
     }
-    smartDashboardScorePosition();
     SmartDashboard.putNumber("Scoring Slot", scoringSlot);
+    smartDashboardScorePosition();
   }
 
   public int getScoringSlot() {
@@ -287,6 +295,5 @@ public class Arms extends SubsystemBase {
     SmartDashboard.putNumber("ArmLengthEncoder", armLengthMotor.getEncoder().getPosition());
     SmartDashboard.putNumber("ArmRotateEncoder", armRotateMotor.getEncoder().getPosition());
     SmartDashboard.putNumber("InOutTemp", armLengthMotor.getMotorTemperature());
-    SmartDashboard.putNumber("InOutCurrent", armLengthMotor.getOutputCurrent());
   }
 }

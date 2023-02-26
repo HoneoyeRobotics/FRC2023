@@ -46,10 +46,8 @@ public final class Constants {
     public final class ArmRotate{
         public static final double deadband = 2.0;
         
-        public static final double maxPosition = 60.0;
+        public static final double maxPosition = 80.0;
         public static final double minPosition = 0.0;
-        public static final double midAPosition = 45;
-        public static final double midBPosition = 30;
 
         
         public static final double RotateKp = 0.08;
@@ -66,8 +64,6 @@ public final class Constants {
         
         public static final double maxPosition = 68.0;
         public static final double minPosition = 0.0;
-        public static final double midAPosition = 30;
-        public static final double midBPosition = 20;
     }
 
     public final class GrabPositions{

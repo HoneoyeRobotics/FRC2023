@@ -69,6 +69,7 @@ public class Vision extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
 
+    //only show in debug mode set with the robot preferences.
     if(RobotPrefs.getDebugMode()){
       SmartDashboard.putNumber("Main LL: TX", main_tx.getDouble(0));      
       SmartDashboard.putNumber("Main LL: TY", main_ty.getDouble(0));      

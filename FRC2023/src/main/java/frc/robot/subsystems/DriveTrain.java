@@ -101,8 +101,8 @@ public class DriveTrain extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
 
+    //only show in debug mode set with the robot preferences.
     if(RobotPrefs.getDebugMode()){
-      //only show in debug mode set with the robot preferences.
       SmartDashboard.putNumber("Rotation", navx.getAngle());
       SmartDashboard.putNumber("Roll (LR tip)", navx.getRoll());
       SmartDashboard.putNumber("Pitch (FR tip)", navx.getPitch());
