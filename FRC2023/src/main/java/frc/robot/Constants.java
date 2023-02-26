@@ -64,6 +64,7 @@ public final class Constants {
         public static final double minPosition = 0.0;
     }
 
+    //TODO: make the grab positions correct
     public final class GrabPositions{
         public static final double cubeLength = 0;
         public static final double cubeHeight = 5;
