@@ -37,8 +37,6 @@ public final class Constants {
         public static final int Claw_Forward = 4;
         public static final int Claw_Reverse = 5;
 
-        public static final int Arm_Rotate_Brake_On = 6;
-        public static final int Arm_Rotate_Brake_Off = 7;
         public static final int Arm_Length_Brake_On = 0;
         public static final int Arm_Length_Brake_Off = 1;
     }

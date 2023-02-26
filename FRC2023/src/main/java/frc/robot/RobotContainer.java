@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.*;
@@ -23,7 +22,8 @@ public class RobotContainer {
   public Pickup pickup;
   public Arms arms;
   public Fingers fingers;
-  CommandXboxController driverJoystick = new CommandXboxController(0);
+  private CommandXboxController driverJoystick = new CommandXboxController(0);
+  private CommandJoystick buttonBoard = new CommandJoystick(1);
 
   public RobotContainer() {
     //initialize subsystems
@@ -42,17 +42,17 @@ public class RobotContainer {
       () -> driverJoystick.getHID().getLeftBumper(),
       () -> driverJoystick.getRightY()
       ));
+    
     initializeScorePosition();
     configureBindings();
-    arms.resetArmLengthEncoder();
-    arms.resetArmRotateEncoder();
+    configureButtonBoard();
+
     SmartDashboard.putData(new ResetArmLengthEncoder(arms));
     SmartDashboard.putData(new ResetArmRotateEncoder(arms));
     SmartDashboard.putData(new ToggleArmLengthBrake(arms));
     SmartDashboard.putData(new RotateToPeg(vision, drivetrain));
     SmartDashboard.putData(new BalanceOnPlatform(drivetrain, false));
-    SmartDashboard.putData(new CloseClaw(arms));
-    SmartDashboard.putData(new OpenClaw(arms));
+    SmartDashboard.putData(new ToggleClaw(arms));
   }
 
   private void initializeScorePosition() {
@@ -67,8 +67,8 @@ public class RobotContainer {
       l_position = String.format("ScorePos%d%s", i, ScoringHeight.Low.toString());
       tab2.add(l_position, false).withPosition(i - 1, 2);
     }
-
   }
+  
   private void configureBindings() {
     
     driverJoystick.rightBumper().whileTrue(new BrakeRobot(drivetrain));
@@ -84,47 +84,42 @@ public class RobotContainer {
     driverJoystick.povLeft().whileTrue(new RotateArm(arms, false));
     driverJoystick.back().whileTrue(new BalanceOnPlatform(drivetrain, false));
     driverJoystick.start().onTrue(new ToggleArmRotatePID(arms));
-    configureButtonBoard();
   }
 
-  private CommandJoystick buttonBoard = new CommandJoystick(1);
   private void configureButtonBoard(){
-
-    buttonBoard.button(9).whileTrue(new MoveArmOut(arms));
-    buttonBoard.button(3).whileTrue(new MoveArmIn(arms));
-
-
-    
-    buttonBoard.button(10).whileTrue(new RotateArm(arms, true));
-    buttonBoard.button(11).whileTrue(new RotateArm(arms, false));
-
-
-    buttonBoard.button(4).onTrue(new ToggleClaw(arms));
-
     //buttonBoard.button(2).whileTrue(new RunBottomPickup(pickup));
     buttonBoard.button(8).whileTrue(new RunBottomPickup(pickup).alongWith(new FingersIn(fingers)));
 
     buttonBoard.button(6).onTrue(new CycleGrabPosition(arms));
     buttonBoard.button(7).onTrue(new  GrabPiece(arms));
-    
+
+    buttonBoard.button(4).onTrue(new ToggleClaw(arms));
+
+    buttonBoard.button(9).whileTrue(new MoveArmOut(arms));
+    buttonBoard.button(3).whileTrue(new MoveArmIn(arms));
+
+    buttonBoard.button(10).whileTrue(new RotateArm(arms, true));
+    buttonBoard.button(11).whileTrue(new RotateArm(arms, false));
+
+    //Brings the arm home
     buttonBoard.button(5).onTrue(new CloseClaw(arms)
       .andThen(new MoveArmCompletelyIn(arms))
       .andThen(new RotateArmToPositionPID(arms, 0))
       .andThen(new OpenClaw(arms)));
 
+    //Changes the scoring position grid on dashboard
     buttonBoard.axisGreaterThan(1, .5).onTrue(new ChangeScoringHeight(arms, true));
     buttonBoard.axisLessThan(1, -.5).onTrue(new ChangeScoringHeight(arms, false));
 
-
-    
     buttonBoard.axisGreaterThan(0, .5).onTrue(new ChangeScoringSlot(arms, true));
     buttonBoard.axisLessThan(0, -.5).onTrue(new ChangeScoringSlot(arms, false));
 
     buttonBoard.button(2).onTrue(new ScorePiece(arms));
-
   }
 
   public Command getAutonomousCommand() {
+    //Autonomous 1 should back up turn 180 and balance on the platfrom
+    //TODO: add Autonomous 2 that should score first then do the above
     return new Autonomous1(arms, drivetrain, scoringHeight);
     //Commands.print("No autonomous command configured");
   }

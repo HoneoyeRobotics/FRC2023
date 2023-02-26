@@ -11,7 +11,6 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -52,8 +51,6 @@ public class Arms extends SubsystemBase {
   // private final Compressor compressor;
   public Arms() {
     armLengthBrakeSolenoid = new DoubleSolenoid(Constants.CanIDs.PCM, PneumaticsModuleType.CTREPCM, Constants.PCMIDs.Arm_Length_Brake_On, Constants.PCMIDs.Arm_Length_Brake_Off);
-    //armRotateBrakeSolenoid = new DoubleSolenoid(Constants.CanIDs.PCM, PneumaticsModuleType.CTREPCM, Constants.PCMIDs.Arm_Rotate_Brake_On, Constants.PCMIDs.Arm_Rotate_Brake_Off);
-    
     clawSolenoid = new DoubleSolenoid (Constants.CanIDs.PCM, PneumaticsModuleType.CTREPCM, Constants.PCMIDs.Claw_Forward, Constants.PCMIDs.Claw_Reverse);    
     clawSolenoid.set(DoubleSolenoid.Value.kForward);
     //compressor = new Compressor(PneumaticsModuleType.CTREPCM);
@@ -62,12 +59,13 @@ public class Arms extends SubsystemBase {
     armRotateMotor = new CANSparkMax(Constants.CanIDs.ArmRotateMotor, MotorType.kBrushless);
     armRotateMotor.setInverted(true);
     armRotateMotor.setIdleMode(IdleMode.kBrake);
-
     armLengthMotor.setSmartCurrentLimit(40);
-
     //armLengthLimitSwitch = new DigitalInput(ArmLength.armLengthLimitSwitch);
 
     armRotatePIDController= new PIDController(Constants.ArmRotate.RotateKp, 0, 0);
+    
+    resetArmLengthEncoder();
+    resetArmRotateEncoder();
   }
 
   // public boolean isArmLengthLimitSwitchOn() {
