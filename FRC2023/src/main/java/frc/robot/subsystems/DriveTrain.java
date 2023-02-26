@@ -59,6 +59,10 @@ public class DriveTrain extends SubsystemBase {
 
     drive = new DifferentialDrive(leftMotors, rightMotors);
 
+
+    //reset the encoders then set the sysid
+    //conversion factor of not 42.
+    //burn it?
     leftFrontMotor.getEncoder().setVelocityConversionFactor(DriveConstants.kEncoderDistancePerPulse);
     rightFrontMotor.getEncoder().setVelocityConversionFactor(DriveConstants.kEncoderDistancePerPulse);
     leftRearMotor.getEncoder().setVelocityConversionFactor(DriveConstants.kEncoderDistancePerPulse);
