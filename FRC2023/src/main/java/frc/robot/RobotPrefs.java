@@ -1,8 +1,6 @@
 
 package frc.robot;
 
-import com.revrobotics.ControlType;
-
 import edu.wpi.first.wpilibj.Preferences;
 import frc.robot.enums.DriveControlType;
 
@@ -37,16 +35,16 @@ public final class RobotPrefs {
 
     public static boolean getDebugMode(){
         if(!Preferences.containsKey("DebugMode")){
-            Preferences.setBoolean("DebugMode", true);            
+            Preferences.setBoolean("DebugMode", false);            
         }
-        return Preferences.getBoolean("DebugMode", true);
+        return Preferences.getBoolean("DebugMode", false);
     }
 
     public static double getBottomPickupSpeed(){
         if(!Preferences.containsKey("BottomPickupSpeed")){
-            Preferences.setDouble("BottomPickupSpeed", 0.2);
+            Preferences.setDouble("BottomPickupSpeed", 0.5);
         }
-        return Preferences.getDouble("BottomPickupSpeed", 0.2);
+        return Preferences.getDouble("BottomPickupSpeed", 0.5);
     }
 
 }
