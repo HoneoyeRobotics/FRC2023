@@ -40,6 +40,13 @@ public final class RobotPrefs {
         return Preferences.getBoolean("DebugMode", false);
     }
 
+    public static boolean getEncoderAndNavXDisplayed(){
+        if(!Preferences.containsKey("DisplayEncoderAndNavX")){
+            Preferences.setBoolean("DisplayEncoderAndNavX", false);            
+        }
+        return Preferences.getBoolean("DebugMode", false);
+    }
+
     public static double getBottomPickupSpeed(){
         if(!Preferences.containsKey("BottomPickupSpeed")){
             Preferences.setDouble("BottomPickupSpeed", 0.5);

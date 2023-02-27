@@ -12,9 +12,15 @@ public final class Constants {
         public static final int RightFrontDrive = 21;
         public static final int RightRearDrive = 22;
         
-        public static final int ArmRotateMotor = 0;
-        public static final int ArmLiftMotor = 0;
-        public static final int ArmLengthMotor = 0;
+        public static final int leftFingerMotor = 10;
+        public static final int rightFingerMotor = 11;
+
+        public static final int BottomPickupMotor = 12;
+        
+        public static final int ArmRotateMotor = 24;
+        public static final int ArmLengthMotor = 23;
+
+        public static final int PCM = 10;
     }
 
 
