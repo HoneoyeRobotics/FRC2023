@@ -7,8 +7,8 @@ package frc.robot.commands;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
-import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.Drive;
 import frc.robot.subsystems.DriveTrain;
 
 public class TeleopDrive extends CommandBase {
@@ -20,6 +20,7 @@ public class TeleopDrive extends CommandBase {
   private DoubleSupplier m_rightStickYSupplier;
   private BooleanSupplier m_fastSupplier;
 
+  private double oldSpeed;
   private double xSpeed;
   private double zRotation;
 
@@ -44,10 +45,18 @@ public class TeleopDrive extends CommandBase {
   @Override
   public void execute() {
     xSpeed = (m_rightTriggerSupplier.getAsDouble() - m_leftTriggerSupplier.getAsDouble());
-    if(m_fastSupplier.getAsBoolean() == false) 
+    zRotation = (m_leftStickXSupplier.getAsDouble());
+    xSpeed = xSpeed * xSpeed * (xSpeed > 0 ? 1 : -1);
+    zRotation = zRotation * zRotation * (zRotation > 0 ? 1 : -1);
+    if(m_fastSupplier.getAsBoolean() == false) {
       xSpeed = xSpeed / 2;
-    zRotation = (m_leftStickXSupplier.getAsDouble() * .75);
-    zRotation = zRotation * zRotation * (zRotation < 0 ? -1 : 1);
+      zRotation = zRotation / 2;
+    }
+    if ((zRotation < Drive.deadband) && (zRotation > (Drive.deadband * -1))) zRotation = 0;
+
+    if (xSpeed > 0) xSpeed = (xSpeed > oldSpeed + Drive.ramprate ? oldSpeed + Drive.ramprate : xSpeed);
+    if (xSpeed < 0) xSpeed = (xSpeed < oldSpeed - Drive.ramprate ? oldSpeed - Drive.ramprate : xSpeed);
+    if ((xSpeed < Drive.deadband) && (xSpeed > (Drive.deadband * -1))) xSpeed = 0;
 
     m_drivetrain.arcadeDrive(xSpeed, zRotation);
   }

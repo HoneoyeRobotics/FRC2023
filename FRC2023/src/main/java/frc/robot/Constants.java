@@ -5,7 +5,10 @@
 package frc.robot;
 
 public final class Constants {
-
+    public final class Drive{
+        public static final double deadband = .05;
+        public static final double ramprate = .05;
+    }
     public final class CanIDs{
         public static final int LeftFrontDrive = 25;
         public static final int LeftRearDrive = 26;
