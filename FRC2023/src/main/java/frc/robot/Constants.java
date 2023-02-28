@@ -39,7 +39,7 @@ public final class Constants {
         public static final double kNeoCPR= (kNeoCPR_none);
         public static final double kWheelDiameterMeters = 0.1524;
         public static final double kEncoderDistancePerPulse =
-          (kWheelDiameterMeters * Math.PI) / 449.82;
+          (kWheelDiameterMeters * Math.PI) / 10.71;
         
         public static final double kTrackwidthMeters = Units.inchesToMeters(22);
         public static final DifferentialDriveKinematics kDriveKinematics =
@@ -59,17 +59,18 @@ public final class Constants {
         // public static final double ksVolts = 0.17012;
         // public static final double kvVoltSecondsPerMeter = 2.2082;
         // public static final double kaVoltSecondsSquaredPerMeter = 0.15066;
-        public static final double ksVolts = 0.17601;
-        public static final double kvVoltSecondsPerMeter = 2.8164;
-        public static final double kaVoltSecondsSquaredPerMeter = 0.23291;
+        public static final double ksVolts = 0.12646;
+        public static final double kvVoltSecondsPerMeter = 2.8058;
+        public static final double kaVoltSecondsSquaredPerMeter = 0.15692;
     
         // Example value only - as above, this must be tuned for your drive!
         //TODO: tune this value
         //public static final double kPDriveVel = 8.5; .084125;
         //public static final double kPDriveVel = 0.70643;
         //public static final double kPDriveVel = 0.21557;
-        public static final double kPDriveVel = 0.086945;
-      }
+        public static final double kPDriveVel = 0.075011;
+        //public static final double kPDriveVel = 0.32906;
+    }
     
       public static final class OIConstants {
         public static final int kDriverControllerPort = 0;

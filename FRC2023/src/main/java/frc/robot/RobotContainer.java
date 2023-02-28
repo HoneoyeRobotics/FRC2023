@@ -197,7 +197,7 @@ public class RobotContainer {
 
         break;
       case 6:
-        jsonPath = Filesystem.getDeployDirectory().toPath().resolve("pathplanner/generatedJSON/Test4.wpilib.json");
+        jsonPath = Filesystem.getDeployDirectory().toPath().resolve("pathplanner/generatedJSON/Test5.wpilib.json");
         //System.out.println("Path: " + jsonPath);
         try{
         myTrajectory = TrajectoryUtil.fromPathweaverJson(jsonPath);
