@@ -77,6 +77,7 @@ public class RobotContainer {
   private void configureBindings() {
     SmartDashboard.putData("coastmode", new coastMode(drivetrain));
     SmartDashboard.putData("ResetEncoders", new ResetEncoders(drivetrain));
+    SmartDashboard.putData("ResetNavX", new ResetGyro(drivetrain));
   }
 
   public Command getAutonomousCommand() {
@@ -180,7 +181,7 @@ public class RobotContainer {
             config);
         break;
       case 5:
-        jsonPath = Filesystem.getDeployDirectory().toPath().resolve("pathplanner/generatedJSON/Test1.wpilib.json");
+        jsonPath = Filesystem.getDeployDirectory().toPath().resolve("pathplanner/generatedJSON/Test4.wpilib.json");
         //System.out.println("Path: " + jsonPath);
         try{
         myTrajectory = TrajectoryUtil.fromPathweaverJson(jsonPath);
@@ -197,7 +198,7 @@ public class RobotContainer {
 
         break;
       case 6:
-        jsonPath = Filesystem.getDeployDirectory().toPath().resolve("pathplanner/generatedJSON/Test5.wpilib.json");
+        jsonPath = Filesystem.getDeployDirectory().toPath().resolve("pathplanner/generatedJSON/Test8.wpilib.json");
         //System.out.println("Path: " + jsonPath);
         try{
         myTrajectory = TrajectoryUtil.fromPathweaverJson(jsonPath);

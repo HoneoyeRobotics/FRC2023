@@ -33,8 +33,8 @@ public class DriveTrain extends SubsystemBase {
   private MotorControllerGroup leftMotors;
   private MotorControllerGroup rightMotors;
   private DifferentialDrive drive;
-  private NetworkTableEntry m_xEntry = NetworkTableInstance.getDefault().getTable("troubleshooting").getEntry("X");
-  private NetworkTableEntry m_yEntry = NetworkTableInstance.getDefault().getTable("troubleshooting").getEntry("Y");
+  //private NetworkTableEntry m_xEntry = NetworkTableInstance.getDefault().getTable("troubleshooting").getEntry("X");
+  //private NetworkTableEntry m_yEntry = NetworkTableInstance.getDefault().getTable("troubleshooting").getEntry("Y");
   
   // The gyro sensor
   private final Gyro m_gyro = new AHRS(SerialPort.Port.kUSB);
@@ -63,10 +63,10 @@ public class DriveTrain extends SubsystemBase {
     //reset the encoders then set the sysid
     //conversion factor of not 42.
     //burn it?
-    leftFrontMotor.getEncoder().setVelocityConversionFactor(DriveConstants.kEncoderDistancePerPulse);
-    rightFrontMotor.getEncoder().setVelocityConversionFactor(DriveConstants.kEncoderDistancePerPulse);
-    leftRearMotor.getEncoder().setVelocityConversionFactor(DriveConstants.kEncoderDistancePerPulse);
-    rightRearMotor.getEncoder().setVelocityConversionFactor(DriveConstants.kEncoderDistancePerPulse);
+    leftFrontMotor.getEncoder().setVelocityConversionFactor(DriveConstants.kEncoderDistancePerPulse / 60);
+    rightFrontMotor.getEncoder().setVelocityConversionFactor(DriveConstants.kEncoderDistancePerPulse / 60);
+    leftRearMotor.getEncoder().setVelocityConversionFactor(DriveConstants.kEncoderDistancePerPulse / 60);
+    rightRearMotor.getEncoder().setVelocityConversionFactor(DriveConstants.kEncoderDistancePerPulse / 60);
     
     leftFrontMotor.getEncoder().setPositionConversionFactor(DriveConstants.kEncoderDistancePerPulse);
     rightFrontMotor.getEncoder().setPositionConversionFactor(DriveConstants.kEncoderDistancePerPulse);
@@ -103,9 +103,9 @@ public class DriveTrain extends SubsystemBase {
       m_gyro.getRotation2d(), leftFrontMotor.getEncoder().getPosition(), rightFrontMotor.getEncoder().getPosition());
 
 
-      var translation = m_odometry.getPoseMeters().getTranslation();
-      m_xEntry.setNumber(translation.getX());
-      m_yEntry.setNumber(translation.getY());
+      //var translation = m_odometry.getPoseMeters().getTranslation();
+      //m_xEntry.setNumber(translation.getX());
+      //m_yEntry.setNumber(translation.getY());
     }
 
   /**
@@ -167,6 +167,10 @@ public class DriveTrain extends SubsystemBase {
     rightFrontMotor.getEncoder().setPosition(0.0);
     leftRearMotor.getEncoder().setPosition(0.0);
     rightRearMotor.getEncoder().setPosition(0.0);
+  }
+
+  public void resetNavX() {
+    m_gyro.reset();
   }
 
   /**
