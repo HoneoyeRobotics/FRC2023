@@ -5,6 +5,9 @@
 package frc.robot;
 
 public final class Constants {
+    public static final int proxSensorID = 0;
+    public static final double txdeadband = 1;
+
     public final class Drive{
         public static final double deadband = .05;
         public static final double ramprate = .05;

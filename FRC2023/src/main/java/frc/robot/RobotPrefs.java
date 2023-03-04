@@ -14,25 +14,6 @@ import frc.robot.enums.DriveControlType;
  */
 public final class RobotPrefs {
 
-    public static DriveControlType getDriveControlType(){
-        if(!Preferences.containsKey("DriveControlType")){
-            Preferences.setString("DriveControlType", "SingleStick");            
-        }
-       String ControlType = Preferences.getString("DriveControlType", "SingleStick");
-
-       switch (ControlType.toLowerCase()){
-        case "triggersforward":
-            return DriveControlType.TriggersForward;
-        case "triggersturn":
-            return DriveControlType.TriggersTurn;
-        case "triggersturndoubleforward":
-            return DriveControlType.TriggersTurnDoubleForward;
-        default:
-            return DriveControlType.SingleStick;
-       }
-    //SingleStick, TriggersForward, TriggersTurn
-    }
-
     public static boolean getDebugMode(){
         if(!Preferences.containsKey("DebugMode")){
             Preferences.setBoolean("DebugMode", false);            
@@ -54,4 +35,10 @@ public final class RobotPrefs {
         return Preferences.getDouble("BottomPickupSpeed", 0.5);
     }
 
+    public static double getRotateRobotSpeed(){
+        if(!Preferences.containsKey("RotateRobotSpeed")){
+            Preferences.setDouble("RotateRobotSpeed", 0.1);
+        }
+        return Preferences.getDouble("RotateRobotSpeed", 0.1);
+    }
 }

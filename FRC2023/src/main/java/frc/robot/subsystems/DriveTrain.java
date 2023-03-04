@@ -43,11 +43,13 @@ public class DriveTrain extends SubsystemBase {
     drive = new DifferentialDrive(leftMotors, rightMotors);
 
     navx = new AHRS(SerialPort.Port.kUSB);
+    navx.calibrate();
 
   }
 
 
   public void arcadeDrive(double xSpeed, double zRotation) {
+    zRotation = zRotation;
     drive.arcadeDrive(xSpeed, zRotation);
   }
 
@@ -77,15 +79,48 @@ public class DriveTrain extends SubsystemBase {
     return navx.getRoll();
   }
   public double getAngle(){
-    return navx.getAngle();
+    return navx.getAngle() * -1;
   }
   public double getPitch(){
     return navx.getPitch();
   }
-
+  public double getYaw(){
+    return navx.getYaw() * -1;
+  }
   public void resetNavX(){
     navx.reset();
   }
+
+  
+  double last_world_linear_accel_x;
+  double last_world_linear_accel_y;
+
+  final double kCollisionThreshold_DeltaG = 0.5f;
+
+  public boolean collisionDetected(boolean lemsWay) {
+    boolean collisionDetected = false;
+    if(lemsWay == false) {
+      
+    double curr_world_linear_accel_x = navx.getWorldLinearAccelX();
+    double currentJerkX = curr_world_linear_accel_x - last_world_linear_accel_x;
+    last_world_linear_accel_x = curr_world_linear_accel_x;
+    double curr_world_linear_accel_y = navx.getWorldLinearAccelY();
+    double currentJerkY = curr_world_linear_accel_y - last_world_linear_accel_y;
+    last_world_linear_accel_y = curr_world_linear_accel_y;
+
+    if ((Math.abs(currentJerkX) > kCollisionThreshold_DeltaG)
+        || (Math.abs(currentJerkY) > kCollisionThreshold_DeltaG)) {
+      collisionDetected = true;
+    }
+    SmartDashboard.putBoolean("CollisionDetected", collisionDetected);
+
+  }else {
+    if(navx.getVelocityX() <= .1)
+      collisionDetected = true;
+  }
+    return collisionDetected;
+  }
+
 
     @Override
     public void periodic() {
@@ -99,6 +134,7 @@ public class DriveTrain extends SubsystemBase {
         SmartDashboard.putNumber("Rotation", getAngle());
         SmartDashboard.putNumber("Roll (RL Tip)", getRoll());
         SmartDashboard.putNumber("Pitch (FB Tip", getPitch());
+        SmartDashboard.putNumber("Yaw", getYaw());
       }
     }
   

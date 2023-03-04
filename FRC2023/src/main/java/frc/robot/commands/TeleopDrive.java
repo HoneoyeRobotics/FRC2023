@@ -16,30 +16,29 @@ public class TeleopDrive extends CommandBase {
   private DoubleSupplier m_leftTriggerSupplier;
   private DoubleSupplier m_rightTriggerSupplier;
   private DoubleSupplier m_leftStickXSupplier;
-  private DoubleSupplier m_leftStickYSupplier;
-  private DoubleSupplier m_rightStickYSupplier;
   private BooleanSupplier m_fastSupplier;
 
-  private double oldSpeed;
+  //private double oldSpeed = 0.0;
   private double xSpeed;
   private double zRotation;
 
-  public TeleopDrive(DriveTrain drivetrain, DoubleSupplier leftTriggerSupplier, DoubleSupplier rightTriggerSupplier, DoubleSupplier leftStickXSupplier, DoubleSupplier leftStickYSupplier, DoubleSupplier rightStickYSupplier, BooleanSupplier fastSupplier) {
-    m_drivetrain = drivetrain;
+  public TeleopDrive(DriveTrain drivetrain, DoubleSupplier leftTriggerSupplier, DoubleSupplier rightTriggerSupplier,
+      DoubleSupplier leftStickXSupplier, BooleanSupplier fastSupplier) {
     m_leftTriggerSupplier = leftTriggerSupplier;
     m_rightTriggerSupplier = rightTriggerSupplier;
     m_leftStickXSupplier = leftStickXSupplier;
-    m_leftStickYSupplier = rightStickYSupplier;
-    m_rightStickYSupplier = rightStickYSupplier;
     m_fastSupplier = fastSupplier;
 
-    // Use addRequirements() here to declare subsystem dependencies.
+    m_drivetrain = drivetrain;
     addRequirements(m_drivetrain);
+
+    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -48,22 +47,27 @@ public class TeleopDrive extends CommandBase {
     zRotation = (m_leftStickXSupplier.getAsDouble());
     xSpeed = xSpeed * xSpeed * (xSpeed > 0 ? 1 : -1);
     zRotation = zRotation * zRotation * (zRotation > 0 ? 1 : -1);
-    if(m_fastSupplier.getAsBoolean() == false) {
-      xSpeed = xSpeed / 2;
+    if (m_fastSupplier.getAsBoolean() == false) {
+      xSpeed = xSpeed / 1.75;
       zRotation = zRotation / 2;
     }
-    if ((zRotation < Drive.deadband) && (zRotation > (Drive.deadband * -1))) zRotation = 0;
+    if ((zRotation < Drive.deadband) && (zRotation > (Drive.deadband * -1)))
+      zRotation = 0;
 
-    if (xSpeed > 0) xSpeed = (xSpeed > oldSpeed + Drive.ramprate ? oldSpeed + Drive.ramprate : xSpeed);
-    if (xSpeed < 0) xSpeed = (xSpeed < oldSpeed - Drive.ramprate ? oldSpeed - Drive.ramprate : xSpeed);
-    if ((xSpeed < Drive.deadband) && (xSpeed > (Drive.deadband * -1))) xSpeed = 0;
+    // if (xSpeed > 0)
+    //   xSpeed = (xSpeed > oldSpeed + Drive.ramprate ? oldSpeed + Drive.ramprate : xSpeed);
+    // if (xSpeed < 0)
+    //   xSpeed = (xSpeed < oldSpeed - Drive.ramprate ? oldSpeed - Drive.ramprate : xSpeed);
+    if ((xSpeed < Drive.deadband) && (xSpeed > (Drive.deadband * -1)))
+      xSpeed = 0;
 
-    m_drivetrain.arcadeDrive(xSpeed, zRotation);
+    m_drivetrain.arcadeDrive(xSpeed, zRotation * -1);
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+  }
 
   // Returns true when the command should end.
   @Override
