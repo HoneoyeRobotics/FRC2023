@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.enums.LimeLightState;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Vision;
 
@@ -22,7 +23,9 @@ public class DriveUntilCorrectDistance extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    m_Vision.setFrontLimelightState(LimeLightState.AprilTag);
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -33,7 +36,8 @@ public class DriveUntilCorrectDistance extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_DriveTrain.arcadeDrive(0, 0);
+    m_DriveTrain.arcadeDrive(0, 0);    
+    m_Vision.setFrontLimelightState(LimeLightState.Drive);
   }
 
   // Returns true when the command should end.

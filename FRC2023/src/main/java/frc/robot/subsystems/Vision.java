@@ -8,6 +8,7 @@ import edu.wpi.first.networktables.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.enums.LimeLightState;
 
 public class Vision extends SubsystemBase {
   
@@ -21,7 +22,10 @@ public class Vision extends SubsystemBase {
   private NetworkTableEntry m_aprilTagID = side_limelight.getEntry("tid");
   
   /** Creates a new Vision. */
-  public Vision() {}
+  public Vision() {
+    setFrontLimelightState(LimeLightState.Drive);
+
+  }
 
   public boolean isPerpendicular(int aprilTagID) {
     int currentAprilTagID = (int)(m_aprilTagID.getDouble(0));
@@ -60,5 +64,22 @@ public class Vision extends SubsystemBase {
     // This method will be called once per scheduler run
     SmartDashboard.putBoolean("AtSeven?", isPerpendicular(7));
     SmartDashboard.putBoolean("CorrectDistance", correctDistance());
+  }
+
+  public void setFrontLimelightState(LimeLightState state){
+    switch (state){
+      case Drive:    
+        main_limelight.getEntry("pipeline").setDouble(1);
+        main_limelight.getEntry("camMode").setDouble(1);
+        break;
+      case AprilTag:          
+        main_limelight.getEntry("pipeline").setDouble(5);
+        main_limelight.getEntry("camMode").setDouble(0);
+        break;
+      case Reflective:      
+        main_limelight.getEntry("pipeline").setDouble(1);
+        main_limelight.getEntry("camMode").setDouble(0);
+        break;
+    }
   }
 }
