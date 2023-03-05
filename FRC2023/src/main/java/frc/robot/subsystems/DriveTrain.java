@@ -49,7 +49,6 @@ public class DriveTrain extends SubsystemBase {
 
 
   public void arcadeDrive(double xSpeed, double zRotation) {
-    zRotation = zRotation;
     drive.arcadeDrive(xSpeed, zRotation);
   }
 
@@ -115,10 +114,14 @@ public class DriveTrain extends SubsystemBase {
     SmartDashboard.putBoolean("CollisionDetected", collisionDetected);
 
   }else {
-    if(navx.getVelocityX() <= .1)
+    if(navx.getVelocityX() <= .1 || navx.getVelocityY() <= .1)
       collisionDetected = true;
   }
     return collisionDetected;
+  }
+
+  public boolean isBlue() {
+    return true;
   }
 
 
@@ -136,6 +139,7 @@ public class DriveTrain extends SubsystemBase {
         SmartDashboard.putNumber("Pitch (FB Tip", getPitch());
         SmartDashboard.putNumber("Yaw", getYaw());
       }
+      SmartDashboard.putBoolean("AllianceColor", isBlue());
     }
   
 }
