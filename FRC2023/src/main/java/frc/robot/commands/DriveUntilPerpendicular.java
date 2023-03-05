@@ -5,24 +5,30 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.Arms;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Vision;
 
 public class DriveUntilPerpendicular extends CommandBase {
   private DriveTrain m_driveTrain;
   private Vision m_vision;
-  private int scoringPositon = 6;
+  private Arms m_arms;
+  private int scoringPositon;
   private int allianceColor = 0;
+  private int slot;
   /** Creates a new DriveUntilPerpendicular. */
-  public DriveUntilPerpendicular(DriveTrain driveTrain, Vision vision) {
+  public DriveUntilPerpendicular(DriveTrain driveTrain, Vision vision, Arms arms) {
     m_driveTrain = driveTrain;
     m_vision = vision;
+    m_arms = arms;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    slot = m_arms.getScoringSlot();
+    scoringPositon = (slot >= 8 ? 7 : slot);
     m_driveTrain.setBreakMode();
   }
 

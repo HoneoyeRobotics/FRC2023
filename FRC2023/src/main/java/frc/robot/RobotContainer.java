@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -38,10 +39,10 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    driverJoystick.a().onTrue(new DriveUntilPerpendicular(driveTrain, vision));
+    driverJoystick.a().onTrue(new DriveUntilPerpendicular(driveTrain, vision, arms));
     driverJoystick.rightBumper().whileTrue(new BrakeMode(driveTrain, false));
     driverJoystick.b().onTrue(new RotateToDegree(driveTrain, 0));
-    driverJoystick.start().onTrue(new MoveToScorePos(driveTrain, vision));
+    driverJoystick.start().onTrue(new MoveToScorePos(driveTrain, vision, arms));
   }
 
   private void configureButtonBoard() {
