@@ -11,7 +11,8 @@ import frc.robot.subsystems.Vision;
 public class DriveUntilPerpendicular extends CommandBase {
   private DriveTrain m_driveTrain;
   private Vision m_vision;
-  private int aprilTagID = 7;
+  private int scoringPositon = 6;
+  private int allianceColor = 0;
   /** Creates a new DriveUntilPerpendicular. */
   public DriveUntilPerpendicular(DriveTrain driveTrain, Vision vision) {
     m_driveTrain = driveTrain;
@@ -28,10 +29,10 @@ public class DriveUntilPerpendicular extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(m_vision.closeToPerpendicular(aprilTagID) == false)
+    if(m_vision.closeToPerpendicular(allianceColor, scoringPositon) == false)
       m_driveTrain.arcadeDrive(.5, 0);
     else 
-      m_driveTrain.arcadeDrive(.3, 0);
+      m_driveTrain.arcadeDrive(.35, 0);
   }
 
   // Called once the command ends or is interrupted.
@@ -43,6 +44,6 @@ public class DriveUntilPerpendicular extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return m_vision.isPerpendicular(aprilTagID);
+    return m_vision.isPerpendicular(allianceColor, scoringPositon);
   }
 }

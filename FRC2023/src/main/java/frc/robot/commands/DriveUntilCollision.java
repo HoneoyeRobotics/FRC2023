@@ -38,7 +38,7 @@ public class DriveUntilCollision extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(i > 15)
+    if(i > 25)
       return m_DriveTrain.collisionDetected(false);
     else
     return false;

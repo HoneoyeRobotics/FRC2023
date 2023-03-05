@@ -41,4 +41,12 @@ public final class RobotPrefs {
         }
         return Preferences.getDouble("RotateRobotSpeed", 0.1);
     }
+
+    
+    public static double getRotateRobotDeadband(){
+        if(!Preferences.containsKey("RotateRobotDeadband")){
+            Preferences.setDouble("RotateRobotDeadband", 5);
+        }
+        return Preferences.getDouble("RotateRobotDeadband", 5);
+    }
 }

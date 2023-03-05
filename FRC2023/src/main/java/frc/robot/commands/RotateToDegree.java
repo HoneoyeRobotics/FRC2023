@@ -35,7 +35,7 @@ public class RotateToDegree extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() { 
-    rotationSpeed = (Math.abs(targetHeading - m_DriveTrain.getYaw()) > 15) ? RobotPrefs.getRotateRobotSpeed() : (RobotPrefs.getRotateRobotSpeed() / 2.5);
+    rotationSpeed = (Math.abs(targetHeading - m_DriveTrain.getYaw()) > 25) ? RobotPrefs.getRotateRobotSpeed() : (RobotPrefs.getRotateRobotSpeed() / 2.6);
     rotationSpeed *= sign;
 
     m_DriveTrain.arcadeDrive(0, rotationSpeed);

@@ -14,6 +14,7 @@ public class Vision extends SubsystemBase {
   
   private NetworkTable side_limelight = NetworkTableInstance.getDefault().getTable("limelight-suitsx");
   private NetworkTableEntry side_tx = side_limelight.getEntry("tx");
+  private NetworkTableEntry side_coordinates = side_limelight.getEntry("botpose_wpiblue");
   
   private NetworkTable main_limelight = NetworkTableInstance.getDefault().getTable("limelight-suits");
   private NetworkTableEntry main_tx = main_limelight.getEntry("tx");
@@ -21,39 +22,59 @@ public class Vision extends SubsystemBase {
 
   private NetworkTableEntry m_aprilTagID = side_limelight.getEntry("tid");
   
+  
   /** Creates a new Vision. */
   public Vision() {
     setFrontLimelightState(LimeLightState.Drive);
 
   }
 
-  public boolean isPerpendicular(int aprilTagID) {
-    int currentAprilTagID = (int)(m_aprilTagID.getDouble(0));
-    double target = -5;
-    double current = side_tx.getDouble(10);
-    if(currentAprilTagID == aprilTagID && 
-    (current <= Constants.txdeadband + target && current >= (Constants.txdeadband * -1) + target))
+  // public boolean isPerpendicular(int aprilTagID) {
+  //   int currentAprilTagID = (int)(m_aprilTagID.getDouble(0));
+  //   double target = -5;
+  //   double current = side_tx.getDouble(10);
+  //   if(currentAprilTagID == aprilTagID && 
+  //   (current <= Constants.txdeadband + target && current >= (Constants.txdeadband * -1) + target))
+  //     return true;
+  //   else 
+  //     return false;
+  // }
+
+  public boolean isPerpendicular(int allianceColor, int scoringPos) {
+    //int currentAprilTagID = (int)(m_aprilTagID.getDouble(0));
+
+    //Target coordinates based on the chosen scoring position
+    double target = Constants.BluetargetYcoordinates[scoringPos];
+
+    //Current coordinates based on apriltag
+    double[] currentPos = side_coordinates.getDoubleArray(new double[] {});
+
+    //checks to see if the current Y position is within the deadband of the target Y position 
+    if((currentPos[1] <= Constants.yPosDeadband + target && currentPos[1] >= (Constants.yPosDeadband * -1) + target))
       return true;
     else 
       return false;
   }
 
-  public boolean closeToPerpendicular(int aprilTagID) {    
-    int currentAprilTagID = (int)(m_aprilTagID.getDouble(0));
-    double target = -15;
-    double current = side_tx.getDouble(10);
-    if(currentAprilTagID == aprilTagID && (current >= target))
+  public boolean closeToPerpendicular(int allianceColor, int scoringPos) {    
+    //int currentAprilTagID = (int)(m_aprilTagID.getDouble(0));
+
+    //Target coordinates based on the chosen scoring position
+    double target = Constants.BluetargetYcoordinates[scoringPos];
+
+    //Current coordinates based on apriltag
+    double[] currentPos = side_coordinates.getDoubleArray(new double[] {});
+    if(currentPos[1] == 0.0)
       return true;
-    else 
-      return false;
+    return (currentPos[1] <= target + 0.5 && currentPos[1] >= target - 0.5) ? true : false;
     }
 
   public boolean correctDistance() {
-    double target = -1.5;
+    double target = -1.7;
     double[] coordinates = main_tz.getDoubleArray(new double[] {});
     if (coordinates.length < 3 || coordinates[2] == 0.0)
       return false;
-    if(coordinates[2] >= target)
+    if(coordinates[2] >= target - .1)
       return true;
     else 
       return false;
@@ -62,8 +83,13 @@ public class Vision extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putBoolean("AtSeven?", isPerpendicular(7));
+    double[] coordinates = side_coordinates.getDoubleArray(new double[] {});
+
+    SmartDashboard.putBoolean("AtSeven?", isPerpendicular(0, 4));
     SmartDashboard.putBoolean("CorrectDistance", correctDistance());
+    SmartDashboard.putNumber("xCord", coordinates[0]);
+    SmartDashboard.putNumber("yCord", coordinates[1]);
+    SmartDashboard.putNumber("zCord", coordinates[2]);
   }
 
   public void setFrontLimelightState(LimeLightState state){
