@@ -13,14 +13,14 @@ import frc.robot.enums.LimeLightState;
 public class Vision extends SubsystemBase {
   
   private NetworkTable side_limelight = NetworkTableInstance.getDefault().getTable("limelight-suitsx");
-  private NetworkTableEntry side_tx = side_limelight.getEntry("tx");
+  //private NetworkTableEntry side_tx = side_limelight.getEntry("tx");
   private NetworkTableEntry side_coordinates = side_limelight.getEntry("botpose_wpiblue");
   
   private NetworkTable main_limelight = NetworkTableInstance.getDefault().getTable("limelight-suits");
-  private NetworkTableEntry main_tx = main_limelight.getEntry("tx");
+  //private NetworkTableEntry main_tx = main_limelight.getEntry("tx");
   private NetworkTableEntry main_tz = main_limelight.getEntry("camerapose_targetspace");
 
-  private NetworkTableEntry m_aprilTagID = side_limelight.getEntry("tid");
+  //private NetworkTableEntry m_aprilTagID = side_limelight.getEntry("tid");
   
   
   /** Creates a new Vision. */

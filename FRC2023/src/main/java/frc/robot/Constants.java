@@ -31,17 +31,18 @@ public final class Constants {
     }
 
     public final class CanIDs {
-        public static final int LeftFrontDrive = 25;
-        public static final int LeftRearDrive = 26;
-        public static final int RightFrontDrive = 21;
-        public static final int RightRearDrive = 22;
+        public static final int LeftFrontDrive = 31;
+        public static final int LeftRearDrive = 34;
+        public static final int RightFrontDrive = 32;
+        public static final int RightRearDrive = 33;
 
+        //TODO change pickup and feeder motors to right IDs and update firmware
         public static final int leftFingerMotor = 10;
         public static final int rightFingerMotor = 11;
 
         public static final int BottomPickupMotor = 12;
 
-        public static final int ArmRotateMotor = 24;
+        public static final int ArmRotateMotor = 22;
         public static final int ArmLengthMotor = 23;
 
         public static final int PCM = 10;

@@ -136,7 +136,7 @@ public class DriveTrain extends SubsystemBase {
         SmartDashboard.putNumber("RR Encoder", rightRearMotor.getEncoder().getPosition());
         SmartDashboard.putNumber("Rotation", getAngle());
         SmartDashboard.putNumber("Roll (RL Tip)", getRoll());
-        SmartDashboard.putNumber("Pitch (FB Tip", getPitch());
+        SmartDashboard.putNumber("Pitch (FB Tip)", getPitch());
         SmartDashboard.putNumber("Yaw", getYaw());
       }
       SmartDashboard.putBoolean("AllianceColor", isBlue());
