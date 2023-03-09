@@ -14,9 +14,12 @@ import frc.robot.commands.*;
 import frc.robot.enums.*;
 import frc.robot.subsystems.*;
 public class RobotContainer {
-  private DriveTrain driveTrain;
   private Arms arms;
+  private DriveTrain driveTrain;
+  private Fingers fingers;
+  private Pickup pickup;
   private Vision vision;
+
   private CommandXboxController driverJoystick = new CommandXboxController(0);
   private CommandJoystick buttonBoard = new CommandJoystick(1);
 
@@ -46,12 +49,37 @@ public class RobotContainer {
 
   private void configureButtonBoard() {
 
-        //Changes the scoring position grid on dashboard
-        buttonBoard.axisGreaterThan(1, .5).onTrue(new ChangeScoringHeight(arms, false));
-        buttonBoard.axisLessThan(1, -.5).onTrue(new ChangeScoringHeight(arms, true));
-    
-        buttonBoard.axisGreaterThan(0, .5).onTrue(new ChangeScoringSlot(arms, true));
-        buttonBoard.axisLessThan(0, -.5).onTrue(new ChangeScoringSlot(arms, false));
+
+        
+    //buttonBoard.button(2).whileTrue(new RunBottomPickup(pickup));
+    buttonBoard.button(8).whileTrue(new BottomPickupIn(pickup).alongWith(new FingersIn(fingers)));
+
+    buttonBoard.button(6).onTrue(new GrabPositionCycle(arms));
+    buttonBoard.button(7).onTrue(new  GrabPiece(arms));
+
+    buttonBoard.button(4).onTrue(new ClawToggle(arms));
+
+    buttonBoard.button(9).whileTrue(new ArmMoveOut(arms));
+    buttonBoard.button(3).whileTrue(new ArmMoveIn(arms));
+
+    buttonBoard.button(10).whileTrue(new ArmRotate(arms, true));
+    buttonBoard.button(11).whileTrue(new ArmRotate(arms, false));
+
+    //Brings the arm home
+    buttonBoard.button(5).onTrue(
+      new ClawClose(arms)
+      .andThen(new ArmMoveCompletelyIn(arms))
+      .andThen(new ArmRotateToPIDPosition(arms, 0).withTimeout(6))
+      .andThen(new ClawOpen(arms)));
+
+    //Changes the scoring position grid on dashboard
+    buttonBoard.axisGreaterThan(1, .5).onTrue(new ChangeScoringHeight(arms, false));
+    buttonBoard.axisLessThan(1, -.5).onTrue(new ChangeScoringHeight(arms, true));
+
+    buttonBoard.axisGreaterThan(0, .5).onTrue(new ChangeScoringSlot(arms, true));
+    buttonBoard.axisLessThan(0, -.5).onTrue(new ChangeScoringSlot(arms, false));
+
+    buttonBoard.button(2).onTrue(new ScorePiece1(arms).andThen(new ScorePiece2(arms)));
   }
 
   private void initializeScorePosition() {
