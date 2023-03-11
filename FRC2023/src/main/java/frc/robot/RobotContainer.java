@@ -17,7 +17,6 @@ public class RobotContainer {
   private Arms arms;
   private DriveTrain driveTrain;
   private Fingers fingers;
-  private Pickup pickup;
   private Vision vision;
 
   private CommandXboxController driverJoystick = new CommandXboxController(0);
@@ -52,7 +51,7 @@ public class RobotContainer {
 
         
     //buttonBoard.button(2).whileTrue(new RunBottomPickup(pickup));
-    buttonBoard.button(8).whileTrue(new BottomPickupIn(pickup).alongWith(new FingersIn(fingers)));
+    buttonBoard.button(8).whileTrue(new FingersIn(fingers));
 
     buttonBoard.button(6).onTrue(new GrabPositionCycle(arms));
     buttonBoard.button(7).onTrue(new  GrabPiece(arms));

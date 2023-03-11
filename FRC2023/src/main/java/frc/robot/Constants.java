@@ -15,10 +15,9 @@ public final class Constants {
         public static final int RightRearDrive = 33;
 
         //TODO change pickup and feeder motors to right IDs and update firmware
-        public static final int leftFingerMotor = 10;
-        public static final int rightFingerMotor = 11;
+        public static final int leftFingerMotor = 12;
+        public static final int rightFingerMotor = 13;
 
-        public static final int BottomPickupMotor = 12;
 
         public static final int ArmRotateMotor = 22;
         public static final int ArmLengthMotor = 23;
