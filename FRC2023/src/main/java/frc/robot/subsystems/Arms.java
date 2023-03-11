@@ -17,13 +17,13 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Robot;
 import frc.robot.RobotPrefs;
 import frc.robot.Constants.*;
 import frc.robot.enums.GrabPosition;
 import frc.robot.enums.ScoringHeight;
 
 public class Arms extends SubsystemBase {
-  private DigitalInput limitswitchOut;
   private DigitalInput proxSensorIn;
   private boolean armOut;
   private boolean armIn;
@@ -62,14 +62,14 @@ public class Arms extends SubsystemBase {
     clawSolenoid = new DoubleSolenoid (Constants.CanIDs.PCM, PneumaticsModuleType.CTREPCM, Constants.PCMIDs.Claw_Forward, Constants.PCMIDs.Claw_Reverse);  
 
 
-    limitswitchOut = new DigitalInput(Constants.limitswitchOutID);
     proxSensorIn = new DigitalInput(Constants.proxSensorInID);
 
     armRotateMotor.getEncoder().setPosition(0.0);
     armRotatePIDController.setSetpoint(0.0);
 
-    armLengthMotor.setIdleMode(IdleMode.kBrake);
-
+    armLengthMotor.setIdleMode(IdleMode.kBrake); 
+    armRotateMotor.setIdleMode(IdleMode.kBrake);
+    armRotatePIDController.setTolerance(1);
     armRotateMotor.setSmartCurrentLimit(15);
     armLengthMotor.setSmartCurrentLimit(40);
   }
@@ -137,8 +137,14 @@ public class Arms extends SubsystemBase {
     armLengthMotor.getEncoder().setPosition(0);
   }
 
-  public void moveArmToPosition(double speed, double position) {
+  public void moveArmToPosition(double position) {
     currentPosition = armLengthMotor.getEncoder().getPosition();
+    double speed = 0;
+    if(position > currentPosition)
+      speed = RobotPrefs.getArmLengthOutSpeed();
+    else
+      speed = -1 * RobotPrefs.getArmLengthInSpeed();
+
     if (position > currentPosition - ArmLength.deadband && position < currentPosition + ArmLength.deadband) {
       speed = 0;
     }
@@ -299,7 +305,6 @@ public class Arms extends SubsystemBase {
 
   private void armLocationUpdate() {
     armIn = !proxSensorIn.get();
-    armOut = limitswitchOut.get();
   }
 
   public boolean isArmIn() {
@@ -307,7 +312,7 @@ public class Arms extends SubsystemBase {
   }
 
   public boolean isArmOut() {
-    return armOut;
+    return armLengthMotorCurrentPosition() > ArmLength.maxPosition;
   }
 
   @Override

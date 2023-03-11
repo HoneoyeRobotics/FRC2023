@@ -41,6 +41,7 @@ public class DriveTrain extends SubsystemBase {
 
     drive = new DifferentialDrive(leftMotors, rightMotors);
     setCoastMode();
+    resetEncoders();
 
     navx = new AHRS(SerialPort.Port.kUSB);
     navx.calibrate();

@@ -13,7 +13,6 @@ import frc.robot.subsystems.Arms;
 
 public class ScorePiece2 extends CommandBase {
   private Arms m_arms;
-  private double lengthSpeed;
   private double lengthPosition;
   private int m_scoringSlot;
   private boolean isCone;
@@ -28,7 +27,6 @@ public class ScorePiece2 extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    lengthSpeed = RobotPrefs.getArmLengthOutSpeed();
     m_scoringSlot = m_arms.getScoringSlot();
     m_scoringHeight = m_arms.getScoringHeight();
 
@@ -61,19 +59,21 @@ public class ScorePiece2 extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-      m_arms.moveArmToPosition(lengthSpeed, lengthPosition);
+      m_arms.moveArmToPosition(lengthPosition);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     m_arms.armLengthBrakeOn();
+    m_arms.moveArmInOut(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (((m_arms.armLengthMotorCurrentPosition() + ArmLength.deadband) > lengthPosition && 
-             (m_arms.armLengthMotorCurrentPosition() - ArmLength.deadband) < lengthPosition));
+    return (((m_arms.armLengthMotorCurrentPosition() + ArmLength.deadband) > lengthPosition 
+          && (m_arms.armLengthMotorCurrentPosition() - ArmLength.deadband) < lengthPosition)
+          || m_arms.isArmOut());
   }
 }

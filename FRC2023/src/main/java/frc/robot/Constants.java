@@ -52,7 +52,7 @@ public final class Constants {
 
         public static final double deadband = 2.0;
         
-        public static final double maxPosition = 68.0;
+        public static final double maxPosition = 60.0;
         public static final double minPosition = 0.0;
     }
 
@@ -69,8 +69,8 @@ public final class Constants {
     }
 
     public final class ScorePositions{
-        public static final double lowLength = 5;
-        public static final double lowHeight = 20;
+        public static final double lowLength = 1;
+        public static final double lowHeight = 25;
         public static final double cubeMedLength = 19;
         public static final double cubeMedHeight = 43;
         public static final double cubeHighLength = 67;
@@ -84,7 +84,6 @@ public final class Constants {
 
 
     private static final double shift = Units.inchesToMeters(22);
-    public static final int limitswitchOutID = 1;
     public static final int proxSensorInID = 0;
     public static final double proxSensorTriggerVoltage = 0.8;
     public static final double txdeadband = 1;
