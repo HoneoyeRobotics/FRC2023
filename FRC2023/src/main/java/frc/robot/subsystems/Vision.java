@@ -20,7 +20,8 @@ public class Vision extends SubsystemBase {
   //private NetworkTableEntry main_tx = main_limelight.getEntry("tx");
   private NetworkTableEntry main_tz = main_limelight.getEntry("camerapose_targetspace");
 
-  //private NetworkTableEntry m_aprilTagID = side_limelight.getEntry("tid");
+  private NetworkTableEntry aprilTagID = main_limelight.getEntry("tid");
+  public boolean isBlue;
   
   
   /** Creates a new Vision. */
@@ -49,11 +50,12 @@ public class Vision extends SubsystemBase {
     //Current coordinates based on apriltag
     double[] currentPos = side_coordinates.getDoubleArray(new double[] {});
 
+    if(currentPos.length > 2){
     //checks to see if the current Y position is within the deadband of the target Y position 
-    if((currentPos[1] <= Constants.yPosDeadband + target && currentPos[1] >= (Constants.yPosDeadband * -1) + target))
-      return true;
-    else 
-      return false;
+      if((currentPos[1] <= Constants.yPosDeadband + target && currentPos[1] >= (Constants.yPosDeadband * -1) + target))
+        return true;
+    }
+    return false;
   }
 
   public boolean closeToPerpendicular(int allianceColor, int scoringPos) {    
@@ -83,13 +85,23 @@ public class Vision extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    double[] coordinates = side_coordinates.getDoubleArray(new double[] {});
-
+    if(side_coordinates != null){
+      double[] coordinates = side_coordinates.getDoubleArray(new double[] {});
+      if(coordinates.length > 2){
+        SmartDashboard.putNumber("xCord", coordinates[0]);
+        SmartDashboard.putNumber("yCord", coordinates[1]);
+        SmartDashboard.putNumber("zCord", coordinates[2]);
+      }
+    }
+    if (aprilTagID.getDouble(0) == 6)
+      isBlue = true;
+    else {
+      if(aprilTagID.getDouble(0) == 3)
+        isBlue = false;
+    }
+    
     SmartDashboard.putBoolean("AtSeven?", isPerpendicular(0, 4));
     SmartDashboard.putBoolean("CorrectDistance", correctDistance());
-    SmartDashboard.putNumber("xCord", coordinates[0]);
-    SmartDashboard.putNumber("yCord", coordinates[1]);
-    SmartDashboard.putNumber("zCord", coordinates[2]);
   }
 
   public void setFrontLimelightState(LimeLightState state){

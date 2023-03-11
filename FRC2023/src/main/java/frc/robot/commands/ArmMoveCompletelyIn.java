@@ -26,19 +26,21 @@ public class ArmMoveCompletelyIn extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_arms.moveArmInOut(-1 * RobotPrefs.getArmLengthInSpeed());
+    m_arms.moveArmInCompletely(1 * RobotPrefs.getArmLengthInSpeed());
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_arms.moveArmInOut(0);
     m_arms.armLengthBrakeOn();
+    m_arms.moveArmInOut(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (m_arms.isArmIn()) || m_arms.armLengthOverload();
+    if(m_arms.isArmIn())
+      m_arms.resetArmLengthEncoder();
+    return m_arms.isArmIn() || m_arms.armLengthOverload();
   }
 }

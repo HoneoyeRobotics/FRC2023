@@ -25,7 +25,7 @@ public class MoveToScorePos extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new DriveUntilCorrectDistance(m_driveTrain, m_vision),
-      new RotateToDegree(m_driveTrain, m_driveTrain.isBlue() ? 90 : -90),
+      new RotateToDegree(m_driveTrain, m_vision.isBlue ? 90 : -90),
       new DriveUntilPerpendicular(m_driveTrain, m_vision, m_arms),
       new RotateToDegree(m_driveTrain, 0),
       new DriveUntilCollision(driveTrain)

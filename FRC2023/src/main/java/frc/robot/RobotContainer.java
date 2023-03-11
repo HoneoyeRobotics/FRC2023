@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -18,6 +20,7 @@ public class RobotContainer {
   private DriveTrain driveTrain;
   private Fingers fingers;
   private Vision vision;
+  private boolean isBlue;
 
   private CommandXboxController driverJoystick = new CommandXboxController(0);
   private CommandJoystick buttonBoard = new CommandJoystick(1);
@@ -26,6 +29,7 @@ public class RobotContainer {
     driveTrain = new DriveTrain();
     arms = new Arms();
     vision = new Vision();
+    fingers = new Fingers();
     //default Teleop command
     driveTrain.setDefaultCommand(new TeleopDrive(driveTrain, 
     () -> driverJoystick.getLeftTriggerAxis(), 
@@ -37,6 +41,8 @@ public class RobotContainer {
     configureButtonBoard();
     initializeScorePosition();
     SmartDashboard.putData("ResetNavX", new ResetNavX(driveTrain));
+    SmartDashboard.putData("ResetLengthEncoder", new ResetArmLengthEncoder(arms));
+    SmartDashboard.putData("ResetRotateEncoder", new ResetArmRotateEncoder(arms));
   }
 
   private void configureBindings() {
@@ -96,6 +102,8 @@ public class RobotContainer {
   }
   
   public Command getAutonomousCommand() {
+    isBlue = (DriverStation.getAlliance() == Alliance.Blue);
+    SmartDashboard.putBoolean("Alliance", isBlue);
     return Commands.print("No autonomous command configured");
   }
 }

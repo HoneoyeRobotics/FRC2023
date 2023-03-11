@@ -15,8 +15,8 @@ public final class Constants {
         public static final int RightRearDrive = 33;
 
         //TODO change pickup and feeder motors to right IDs and update firmware
-        public static final int leftFingerMotor = 12;
-        public static final int rightFingerMotor = 13;
+        public static final int leftFingerMotor = 13;
+        public static final int rightFingerMotor = 12;
 
 
         public static final int ArmRotateMotor = 22;
@@ -26,11 +26,11 @@ public final class Constants {
     }
 
     public final class PCMIDs{
-        public static final int Claw_Forward = 6;
-        public static final int Claw_Reverse = 7;
+        public static final int Claw_Forward = 4;
+        public static final int Claw_Reverse = 5;
 
-        public static final int Arm_Length_Brake_On = 4;
-        public static final int Arm_Length_Brake_Off = 5;
+        public static final int Arm_Length_Brake_On = 6;
+        public static final int Arm_Length_Brake_Off = 7;
     }
 
     //TODO: tune these values
@@ -40,7 +40,7 @@ public final class Constants {
         public static final double maxPosition = 80.0;
         public static final double minPosition = 0.0;
 
-        public static final double RotateKp = 0.08;
+        public static final double RotateKp = 0.06;
 
     }
 
@@ -86,7 +86,7 @@ public final class Constants {
     private static final double shift = Units.inchesToMeters(22);
     public static final int proxSensorOutID = 0;
     public static final int proxSensorInID = 0;
-    public static final double proxSensorTriggerVoltage = 0.5;
+    public static final double proxSensorTriggerVoltage = 0.8;
     public static final double txdeadband = 1;
     public static final double yPosDeadband = .04;
 

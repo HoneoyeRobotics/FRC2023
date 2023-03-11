@@ -11,6 +11,7 @@ import frc.robot.subsystems.Arms;
 public class ArmMoveIn extends CommandBase {
   /** Creates a new MoveArmIn. */
   private Arms arms;
+  private int i;
   public ArmMoveIn(Arms arms) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.arms = arms;
@@ -20,25 +21,30 @@ public class ArmMoveIn extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    i = 0;
     arms.armLengthBrakeOff();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    arms.moveArmInOut(-1 * RobotPrefs.getArmLengthInSpeed());
+    arms.moveArmInOut(1 * RobotPrefs.getArmLengthInSpeed());
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    arms.moveArmInOut(0);
     arms.armLengthBrakeOn();
+    arms.moveArmInOut(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return arms.isArmIn() || arms.armLengthOverload();
+    if(arms.isArmIn()) {
+      arms.armLengthBrakeOn();
+      i++;
+    }
+    return (i >= 5) || arms.armLengthOverload();
   }
 }

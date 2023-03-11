@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -44,7 +45,7 @@ public class Arms extends SubsystemBase {
   private PIDController armRotatePIDController;
   private double armRotatePIDSetpoint;
 
-  private ScoringHeight scoringHeight;
+  private ScoringHeight scoringHeight = ScoringHeight.Low;
   private GrabPosition grabPosition;
   
   private NetworkTableInstance table = NetworkTableInstance.getDefault();
@@ -52,6 +53,8 @@ public class Arms extends SubsystemBase {
   //private DigitalInput proxSensor;
   /** Creates a new Arm. */
   public Arms() {
+    //TODO: add robot pref for kP value
+    armRotatePIDController = new PIDController(ArmRotate.RotateKp, 0.0, 0.0);
 
     armLengthMotor = new CANSparkMax(CanIDs.ArmLengthMotor, MotorType.kBrushless);
     armRotateMotor = new CANSparkMax(CanIDs.ArmRotateMotor, MotorType.kBrushless);
@@ -62,6 +65,14 @@ public class Arms extends SubsystemBase {
 
     proxSensorOut = new AnalogInput(Constants.proxSensorOutID);
     proxSensorIn = new DigitalInput(Constants.proxSensorInID);
+
+    armRotateMotor.getEncoder().setPosition(0.0);
+    armRotatePIDController.setSetpoint(0.0);
+
+    armLengthMotor.setIdleMode(IdleMode.kBrake);
+
+    armRotateMotor.setSmartCurrentLimit(15);
+    armLengthMotor.setSmartCurrentLimit(40);
   }
 
 
@@ -119,6 +130,14 @@ public class Arms extends SubsystemBase {
     armLengthMotor.set(speed);
   }
 
+  public void moveArmInCompletely(double speed){
+    armLengthMotor.set(speed);
+  }
+
+  public  void resetArmLengthEncoder() {
+    armLengthMotor.getEncoder().setPosition(0);
+  }
+
   public void moveArmToPosition(double speed, double position) {
     currentPosition = armLengthMotor.getEncoder().getPosition();
     if (position > currentPosition - ArmLength.deadband && position < currentPosition + ArmLength.deadband) {
@@ -170,7 +189,8 @@ public class Arms extends SubsystemBase {
   }
 
   public  void resetArmRotateEncoder() {
-    armRotateMotor.getEncoder().setPosition(0);
+    armRotateMotor.getEncoder().setPosition(0.0);
+    armRotatePIDSetpoint = 0.0;
   }
 
   public double armRotateMotorCurrentPosition() {
@@ -279,8 +299,8 @@ public class Arms extends SubsystemBase {
 
 
   private void armLocationUpdate() {
-    armIn = proxSensorIn.get();
-    if(proxSensorOut.getVoltage() > Constants.proxSensorTriggerVoltage) 
+    armIn = !proxSensorIn.get();
+    if(proxSensorOut.getVoltage() < Constants.proxSensorTriggerVoltage) 
       armOut = true;
     else 
       armOut = false;
@@ -300,10 +320,17 @@ public class Arms extends SubsystemBase {
     if(armRotatePIDEnabled){
       double rotateSpeed = armRotatePIDController.calculate(armRotateMotorCurrentPosition(), armRotatePIDSetpoint);
       armRotateMotor.set(rotateSpeed);
+      SmartDashboard.putNumber("armRotateMotorCurrentPosition", armRotateMotorCurrentPosition());
+      SmartDashboard.putNumber("armRotatePIDSetpoint", armRotatePIDSetpoint);
       SmartDashboard.putNumber("ArmRotatePIDSpeed", rotateSpeed);
     }
-
     armLocationUpdate();
+    SmartDashboard.putBoolean("armIn", armIn);
+    SmartDashboard.putBoolean("armOut", armOut);
+    SmartDashboard.putNumber("currentDrawRotate", armRotateMotor.getOutputCurrent());
+    SmartDashboard.putNumber("currentDrawLength", armLengthMotor.getOutputCurrent());
+    SmartDashboard.putNumber("LengthEncoer", armLengthMotorCurrentPosition());
+
     //SmartDashboard.putBoolean("ProxSensor", proxSensor.get());
   }
 }

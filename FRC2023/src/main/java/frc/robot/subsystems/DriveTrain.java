@@ -8,7 +8,6 @@ import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
@@ -41,10 +40,10 @@ public class DriveTrain extends SubsystemBase {
     rightMotors = new MotorControllerGroup(rightFrontMotor, rightRearMotor);
 
     drive = new DifferentialDrive(leftMotors, rightMotors);
+    setCoastMode();
 
     navx = new AHRS(SerialPort.Port.kUSB);
     navx.calibrate();
-
   }
 
 
@@ -139,7 +138,6 @@ public class DriveTrain extends SubsystemBase {
         SmartDashboard.putNumber("Pitch (FB Tip)", getPitch());
         SmartDashboard.putNumber("Yaw", getYaw());
       }
-      SmartDashboard.putBoolean("AllianceColor", isBlue());
     }
   
 }
