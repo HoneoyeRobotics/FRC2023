@@ -28,7 +28,6 @@ public class GrabPiece extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    lengthSpeed = RobotPrefs.getArmLengthOutSpeed();
 
     switch(grabPosition){
       case Cube:
@@ -58,14 +57,14 @@ public class GrabPiece extends CommandBase {
   public void execute() {
     if (arms.isArmRotateAtPosition()) {
       arms.armLengthBrakeOff();
-      arms.moveArmToPosition(lengthSpeed, lengthPosition);
+      arms.moveArmToPosition(lengthPosition);
     }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    arms.moveArmToPosition(0.0, arms.armLengthMotorCurrentPosition());
+    arms.moveArmInOut(0.0);
     arms.armLengthBrakeOn();
   }
 
