@@ -84,7 +84,7 @@ public final class Constants {
 
 
     private static final double shift = Units.inchesToMeters(22);
-    public static final int proxSensorOutID = 0;
+    public static final int limitswitchOutID = 1;
     public static final int proxSensorInID = 0;
     public static final double proxSensorTriggerVoltage = 0.8;
     public static final double txdeadband = 1;

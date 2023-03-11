@@ -12,7 +12,6 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -24,7 +23,7 @@ import frc.robot.enums.GrabPosition;
 import frc.robot.enums.ScoringHeight;
 
 public class Arms extends SubsystemBase {
-  private AnalogInput proxSensorOut;
+  private DigitalInput limitswitchOut;
   private DigitalInput proxSensorIn;
   private boolean armOut;
   private boolean armIn;
@@ -63,7 +62,7 @@ public class Arms extends SubsystemBase {
     clawSolenoid = new DoubleSolenoid (Constants.CanIDs.PCM, PneumaticsModuleType.CTREPCM, Constants.PCMIDs.Claw_Forward, Constants.PCMIDs.Claw_Reverse);  
 
 
-    proxSensorOut = new AnalogInput(Constants.proxSensorOutID);
+    limitswitchOut = new DigitalInput(Constants.limitswitchOutID);
     proxSensorIn = new DigitalInput(Constants.proxSensorInID);
 
     armRotateMotor.getEncoder().setPosition(0.0);
@@ -300,10 +299,7 @@ public class Arms extends SubsystemBase {
 
   private void armLocationUpdate() {
     armIn = !proxSensorIn.get();
-    if(proxSensorOut.getVoltage() < Constants.proxSensorTriggerVoltage) 
-      armOut = true;
-    else 
-      armOut = false;
+    armOut = limitswitchOut.get();
   }
 
   public boolean isArmIn() {
@@ -330,6 +326,8 @@ public class Arms extends SubsystemBase {
     SmartDashboard.putNumber("currentDrawRotate", armRotateMotor.getOutputCurrent());
     SmartDashboard.putNumber("currentDrawLength", armLengthMotor.getOutputCurrent());
     SmartDashboard.putNumber("LengthEncoer", armLengthMotorCurrentPosition());
+    
+    SmartDashboard.putBoolean("atSetpoint", armRotatePIDController.atSetpoint());
 
     //SmartDashboard.putBoolean("ProxSensor", proxSensor.get());
   }
