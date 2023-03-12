@@ -21,6 +21,7 @@ public class ClawOpen extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_arms.openClaw();
+    if(m_arms.alreadyClosed == false)
+      m_arms.openClaw();
   }
 }

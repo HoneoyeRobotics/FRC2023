@@ -17,7 +17,6 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.Robot;
 import frc.robot.RobotPrefs;
 import frc.robot.Constants.*;
 import frc.robot.enums.GrabPosition;
@@ -36,6 +35,8 @@ public class Arms extends SubsystemBase {
   private boolean armLengthBrakeOn;
   private DoubleSolenoid armLengthBrakeSolenoid;
   private double currentPosition;
+
+  public boolean alreadyClosed = false;
 
   private CANSparkMax armLengthMotor;
   private CANSparkMax armRotateMotor;
@@ -85,8 +86,11 @@ public class Arms extends SubsystemBase {
   }
   
   public void closeClaw(){
+    alreadyClosed = clawOpened == false;
+
     clawSolenoid.set(DoubleSolenoid.Value.kForward);
     clawOpened = false;
+    
   }
 
 

@@ -85,4 +85,12 @@ public final class RobotPrefs {
         }
         return Preferences.getBoolean("Alliance", true);
     }
+
+    public static double getBalanceP(){
+        if(!Preferences.containsKey("BalanceP")){
+            Preferences.setDouble("BalanceP", 0.05 );
+        }
+        return Preferences.getDouble("BalanceP", 0.05);
+    }
+
 }

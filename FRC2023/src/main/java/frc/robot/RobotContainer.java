@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.*;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -21,6 +22,8 @@ public class RobotContainer {
   private DriveTrain driveTrain;
   private Fingers fingers;
   private Vision vision;
+
+  private SendableChooser<Command> selectedAutoMode = new SendableChooser<>();
   private boolean isBlue;
 
   private CommandXboxController driverJoystick = new CommandXboxController(0);
@@ -44,6 +47,10 @@ public class RobotContainer {
     SmartDashboard.putData("ResetNavX", new ResetNavX(driveTrain));
     SmartDashboard.putData("ResetLengthEncoder", new ResetArmLengthEncoder(arms));
     SmartDashboard.putData("ResetRotateEncoder", new ResetArmRotateEncoder(arms));
+
+    selectedAutoMode.setDefaultOption("Score and backup", new Autonomous1(arms, driveTrain));
+    selectedAutoMode.addOption("Balance", new Autonomous2(arms, driveTrain));
+    SmartDashboard.putData("AutoMode", selectedAutoMode);
   }
 
   private void configureBindings() {
@@ -107,8 +114,6 @@ public class RobotContainer {
   }
   
   public Command getAutonomousCommand() {
-    isBlue = (DriverStation.getAlliance() == Alliance.Blue);
-    SmartDashboard.putBoolean("Alliance", isBlue);
-    return Commands.print("No autonomous command configured");
+    return selectedAutoMode.getSelected();
   }
 }
