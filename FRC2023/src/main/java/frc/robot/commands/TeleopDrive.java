@@ -16,18 +16,17 @@ public class TeleopDrive extends CommandBase {
   private DoubleSupplier m_leftTriggerSupplier;
   private DoubleSupplier m_rightTriggerSupplier;
   private DoubleSupplier m_leftStickXSupplier;
-  private BooleanSupplier m_fastSupplier;
 
   //private double oldSpeed = 0.0;
   private double xSpeed;
   private double zRotation;
+  private double tmpSpeed;
 
   public TeleopDrive(DriveTrain drivetrain, DoubleSupplier leftTriggerSupplier, DoubleSupplier rightTriggerSupplier,
-      DoubleSupplier leftStickXSupplier, BooleanSupplier fastSupplier) {
+      DoubleSupplier leftStickXSupplier) {
     m_leftTriggerSupplier = leftTriggerSupplier;
     m_rightTriggerSupplier = rightTriggerSupplier;
     m_leftStickXSupplier = leftStickXSupplier;
-    m_fastSupplier = fastSupplier;
 
     m_drivetrain = drivetrain;
     addRequirements(m_drivetrain);
@@ -45,12 +44,19 @@ public class TeleopDrive extends CommandBase {
   public void execute() {
     xSpeed = (m_rightTriggerSupplier.getAsDouble() - m_leftTriggerSupplier.getAsDouble());
     zRotation = (m_leftStickXSupplier.getAsDouble());
-    xSpeed = xSpeed * xSpeed * (xSpeed > 0 ? 1 : -1);
-    zRotation = zRotation * zRotation * (zRotation > 0 ? 1 : -1);
-    if (m_fastSupplier.getAsBoolean() == false) {
-      xSpeed = xSpeed / 1.75;
-      zRotation = zRotation / 2;
-    }
+
+    // xSpeed = xSpeed * xSpeed * (xSpeed > 0 ? 1 : -1);
+    tmpSpeed = xSpeed * xSpeed;
+    if (xSpeed < 0)
+       xSpeed = tmpSpeed * -1.0;
+    else
+       xSpeed = tmpSpeed;
+      
+   zRotation = zRotation * zRotation * (zRotation > 0 ? 1 : -1);
+    // if (m_drivetrain.getFast() == false) {
+    //   xSpeed = xSpeed / 1.75;
+    //   zRotation = zRotation / 2;
+    // }
     if ((zRotation < Drive.deadband) && (zRotation > (Drive.deadband * -1)))
       zRotation = 0;
 

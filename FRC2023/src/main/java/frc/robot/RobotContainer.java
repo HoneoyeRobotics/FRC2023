@@ -38,8 +38,7 @@ public class RobotContainer {
     driveTrain.setDefaultCommand(new TeleopDrive(driveTrain, 
     () -> driverJoystick.getLeftTriggerAxis(), 
     () -> driverJoystick.getRightTriggerAxis(), 
-    () -> driverJoystick.getLeftX(), 
-    () -> driverJoystick.getHID().getLeftBumper()));
+    () -> driverJoystick.getLeftX()));
 
     configureBindings();
     configureButtonBoard();
@@ -54,19 +53,19 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    driverJoystick.a().onTrue(new DriveUntilPerpendicular(driveTrain, vision, arms));
-    driverJoystick.b().onTrue(new RotateToDegree(driveTrain, 10));
-    driverJoystick.rightBumper().whileTrue(new BrakeMode(driveTrain, false));
+    //driverJoystick.a().onTrue(new DriveUntilPerpendicular(driveTrain, vision, arms));
+    //driverJoystick.b().onTrue(new RotateToDegree(driveTrain, 10));
+    driverJoystick.rightBumper().onTrue(new DriveToggleIdleMode(driveTrain));
     driverJoystick.start().onTrue(new MoveToScorePos(driveTrain, vision, arms));
+    
+    driverJoystick.leftBumper().onTrue(new DriveToggleFast(driveTrain));
 
-    //driverJoystick.a().whileTrue(new FingersIn(fingers));
-    //driverJoystick.b().whileTrue(new FingersOut(fingers));
+    driverJoystick.a().whileTrue(new FingersIn(fingers));
+    driverJoystick.b().whileTrue(new FingersOut(fingers));
   }
 
   private void configureButtonBoard() {
 
-
-        
     //buttonBoard.button(2).whileTrue(new RunBottomPickup(pickup));
     buttonBoard.button(8).whileTrue(new FingersIn(fingers));
 

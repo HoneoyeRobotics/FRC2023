@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import org.ejml.sparse.csc.linsol.qr.LinearSolverQrLeftLooking_DSCC;
+
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
@@ -26,6 +28,8 @@ public class DriveTrain extends SubsystemBase {
     private MotorControllerGroup leftMotors;
     private MotorControllerGroup rightMotors;
     private DifferentialDrive drive;
+    
+    private boolean driveFast = false;
   
     private AHRS navx;
 
@@ -45,6 +49,17 @@ public class DriveTrain extends SubsystemBase {
 
     navx = new AHRS(SerialPort.Port.kUSB);
     navx.calibrate();
+  }
+
+  public void toggleFast(){
+    if(driveFast)
+      driveFast = false;
+    else
+      driveFast = true;
+  }
+
+  public boolean getFast(){
+    return driveFast;
   }
 
 
@@ -71,6 +86,10 @@ public class DriveTrain extends SubsystemBase {
     leftRearMotor.setIdleMode(IdleMode.kCoast);
     rightFrontMotor.setIdleMode(IdleMode.kCoast);
     rightRearMotor.setIdleMode(IdleMode.kCoast);
+  }
+
+  public boolean getBrakeMode(){
+    return leftFrontMotor.getIdleMode() == IdleMode.kBrake;
   }
 
 
@@ -139,6 +158,9 @@ public class DriveTrain extends SubsystemBase {
         SmartDashboard.putNumber("Pitch (FB Tip)", getPitch());
         SmartDashboard.putNumber("Yaw", getYaw());
       }
+      SmartDashboard.putBoolean("BrakeMode", getBrakeMode());
+
+
     }
   
 }
