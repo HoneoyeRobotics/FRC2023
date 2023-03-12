@@ -18,10 +18,10 @@ import edu.wpi.first.math.util.Units;
 public final class Constants {
 
   public final class CanIDs{
-    public static final int LeftFrontDrive = 25;
-    public static final int LeftRearDrive = 26;
-    public static final int RightFrontDrive = 21;
-    public static final int RightRearDrive = 22;
+    public static final int LeftFrontDrive = 34;
+    public static final int LeftRearDrive = 31;
+    public static final int RightFrontDrive = 32;
+    public static final int RightRearDrive = 33;
   }
   
 //   public final class CanIDs{

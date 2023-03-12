@@ -76,8 +76,10 @@ public class RobotContainer {
 
   private void configureBindings() {
     SmartDashboard.putData("coastmode", new coastMode(drivetrain));
+    SmartDashboard.putData("brakemode", new BrakeMode(drivetrain));
     SmartDashboard.putData("ResetEncoders", new ResetEncoders(drivetrain));
     SmartDashboard.putData("ResetNavX", new ResetGyro(drivetrain));
+
   }
 
   public Command getAutonomousCommand() {

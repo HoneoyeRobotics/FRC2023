@@ -12,8 +12,6 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
@@ -53,6 +51,11 @@ public class DriveTrain extends SubsystemBase {
     leftRearMotor.setIdleMode(IdleMode.kBrake);
     rightFrontMotor.setIdleMode(IdleMode.kBrake);
     rightRearMotor.setIdleMode(IdleMode.kBrake);
+
+    leftFrontMotor.setInverted(false);
+    leftRearMotor.setInverted(false);
+    rightFrontMotor.setInverted(true);
+    rightRearMotor.setInverted(true);
     
     leftMotors = new MotorControllerGroup(leftFrontMotor, leftRearMotor);
     rightMotors = new MotorControllerGroup(rightFrontMotor, rightRearMotor);
@@ -236,12 +239,17 @@ public class DriveTrain extends SubsystemBase {
 
 
   public void togglecoastmode() {
-
     leftFrontMotor.setIdleMode(IdleMode.kCoast);
     leftRearMotor.setIdleMode(IdleMode.kCoast);
     rightFrontMotor.setIdleMode(IdleMode.kCoast);
     rightRearMotor.setIdleMode(IdleMode.kCoast);
   }
 
+  public void brakemode() {
+    leftFrontMotor.setIdleMode(IdleMode.kBrake);
+    leftRearMotor.setIdleMode(IdleMode.kBrake);
+    rightFrontMotor.setIdleMode(IdleMode.kBrake);
+    rightRearMotor.setIdleMode(IdleMode.kBrake);
+  }
 
 }
