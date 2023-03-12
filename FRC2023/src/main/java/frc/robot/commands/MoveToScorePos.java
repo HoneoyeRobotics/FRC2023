@@ -5,6 +5,8 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.RobotPrefs;
 import frc.robot.subsystems.Arms;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Vision;
@@ -25,7 +27,8 @@ public class MoveToScorePos extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new DriveUntilCorrectDistance(m_driveTrain, m_vision),
-      new RotateToDegree(m_driveTrain, m_vision.isBlue ? 90 : -90),
+      new WaitCommand(.2),
+      new RotateToDegree(m_driveTrain, RobotPrefs.isBlue() ? 90 : -90),
       new DriveUntilPerpendicular(m_driveTrain, m_vision, m_arms),
       new RotateToDegree(m_driveTrain, 0),
       new DriveUntilCollision(driveTrain)

@@ -93,14 +93,16 @@ public class Vision extends SubsystemBase {
         SmartDashboard.putNumber("zCord", coordinates[2]);
       }
     }
-    if (aprilTagID.getDouble(0) == 6)
-      isBlue = true;
-    else {
-      if(aprilTagID.getDouble(0) == 3)
-        isBlue = false;
-    }
+    // if (aprilTagID.getDouble(0) == 6)
+    //   isBlue = true;
+    // else {
+    //   if(aprilTagID.getDouble(0) == 3)
+    //     isBlue = false;
+    // }
     
-    SmartDashboard.putBoolean("AtSeven?", isPerpendicular(0, 4));
+    //SmartDashboard.putBoolean("AtSeven?", isPerpendicular(0, 4));
+    
+    SmartDashboard.putBoolean("isblue", isBlue);
     SmartDashboard.putBoolean("CorrectDistance", correctDistance());
   }
 

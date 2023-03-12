@@ -78,4 +78,11 @@ public final class RobotPrefs {
         }
         return Preferences.getDouble("RotateRobotDeadband", 5);
     }
+
+    public static boolean isBlue(){
+        if(!Preferences.containsKey("Alliance")){
+            Preferences.setBoolean("Alliance", true);            
+        }
+        return Preferences.getBoolean("Alliance", true);
+    }
 }

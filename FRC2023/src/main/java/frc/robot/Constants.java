@@ -84,16 +84,17 @@ public final class Constants {
 
 
     private static final double shift = Units.inchesToMeters(22);
+    private static final double offset = Units.inchesToMeters(3);
     public static final int proxSensorInID = 0;
     public static final double proxSensorTriggerVoltage = 0.8;
     public static final double txdeadband = 1;
     public static final double yPosDeadband = .04;
 
     public static final double[] AprilTagYcoordinates = {0, 
-        Units.inchesToMeters(174.19), Units.inchesToMeters(108.19),
-        Units.inchesToMeters(41.19), Units.inchesToMeters(265.74), 
-        Units.inchesToMeters(265.74), Units.inchesToMeters(174.19), 
-        Units.inchesToMeters(108.19), Units.inchesToMeters(41.19)
+        Units.inchesToMeters(174.19) + offset, Units.inchesToMeters(108.19) + offset,
+        Units.inchesToMeters(41.19) + offset, Units.inchesToMeters(265.74) + offset, 
+        Units.inchesToMeters(265.74) + offset, Units.inchesToMeters(174.19) + offset, 
+        Units.inchesToMeters(108.19) + offset, Units.inchesToMeters(41.19) + offset
     };
 
     public static final double[] BluetargetYcoordinates = {0,

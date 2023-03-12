@@ -47,13 +47,13 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    //driverJoystick.a().onTrue(new DriveUntilPerpendicular(driveTrain, vision, arms));
-    //driverJoystick.b().onTrue(new RotateToDegree(driveTrain, 0));
+    driverJoystick.a().onTrue(new DriveUntilPerpendicular(driveTrain, vision, arms));
+    driverJoystick.b().onTrue(new RotateToDegree(driveTrain, 10));
     driverJoystick.rightBumper().whileTrue(new BrakeMode(driveTrain, false));
     driverJoystick.start().onTrue(new MoveToScorePos(driveTrain, vision, arms));
 
-    driverJoystick.a().whileTrue(new FingersIn(fingers));
-    driverJoystick.b().whileTrue(new FingersOut(fingers));
+    //driverJoystick.a().whileTrue(new FingersIn(fingers));
+    //driverJoystick.b().whileTrue(new FingersOut(fingers));
   }
 
   private void configureButtonBoard() {

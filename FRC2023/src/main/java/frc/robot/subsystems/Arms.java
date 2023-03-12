@@ -28,7 +28,7 @@ public class Arms extends SubsystemBase {
   private boolean armOut;
   private boolean armIn;
 
-  private int scoringSlot = 1;    
+  private int scoringSlot = 5;    
   private String l_position;
 
   private boolean clawOpened;
